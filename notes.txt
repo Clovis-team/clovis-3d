@@ -1,8 +1,0 @@
-Visualize an IFC file with webgl.
-
-Main steps.
- - turn ifc into an obj file (possibly divided by macro groups)
- - show these obj into a a-frame, maybe even one single glTF with multiple parts.
-
-Remember:
-can subdivide obj file externaly with mesh IFCtags informations.
