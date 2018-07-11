@@ -1,7 +1,7 @@
-var fs = require('fs');
-let ifc_filepath = "objs/15-34-IMB_MARCHE_optimisations-assimp.obj"
+const fs = require('fs');
+const ifc_filepath = "objs/15-34-IMB_MARCHE_optimisations-assimp.obj"
 let fileContents = fs.readFileSync(ifc_filepath).toString('utf8')
-let local_dir = "objs-split/"
+const local_dir = "objs-split/"
 
 const OBJFile = require('obj-file-parser');
 const objFile = new OBJFile(fileContents);
@@ -63,7 +63,6 @@ ifc_sections.forEach((section) =>{
         }
     });
     let section_array = vertices_new.concat(faces_new);
-    console.log("saving " + section)
     fs.writeFile(
         output_file_name,
         section_array.join("\n"),
