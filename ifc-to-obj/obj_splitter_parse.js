@@ -31,7 +31,7 @@ function edit_get_ifc_sections(faces){
 
 const ifc_sections = edit_get_ifc_sections(faces);
 
-function stringifyVertex(vertex){
+function vertexToString(vertex){
     return "v " + String(vertex.x) + " " + vertex.y + " " + vertex.z
 };
 
@@ -53,7 +53,7 @@ ifc_sections.forEach((section) =>{
                 v_i = vertex.vertexIndex;
                 if (!vertices_map[v_i]){
                     // vertices_map(v_i) = vertices_assigned++;
-                    let vertex_str = stringifyVertex(vertices[v_i - 1]);
+                    let vertex_str = vertexToString(vertices[v_i - 1]);
                     vertices_new.push(vertex_str);
                     vertices_map[v_i] = vertices_new.length;
                 }
