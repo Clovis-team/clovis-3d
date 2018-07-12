@@ -1,6 +1,8 @@
 
 
 var scene = new THREE.Scene();
+scene.background = new THREE.Color( 0xaaaabb );
+
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
 var renderer = new THREE.WebGLRenderer();
@@ -20,44 +22,34 @@ scene.add( directionalLight );
 
 var controls = new THREE.OrbitControls( camera );
 
-// controls.target.set(getCenterPoint());
+controls.enableDamping = true;
 controls.target.set(50,0,-10)
 controls.screenSpacePanning = true;
 controls.update();
+controls.panSpeed = 0.3;
+controls.rotateSpeed = 0.2;
 
 
 
+var building = null;
+
+var mtlLoader = new THREE.MTLLoader();
+mtlLoader.load( 'objs/15.mtl', function( materials ) {
+
+    materials.preload();
+
+    var objLoader = new THREE.OBJLoader();
+    objLoader.setMaterials( materials );
+    objLoader.load( 'objs/15.obj', function ( object ) {
+
+    building = object;
+    scene.add( building );
+    } );
+
+} );
 
 
-var loader = new THREE.OBJLoader();
-
-// load a resource
-loader.load(
-	// resource URL
-	'objs/15.obj',
-	// called when resource is loaded
-	function ( object ) {
-
-        scene.add( object );
-        
-
-	},
-	// called when loading is in progresses
-	function ( xhr ) {
-
-		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
-	},
-	// called when loading has errors
-	function ( error ) {
-
-		console.log( 'An error happened' );
-
-	}
-);
-
-
-
+console.log("controls",controls);
 
 var animate = function () {
     requestAnimationFrame( animate );
