@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "budo three-viz.js --live --verbose --port 3000 --open"
+    "start": "budo three-viz.js three-viz.glts.js --live --verbose --port 3000 --open"
   },
   "author": "nmanzini",
   "license": "ISC",

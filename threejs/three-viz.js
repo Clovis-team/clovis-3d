@@ -1,4 +1,10 @@
-
+function getCenterPoint(mesh) {
+    var geometry = mesh.geometry;
+    geometry.computeBoundingBox();   
+    center = geometry.boundingBox.getCenter();
+    mesh.localToWorld( center );
+    return center;
+}
 
 var scene = new THREE.Scene();
 scene.background = new THREE.Color( 0xaaaabb );
@@ -20,18 +26,17 @@ var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
 scene.add( directionalLight );
 
 
+
+
 var controls = new THREE.OrbitControls( camera );
 
 controls.enableDamping = true;
-controls.target.set(50,0,-10)
 controls.screenSpacePanning = true;
-controls.update();
 controls.panSpeed = 0.3;
 controls.rotateSpeed = 0.2;
+controls.target.set(50,0,10);
 
-
-
-var building = null;
+var building_mesh = null;
 
 var mtlLoader = new THREE.MTLLoader();
 mtlLoader.load( 'objs/15.mtl', function( materials ) {
@@ -42,14 +47,13 @@ mtlLoader.load( 'objs/15.mtl', function( materials ) {
     objLoader.setMaterials( materials );
     objLoader.load( 'objs/15.obj', function ( object ) {
 
-    building = object;
-    scene.add( building );
+        building_mesh = object;
+        scene.add( building_mesh );
+        console.log(building_mesh)
     } );
-
 } );
 
-
-console.log("controls",controls);
+controls.update();
 
 var animate = function () {
     requestAnimationFrame( animate );
