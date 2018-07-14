@@ -49,7 +49,7 @@ mtlLoader.load( 'objs/15.mtl', function( materials ) {
 
         building_mesh = object;
         scene.add( building_mesh );
-        console.log(building_mesh)
+        // console.log(building_mesh)
     } );
 } );
 

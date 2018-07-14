@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "budo three-viz.gltf.js --live --verbose --port 3000 --open"
+    "start": "budo ./three-viz.gltf.js --live --verbose --port 3000 --open"
   },
   "author": "nmanzini",
   "license": "ISC",
   "dependencies": {
+    "dat.gui": "^0.7.2",
     "three": "^0.94.0"
   }
 }
