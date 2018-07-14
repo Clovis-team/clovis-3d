@@ -22,8 +22,6 @@ console.log(directionalLight);
 directionalLight.position= THREE.Vector3(0,-10,10);
 scene.add( directionalLight );
 
-
-
 var loader = new THREE.GLTFLoader();
 
 var building_main = {}
