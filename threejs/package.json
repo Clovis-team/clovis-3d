@@ -5,11 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-<<<<<<< HEAD
     "start": "budo ./three-viz-gltf.js --live --verbose --port 3466 --open"
-=======
-    "start": "budo ./three-viz.gltf.js --live --verbose --port 3000 --open"
->>>>>>> 88a5e28817484d8c7e71b787bad0bc9dea148aaf
   },
   "author": "nmanzini",
   "license": "ISC",
