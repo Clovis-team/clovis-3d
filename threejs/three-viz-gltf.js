@@ -24,19 +24,35 @@ scene.add( light );
 var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5);
 scene.add( directionalLight );
 
+var stats = new Stats();
+stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild( stats.dom );
 
-var loader = new THREE.GLTFLoader();
-
-var building_main = {}
-var floors = {}
-var objects_flat = [];
-
+var gui = new dat.GUI();
+let gui_floor_folder = gui.addFolder('Floors');
 var explosion = {
     z_old:0,
     z_new:0,
     z_delta:0
 };
+gui.add(explosion,"z_new",0,100).name("z_explosion");
+let gui_ifc_tags_folder = gui.addFolder('Ifc Tags');
 
+var building_main = {}
+var floors = {}
+let ifc_building_elements = [];
+
+// ifc_building_elements is an array of objects3d
+// each object has as child all the meshes and objs
+//  of a certain building element (wall, slab...)
+var mesh_all = [];
+
+
+
+var loader = new THREE.GLTFLoader();
+
+
+var t0 = performance.now();
 // Load a glTF resource
 loader.load(
     // resource URL
@@ -44,36 +60,66 @@ loader.load(
     // 'gltfs/Project1-assimp.gltf',
     // called when the resource is loaded
     function ( gltf ) {
-
         // scene.add( gltf.scene );
         // gltf.animations; // Array<THREE.AnimationClip>
-        // gltf.scene; // THREE.Scene
+        // gltf.scene; // THREE.Scene   
         // gltf.scenes; // Array<THREE.Scene>
         // gltf.cameras; // Array<THREE.Camera>
         // gltf.asset; // Object
-        building_main = (gltf.scene.children[0])
-        scene.add(building_main);
-        floors = scene.children[2].children[0].children[0].children[0].children
+        // var t0 = performance.now();
+        var t1 = performance.now();
+        console.log("load gltf took " + Math.round(t1 - t0) + " milliseconds.")
+        scene.add(gltf.scene);
+        building = (gltf.scene.children[0].children[0].children[0].children[0]);
+        floors = building.children;
         populate_gui_floors(floors);
-        objects_flat = flatten(floors);
-        // console.log(objects_flat);
+        ifc_building_elements = get_building_elements(scene);
+        populate_gui_ifc_tags(ifc_building_elements);
+        var t2 = performance.now();
+        console.log("load and name all groups " + Math.round(t2 - t1) + " milliseconds.")
+        console.log(ifc_building_elements)
     },
     // called while loading is progressing
     function ( xhr ) {
-
         console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
     },
     // called when loading has errors
     // function ( error ) {
-
     //     console.log( 'An error happened' );
-
     // }
 );
 
-var gui = new dat.GUI();
-let gui_floor_folder = gui.addFolder('Floors');
+function get_building_elements(scene){
+    let ifc_building_elements = []
+    ifc_building_elements.exist = true;
+    scene.traverse( function( node ) {
+        if ( (node instanceof THREE.Mesh || node instanceof THREE.Object3D) && node.name != "") {
+            mesh_all.push(node);
+            let ifc_tag = node.name.split('_')[0];
+            node.ifc_tag = ifc_tag;
+            let ifc_name = node.name.split('_')[1];
+            node.ifc_name = ifc_name;
+            if ( ifc_tag != "" && ifc_tag.charAt(0) != "$" && ifc_tag != "mesh")
+            {
+                if ( !ifc_building_elements.some(obj => obj.ifc_tag === ifc_tag
+                    )){
+                    let ifc_building_element = new THREE.Object3D();
+                    ifc_building_element.ifc_tag = ifc_tag;
+                    ifc_building_element.name = ifc_tag;
+                    ifc_building_element.ifc_name = ifc_name;
+                    ifc_building_element.visible_order = true;
+                    ifc_building_element.children.push(node);
+                    ifc_building_elements.push(ifc_building_element);
+                }
+                else{
+                    let ifc_building_element = ifc_building_elements.find(obj => obj.ifc_tag === ifc_tag );
+                    ifc_building_element.children.push(node);
+                };
+            };
+        }
+    });
+    return ifc_building_elements;
+}
 
 function populate_gui_floors(floors){
     for (i = floors.length - 1; i>=0; i--){
@@ -82,7 +128,17 @@ function populate_gui_floors(floors){
     }
 }
 
-// let gui_floor_folder = gui.addFolder('Explode');
+function populate_gui_ifc_tags(elements){
+    elements.forEach(element => {
+        let ifc_tag = element.name;
+        gui_ifc_tags_folder.add(element, "visible_order").name(ifc_tag);
+
+    })
+    // for (i = elements.length - 1; i>=0; i--){
+    //     let ifc_tag = elements[i].name;
+    //     gui_ifc_tags_folder.add(elements[i], "visible_order").name(ifc_tag);
+    // }
+}
 
 function explode_floors(floors){
     explosion.z_delta = explosion.z_new -explosion.z_old
@@ -96,22 +152,24 @@ function explode_floors(floors){
     });
     explosion.z_old = explosion.z_new;
     explosion.z_delta=0;
-    // console.log ("exploded :", explosion.z)
 }
 
-gui.add(explosion,"z_new",0,100).name("z_explosion");
+
 
 raycaster = new THREE.Raycaster();
 
-// stats = new Stats();
-// container.appendChild( stats.dom );
 document.addEventListener( 'mouseup', onDocumentMouseMove, false );
 window.addEventListener( 'resize', onWindowResize, false );
 
 function animate() {
     requestAnimationFrame( animate );
+
+    stats.begin();
+
     controls.update();
     render()
+
+	stats.end();
 };
 
 function render(){
@@ -122,16 +180,29 @@ function render(){
     if (mouse.updated){
         console.log("click")
         raycaster.setFromCamera( mouse, camera );
-        var intersects = raycaster.intersectObjects( objects_flat );
+        var intersects = raycaster.intersectObjects( mesh_all );
         if ( intersects.length > 0 ) {
             INTERSECTED = intersects[0].object;
-            console.log(intersects);
-
+            console.log("OBJ", INTERSECTED)
+            console.log("PAR 1", INTERSECTED.parent)
+            console.log("PAR 2", INTERSECTED.parent.parent)
+            console.log("PAR 3", INTERSECTED.parent.parent.parent)
             var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
             INTERSECTED.material = material;
         }
         mouse.updated = false;
     };
+
+    if (ifc_building_elements.exist){
+        ifc_building_elements.forEach(element => {
+            if (element.visible_order != element.visible ){
+                element.children.forEach(obj =>{
+                    obj.visible = element.visible_order;
+                })
+                element.visible = element.visible_order;
+            }
+        })
+    }
 
     // required if controls.enableDamping or controls.autoRotate are set to true
     controls.update();
@@ -163,6 +234,6 @@ function flatten(items) {
     return flat;
   }
 
-controls.update();
+// controls.update();
 
 animate();
