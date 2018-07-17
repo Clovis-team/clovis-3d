@@ -14,9 +14,24 @@ to start:
 
 # What do i do?
 
-I take a 3d .obj and its .mtl files and loads it into a threejs canvas.
-the threejs canvas is setup in thee-viz.js.
-Index.html  has the core functions of threejs loaded in its header and 
-then threejs loads a 3d file (15.obj) and its material (15.mtl).
+I visualize a gltf file and allow user to perform some basic tasks.
+
+## Early imprementation:
+-   orbit, pan and zoom
+-   turn on and of layer of floors
+-   explode the building's floor verticaly witha  slider
+
+## Planned:
+-   select an object in the scene and get informations (for now name, function and id)
+-   walking mode
+-   switch between walking and orbit
+
+# Structure
+
+the code is divided in 3 main parts
+
+- the node_modules with all the dependencies.
+- three-viz that is our visualizer.
+- index.html that loads both in a browser.
 
 
