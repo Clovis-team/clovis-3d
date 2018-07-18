@@ -12,19 +12,26 @@ to start:
 
     npm start
 
-# What do i do?
+# What does it do?
 
-I visualize a gltf file and allow user to perform some basic tasks.
+It visualize a gltf file and allow user to perform some basic tasks.
 
 ## Early imprementation:
 -   orbit, pan and zoom
--   turn on and of layer of floors
--   explode the building's floor verticaly witha  slider
+-   switch visibility of floors
+-   switch visibility of object based on their ifc_tag
+-   explode the building's floor verticaly with a slider
+-   click on an object an get information in the UI (ifc_tag and ifc_name)
+-   select between perspective and ortographic camera (keeping position, rotation and orbit target) 
 
 ## Planned:
--   select an object in the scene and get informations (for now name, function and id)
+-   better selecting management
 -   walking mode
 -   switch between walking and orbit
+-   add sky sphere
+
+## Future ideas
+-   bake shadows on textures (backend processing of gltf files), maybe using blender?
 
 # Structure
 
