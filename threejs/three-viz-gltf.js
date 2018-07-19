@@ -86,7 +86,26 @@ var t0 = performance.now();
 
 populate_gui_camera();
 // load_gltf_file('gltfs/Project1-assimp.gltf')
-load_gltf_file('gltfs/15-assimp.gltf')
+
+var gltf_files = [
+    "gltfs/15-assimp.gltf",
+    "gltfs/Project1-assimp.gltf",
+    "gltfs/14-06-VIL_CHANTIER_150916_RVT2017_fdr_1.gltf",
+    "gltfs/14-06-VIL_CHANTIER_150916_RVT2017_fdr.gltf",
+    "gltfs/20160125WestRiverSide_Hospital_-_IFC4-Autodesk_Hospital_Metric_Structural.gltf",
+    "gltfs/20160414office_model_CV2_fordesign.gltf",
+    "gltfs/architect_copie_2.gltf",
+    "gltfs/architect_copie.gltf",
+    "gltfs/architect.gltf",
+    "gltfs/duplex.gltf",
+    "gltfs/Munkerud_hus6_BE.gltf",
+]
+
+load_gltf_file(gltf_files[0])
+
+// 4 fails
+
+// load_gltf_file(gltf_files[0])
 function load_gltf_file(URL){
     // Load a glTF resource
     loader.load(
@@ -265,7 +284,8 @@ function populate_ifc_tag_gui(){
 
 function explode_floors(floors){
     explosion.z_delta = explosion.z_new -explosion.z_old
-    // TODO: find the floor with most stuff and center the explosi
+    // TODO: find the floor with most stuff and center the explosion
+    // TODO: scale the explosion based on the heiaght of the model
     floors.forEach((floor,index) => {
         floor.position.z += (explosion.z_delta * index);
         // floor.children.forEach((obj,index) =>{
