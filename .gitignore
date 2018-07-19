@@ -64,6 +64,6 @@ typings/
 .DS_Store
 
 #3d file extension
-.ifc
-.gltf
-.bin
+*.ifc
+*.gltf
+*.bin
