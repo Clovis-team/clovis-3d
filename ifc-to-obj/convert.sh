@@ -38,8 +38,9 @@ else
     OUTPUT="./$OUTPUT_FOLDER/$INPUT_NAME$CONV_TAG.$OUTPUT_EXT"
 
     # assimp binding
-    ASSIMP="assimp"
-    ASSIMP_CALL="$ASSIMP export $INPUT_FILE_PATH $OUTPUT -f$OUTPUT_FORMAT"
+    ASSIMP_MAC="assimp"
+    ASSIMP_LINUX="./converters_bin/assimp-linux"
+    ASSIMP_CALL="$ASSIMP_LINUX export $INPUT_FILE_PATH $OUTPUT -f$OUTPUT_FORMAT"
 
     # ifcConvert binding
     IFCCONVERT="./converters_bin/IfcConvert-mac-0.4-64"
