@@ -1,28 +1,47 @@
 const { spawn } = require('child_process');
 
-const ifcs = './ifcs/';
+const ifcs_path = './ifcs/';
 const fs = require('fs');
 
-// fs.readdir(ifcs, (err, files) => {
-//   files.forEach(file => {
-//     console.log(file);
-//   });
-// })
+fs.readdir(ifcs_path, (err, files) => {
+    files.forEach(file => {
+        convert(file,"gltf")
+    });
+})
 
-const model = "/Users/nicola/code/clovis-3d/ifc-to-obj/ifcs/15"
-const out = "/Users/nicola/code/clovis-3d/ifc-to-obj/objs/15.obj"
-const h = "obj"
+const assimp_linux = "./converters_bin/assimp-linux"
 
-const assimp = spawn('assimp', ['export',model,out,h]);
+function convert(file,extension){
+    // console.log(file);
+    var file_name = file.split('.')[0]
+    var file_path = ifcs_path + file;
+    var out_path =  "./"+extension
+    var out_file_path = out_path+"/"+file_name+"."+extension;
 
-assimp.stdout.on('data', (data) => {
-	console.log(` stdout:\n${data}`);
-});
+    if (!fs.existsSync(out_path)){
+        fs.mkdirSync(out_path);
+    }
+    
+    if (extension == "gltf"){
+        extension = extension + "2";
+    }
 
-assimp.stderr.on('data', (data) => {
-	console.log(` stderr:\n${data}`);
-});
+    var h = "-f" + extension;
 
-assimp.on('close', (code) => {
-	console.log(` close: child process exited with code ${code}`);
-});
+    // console.log(assimp_linux,'export',file_path,out_file_path,h)
+        
+    var assimp = spawn(assimp_linux, ['export',file_path,out_file_path,h]);
+
+    assimp.stdout.on('data', (data) => {
+        console.log(` stdout: file\n${data}`);
+    });
+    
+    assimp.stderr.on('data', (data) => {
+        console.log(` stderr: file\n${data}`);
+    });
+    
+    assimp.on('close', (code) => {
+        console.log('closed ',file,': child process exited with code ${code}');
+    });
+}
+
