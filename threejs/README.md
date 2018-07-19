@@ -25,7 +25,10 @@ It visualize a gltf file and allow user to perform some basic tasks.
 -   select between perspective and ortographic camera (keeping position, rotation and orbit target) 
 
 ## Planned:
--   better selecting management
+-   think about touch events for mobile phone.
+-   add viusalization styles, transparency, wireframe, etc
+-   reimplement function look at.
+-   better selecting management, object get colored on overlay
 -   walking mode
 -   switch between walking and orbit
 -   add sky sphere
