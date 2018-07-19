@@ -2,41 +2,21 @@
  * @author nmanzini / https://www.nicolamanzini.com/
  */
 
-
 var scene, camera, control, renderer
 
 scene = new THREE.Scene();
 scene.background = new THREE.Color( 0xaaaabb );
 window.scene = scene
 
-// var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-// console.log(camera);
-
-// camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-// var ratio = window.innerWidth/window.innerHeight;
-// var height = 20
-// var width = 20 * ratio;
-// var camera = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000 );
-
 var camera_types = ["Perspective","Ortographic","Walking"]
 
-// scene.add( camera );
-
-renderer = new THREE.WebGLRenderer();
+renderer = new THREE.WebGLRenderer({antialias: true});
 renderer.setPixelRatio( window.devicePixelRatio );
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
 var mouse = new THREE.Vector2();
 var INTERSECTED = {}
-
-// var controls = new THREE.OrbitControls(camera,renderer.domElement);
-// controls.enableDamping = true;
-// controls.screenSpacePanning = true;
-// controls.panSpeed = 0.3;
-// controls.rotateSpeed = 0.2;
-// controls.target.set(80, 0, 20);
-
 
 setup_camera(camera_types[0],camera);
 
@@ -61,8 +41,9 @@ function setup_camera(type,old_camera){
         console.log("camera not recognized")
     };
     camera = new_camera;
+    console.log(camera)
 
-    let new_controls = new THREE.OrbitControls(new_camera,renderer.domElement);
+    let new_controls = new THREE.OrbitControls(camera,renderer.domElement);
     if (typeof controls != "undefined") {
         new_controls.target.copy(controls.target);
     }else{
@@ -72,10 +53,12 @@ function setup_camera(type,old_camera){
     new_controls.screenSpacePanning = true;
     new_controls.panSpeed = 0.3;
     new_controls.rotateSpeed = 0.2;
+    new_controls.screenSpacePanning = true;
+
     
     controls = new_controls;
     console.log(controls);
-    console.log(camera)
+    
     
 }
 
@@ -247,7 +230,7 @@ function populate_gui_explosion(floors){
 
 function explode_floors(floors){
     explosion.z_delta = explosion.z_new -explosion.z_old
-
+    // TODO: find the floor with most stuff and center the explosi
     floors.forEach((floor,index) => {
         floor.position.z += (explosion.z_delta * index);
         // floor.children.forEach((obj,index) =>{
@@ -261,7 +244,7 @@ function explode_floors(floors){
 
 raycaster = new THREE.Raycaster();
 
-document.addEventListener( 'mouseup', onDocumentMouseMove, false );
+document.addEventListener( 'click', onDocumentMouseMove, false );
 window.addEventListener( 'resize', onWindowResize, false );
 
 function onWindowResize() {
@@ -303,8 +286,11 @@ function render(){
             gui_intersected.ifc_tag = INTERSECTED.ifc_tag
             gui_intersected.ifc_name = INTERSECTED.ifc_name
             console.log("OBJ", INTERSECTED)
+            console.log("intersects[0]",intersects[0])
             var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
             INTERSECTED.material = material;
+            // controls.target.copy(intersects[0].point);
+            // :TODO TWEEN the old target to the new (in 0.3 seconds)
         }
         mouse.updated = false;
     };
