@@ -67,3 +67,6 @@ typings/
 *.ifc
 *.gltf
 *.bin
+
+#webpack folder
+dist/
