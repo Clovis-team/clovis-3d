@@ -8,13 +8,14 @@
     "start": "budo ./dist/main.js --live --verbose --port 3466 --open",
     "lint": "eslint .",
     "build:dev": "webpack --mode=development",
-    "build:production":"webpack --mode=production",
+    "build:production": "webpack --mode=production",
     "build:watch": "webpack --mode=development --watch"
   },
   "author": "nmanzini",
   "license": "ISC",
   "dependencies": {
     "dat.gui": "^0.7.2",
+    "lodash": "^4.17.10",
     "stats.js": "^0.17.0",
     "three": "^0.94.0"
   },

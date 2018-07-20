@@ -10,10 +10,10 @@ import 'three/examples/js/controls/TrackballControls';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/loaders/MTLLoader';
 import 'three/examples/js/loaders/GLTFLoader';
-// dat gui
 import dat from 'dat.gui/build/dat.gui.module';
-// stats
 import Stats from 'stats.js/src/Stats';
+
+import { get_building } from './utils/get_from_scene';
 
 const scene = new THREE.Scene();
 let camera;
@@ -23,11 +23,11 @@ const gui = new dat.GUI();
 const stats = new Stats();
 const loader = new THREE.GLTFLoader();
 const raycaster = new THREE.Raycaster();
-const ambient_light = new THREE.AmbientLight(0x404040); // soft white light
-const directional_light = new THREE.DirectionalLight(0xffffff, 0.5);
-const camera_types = ['Perspective', 'Ortographic', 'Walking'];
+const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+const cameraTypes = ['Perspective', 'Ortographic', 'Walking'];
 const mouse = new THREE.Vector2();
-const gltf_files = [
+const gltfFiles = [
     'gltfs/15-assimp.gltf',
     'gltfs/Project1-assimp.gltf',
     'gltfs/14-06-VIL_CHANTIER_150916_RVT2017_fdr_1.gltf',
@@ -41,7 +41,7 @@ const gltf_files = [
     'gltfs/Munkerud_hus6_BE.gltf',
 ];
 let gui_ifc_info;
-let intersected_obj = {};
+let intersected_obj;
 
 let building;
 let floors;
@@ -53,7 +53,7 @@ const mesh_all = [];
 
 function setup_camera(type, old_camera) {
     let new_camera;
-    if (type === camera_types[0]) {
+    if (type === cameraTypes[0]) {
         new_camera = new THREE.PerspectiveCamera(
             75, window.innerWidth / window.innerHeight, 0.1, 1000,
         );
@@ -61,7 +61,7 @@ function setup_camera(type, old_camera) {
             new_camera.position.copy(old_camera.position);
             new_camera.rotation.copy(old_camera.rotation);
         }
-    } else if (type === camera_types[1]) {
+    } else if (type === cameraTypes[1]) {
         const ratio = window.innerWidth / window.innerHeight;
         const height = 100;
         const width = height * ratio;
@@ -93,8 +93,8 @@ function setup_camera(type, old_camera) {
 
 function populate_gui_camera() {
     const gui_camera = gui.addFolder('Camera options');
-    const new_camera = { type: camera_types[0] };
-    const controller = gui_camera.add(new_camera, 'type', camera_types);
+    const new_camera = { type: cameraTypes[0] };
+    const controller = gui_camera.add(new_camera, 'type', cameraTypes);
     controller.onChange((value) => {
         setup_camera(value, camera);
     });
@@ -120,13 +120,15 @@ function populate_gui_floors() {
 
 function populate_gui_ifc_tags(elements) {
     const gui_ifc_tags_folder = gui.addFolder('Ifc Tags');
-    elements.forEach((element) => {
+    elements.forEach((element_no) => {
+        const element = element_no;
         const ifc_tag = element.name;
         const controller = gui_ifc_tags_folder.add(element, 'visible_order').name(ifc_tag);
 
         controller.onChange(() => {
             if (element.visible_order !== element.visible) {
-                element.children.forEach((obj) => {
+                element.children.forEach((obj_no) => {
+                    const obj = obj_no;
                     obj.visible = element.visible_order;
                 });
                 element.visible = element.visible_order;
@@ -146,9 +148,11 @@ function populate_gui_explosion() {
 
     controller.onChange(() => {
         explosion.z_delta = explosion.z_new - explosion.z_old;
-        floors.forEach((floor, index) => {
+        floors.forEach((floor_no, index) => {
+            const floor = floor_no;
             floor.position.z += (explosion.z_delta * index);
         });
+
         explosion.z_old = explosion.z_new;
         explosion.z_delta = 0;
     });
@@ -163,7 +167,8 @@ function populate_ifc_tag_gui() {
 
 function get_building_elements(object) {
     const elements = [];
-    object.traverse((node) => {
+    object.traverse((node_no) => {
+        const node = node_no;
         if ((node instanceof THREE.Mesh || node instanceof THREE.Object3D) && node.name !== '') {
             mesh_all.push(node);
             const ifc_tag = node.name.split('_')[0];
@@ -212,7 +217,8 @@ function load_gltf_file(URL) {
             scene.add(gltf.scene);
             center_and_position_camera(scene);
 
-            building = (gltf.scene.children[0].children[0].children[0].children[0]);
+            // building = gltf.scene.children[0].children[0].children[0].children[0];
+            building = get_building(gltf.scene);
             floors = building.children;
 
             populate_gui_floors();
@@ -248,62 +254,53 @@ function onDocumentMouseMove(event) {
 }
 
 function init_scene() {
-    load_gltf_file(gltf_files[0]);
+    load_gltf_file(gltfFiles[0]);
     document.addEventListener('click', onDocumentMouseMove, false);
     window.addEventListener('resize', onWindowResize, false);
-    scene.add(ambient_light);
-    scene.add(directional_light);
+    scene.add(ambientLight);
+    scene.add(directionalLight);
     scene.background = new THREE.Color(0xaaaabb);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
     stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
     document.body.appendChild(stats.dom);
-    setup_camera(camera_types[0], camera);
+    setup_camera(cameraTypes[0], camera);
     populate_gui_camera();
 }
 
 init_scene();
 
+// function get_main_floor(floor_array) {
+//     let max_value = 0;
+//     let max_id = 0;
+//     floor_array.forEach((floor, index) => {
+//         if (floor.children.length > max_value) {
+//             max_value = floor.children.length;
+//             max_id = index;
+//         }
+//     });
+//     return max_id;
+// }
 
-// load_gltf_file('gltfs/Project1-assimp.gltf')
+// function find_center(object3D) {
+//     const length = object3D.children.length;
+//     const centers = object3D.children.map(({ position: center }) => center);
 
-
-// 4 fails
-
-// load_gltf_file(gltf_files[0])
-
-
-function get_main_floor(floor_array) {
-    let max_value = 0;
-    let max_id = 0;
-    floor_array.forEach((floor, index) => {
-        if (floor.children.length > max_value) {
-            max_value = floor.children.length;
-            max_id = index;
-        }
-    });
-    return max_id;
-}
-
-function find_center(object3D) {
-    const length = object3D.children.length;
-    const centers = object3D.children.map(({ position: center }) => center);
-
-    let x = 0;
-    let y = 0;
-    let z = 0;
-    centers.forEach((vector) => {
-        x += vector.x;
-        y += vector.y;
-        z += vector.z;
-    });
-    x /= length;
-    y /= length;
-    z /= length;
-    const center = new THREE.Vector3(x, y, z);
-    return center;
-}
+//     let x = 0;
+//     let y = 0;
+//     let z = 0;
+//     centers.forEach((vector) => {
+//         x += vector.x;
+//         y += vector.y;
+//         z += vector.z;
+//     });
+//     x /= length;
+//     y /= length;
+//     z /= length;
+//     const center = new THREE.Vector3(x, y, z);
+//     return center;
+// }
 
 
 // const clock = new THREE.Clock( true );
