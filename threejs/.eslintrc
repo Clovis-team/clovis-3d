@@ -1,0 +1,15 @@
+{
+    "extends": "airbnb",
+    "rules": {
+        "camelcase": [0, {"properties": "never"}],
+        "indent": ["error", 4],
+        "no-console" : 0
+    },
+    "globals":{
+        "THREE":true
+    },
+    "env": {
+        "browser": true
+    }
+    
+}
