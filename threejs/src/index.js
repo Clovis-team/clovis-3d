@@ -3,17 +3,17 @@
  */
 
 // THREE IMPORTED BY WEBPACK
-import 'three/examples/js/controls/OrbitControls';
-import 'three/examples/js/controls/FirstPersonControls';
-import 'three/examples/js/controls/PointerLockControls';
-import 'three/examples/js/controls/TrackballControls';
-import 'three/examples/js/loaders/OBJLoader';
-import 'three/examples/js/loaders/MTLLoader';
-import 'three/examples/js/loaders/GLTFLoader';
 import dat from 'dat.gui/build/dat.gui.module';
 import Stats from 'stats.js/src/Stats';
-
+import 'three/examples/js/controls/FirstPersonControls';
+import 'three/examples/js/controls/OrbitControls';
+import 'three/examples/js/controls/PointerLockControls';
+import 'three/examples/js/controls/TrackballControls';
+import 'three/examples/js/loaders/GLTFLoader';
+import 'three/examples/js/loaders/MTLLoader';
+import 'three/examples/js/loaders/OBJLoader';
 import { get_building } from './utils/get_from_scene';
+
 
 const scene = new THREE.Scene();
 let camera;
@@ -23,8 +23,10 @@ const gui = new dat.GUI();
 const stats = new Stats();
 const loader = new THREE.GLTFLoader();
 const raycaster = new THREE.Raycaster();
-const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
+// const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+const hemisphereLight = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
+
 const cameraTypes = ['Perspective', 'Ortographic', 'Walking'];
 const mouse = new THREE.Vector2();
 const gltfFiles = [
@@ -40,15 +42,24 @@ const gltfFiles = [
     'gltfs/duplex.gltf',
     'gltfs/Munkerud_hus6_BE.gltf',
 ];
-let gui_ifc_info;
-let intersected_obj;
+// object to support the clikinng, infos and objc color change
+const obj_selection = {
+    ifc_tag: 'none',
+    ifc_name: 'none',
+    obj_old: undefined,
+    obj_old_material: undefined,
+};
 
+// relink of the actual building object 3d
 let building;
+
+// relink of building.children
 let floors;
+
+// list of objects
 let ifc_building_elements = [];
-// ifc_building_elements is an array of objects3d
-// each object has as child all the meshes and objs
-//  of a certain building element (wall, slab...)
+
+// list of all meshes for mouse cliking
 const mesh_all = [];
 
 function setup_camera(type, old_camera) {
@@ -137,6 +148,18 @@ function populate_gui_ifc_tags(elements) {
     });
 }
 
+function get_main_floor(floor_array) {
+    let max_value = 0;
+    let max_id = 0;
+    floor_array.forEach((floor, index) => {
+        if (floor.children.length > max_value) {
+            max_value = floor.children.length;
+            max_id = index;
+        }
+    });
+    return max_id;
+}
+
 function populate_gui_explosion() {
     const explosion = {
         z_old: 0,
@@ -144,13 +167,15 @@ function populate_gui_explosion() {
         z_delta: 0,
     };
 
+    const main_floor = get_main_floor(floors);
+
     const controller = gui.add(explosion, 'z_new', 0, 100).name('z_explosion');
 
     controller.onChange(() => {
         explosion.z_delta = explosion.z_new - explosion.z_old;
         floors.forEach((floor_no, index) => {
             const floor = floor_no;
-            floor.position.z += (explosion.z_delta * index);
+            floor.position.z += (explosion.z_delta * (index - main_floor));
         });
 
         explosion.z_old = explosion.z_new;
@@ -160,9 +185,8 @@ function populate_gui_explosion() {
 
 
 function populate_ifc_tag_gui() {
-    gui_ifc_info = { ifc_tag: 'none', ifc_name: 'none' };
-    gui.add(gui_ifc_info, 'ifc_tag').listen();
-    gui.add(gui_ifc_info, 'ifc_name').listen();
+    gui.add(obj_selection, 'ifc_tag').listen();
+    gui.add(obj_selection, 'ifc_name').listen();
 }
 
 function get_building_elements(object) {
@@ -251,14 +275,38 @@ function onDocumentMouseMove(event) {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     mouse.updated = true;
+
+    if (obj_selection.obj_old && obj_selection.obj_old_material) {
+        obj_selection.obj_old.material = obj_selection.obj_old_material;
+    }
+
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(mesh_all);
+
+    // object that is intersected by the mouse
+
+    if (intersects.length > 0) {
+        // obj_selection.obj_new = intersects[0].object;
+        const intersected_obj = intersects[0].object;
+        obj_selection.ifc_tag = intersected_obj.ifc_tag;
+        obj_selection.ifc_name = intersected_obj.ifc_name;
+
+        const event_color = new THREE.Color(0x51f787);
+
+        const event_material = new THREE.MeshBasicMaterial({ color: event_color });
+        obj_selection.obj_old = intersected_obj;
+        obj_selection.obj_old_material = intersected_obj.material;
+        intersected_obj.material = event_material;
+    }
 }
 
 function init_scene() {
     load_gltf_file(gltfFiles[0]);
-    document.addEventListener('click', onDocumentMouseMove, false);
+    document.addEventListener('mousemove', onDocumentMouseMove, false);
     window.addEventListener('resize', onWindowResize, false);
-    scene.add(ambientLight);
+    // scene.add(ambientLight);
     scene.add(directionalLight);
+    scene.add(hemisphereLight);
     scene.background = new THREE.Color(0xaaaabb);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -271,17 +319,6 @@ function init_scene() {
 
 init_scene();
 
-// function get_main_floor(floor_array) {
-//     let max_value = 0;
-//     let max_id = 0;
-//     floor_array.forEach((floor, index) => {
-//         if (floor.children.length > max_value) {
-//             max_value = floor.children.length;
-//             max_id = index;
-//         }
-//     });
-//     return max_id;
-// }
 
 // function find_center(object3D) {
 //     const length = object3D.children.length;
@@ -298,7 +335,7 @@ init_scene();
 //     x /= length;
 //     y /= length;
 //     z /= length;
-//     const center = new THREE.Vector3(x, y, z);
+//     const center = new THREE.Vector3(x,  y, z);
 //     return center;
 // }
 
@@ -306,23 +343,6 @@ init_scene();
 // const clock = new THREE.Clock( true );
 
 function render() {
-    if (mouse.updated) {
-        raycaster.setFromCamera(mouse, camera);
-        const intersects = raycaster.intersectObjects(mesh_all);
-        if (intersects.length > 0) {
-            intersected_obj = intersects[0].object;
-            gui_ifc_info.ifc_tag = intersected_obj.ifc_tag;
-            gui_ifc_info.ifc_name = intersected_obj.ifc_name;
-            console.log('OBJ', intersected_obj);
-            console.log('intersects[0]', intersects[0]);
-            const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-            intersected_obj.material = material;
-            // controls.target.copy(intersects[0].point);
-            // :TODO TWEEN the old target to the new (in 0.3 seconds)
-        }
-        mouse.updated = false;
-    }
-
     renderer.render(scene, camera);
 }
 
