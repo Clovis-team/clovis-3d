@@ -18,7 +18,7 @@ import { get_building } from './utils/get_from_scene';
 const scene = new THREE.Scene();
 let camera;
 let controls;
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ antialias: false });
 const gui = new dat.GUI();
 const stats = new Stats();
 const loader = new THREE.GLTFLoader();
@@ -270,11 +270,21 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function onDocumentMouseMove(event) {
+function add_sphere_on_click(intersected) {
+    const geometry = new THREE.SphereGeometry(1, 32, 32);
+    const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+    const sphere = new THREE.Mesh(geometry, material);
+    const position = intersected.point;
+
+    sphere.position.copy(position);
+    scene.add(sphere);
+}
+
+function onDocumentMouseClick(event) {
     event.preventDefault();
+
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    mouse.updated = true;
 
     if (obj_selection.obj_old && obj_selection.obj_old_material) {
         obj_selection.obj_old.material = obj_selection.obj_old_material;
@@ -283,10 +293,37 @@ function onDocumentMouseMove(event) {
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObjects(mesh_all);
 
-    // object that is intersected by the mouse
+    if (intersects.length > 0) {
+        add_sphere_on_click(intersects[0]);
+        const intersected_obj = intersects[0].object;
+
+        obj_selection.ifc_tag = intersected_obj.ifc_tag;
+        obj_selection.ifc_name = intersected_obj.ifc_name;
+
+        const event_color = new THREE.Color(0x51f787);
+
+        const event_material = new THREE.MeshBasicMaterial({ color: event_color });
+        obj_selection.obj_old = intersected_obj;
+        obj_selection.obj_old_material = intersected_obj.material;
+        intersected_obj.material = event_material;
+    }
+}
+
+function onDocumentTouchEnd(event) {
+    event.preventDefault();
+
+    mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+
+    if (obj_selection.obj_old && obj_selection.obj_old_material) {
+        obj_selection.obj_old.material = obj_selection.obj_old_material;
+    }
+
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(mesh_all);
 
     if (intersects.length > 0) {
-        // obj_selection.obj_new = intersects[0].object;
+        add_sphere_on_click(intersects[0]);
         const intersected_obj = intersects[0].object;
         obj_selection.ifc_tag = intersected_obj.ifc_tag;
         obj_selection.ifc_name = intersected_obj.ifc_name;
@@ -301,8 +338,11 @@ function onDocumentMouseMove(event) {
 }
 
 function init_scene() {
+    document.body.appendChild(renderer.domElement);
+    document.body.appendChild(stats.dom);
     load_gltf_file(gltfFiles[0]);
-    document.addEventListener('mousemove', onDocumentMouseMove, false);
+    document.addEventListener('mouseup', onDocumentMouseClick, false);
+    document.addEventListener('touchend', onDocumentTouchEnd, false);
     window.addEventListener('resize', onWindowResize, false);
     // scene.add(ambientLight);
     scene.add(directionalLight);
@@ -310,9 +350,9 @@ function init_scene() {
     scene.background = new THREE.Color(0xaaaabb);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+
     stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-    document.body.appendChild(stats.dom);
+
     setup_camera(cameraTypes[0], camera);
     populate_gui_camera();
 }
