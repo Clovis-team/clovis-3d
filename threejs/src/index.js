@@ -18,7 +18,7 @@ import { get_building } from './utils/get_from_scene';
 const scene = new THREE.Scene();
 let camera;
 let controls;
-const renderer = new THREE.WebGLRenderer({ antialias: false });
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 const gui = new dat.GUI();
 const stats = new Stats();
 const loader = new THREE.GLTFLoader();
