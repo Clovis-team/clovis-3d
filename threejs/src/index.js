@@ -24,8 +24,8 @@ const stats = new Stats();
 const loader = new THREE.GLTFLoader();
 const raycaster = new THREE.Raycaster();
 // const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-const hemisphereLight = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
+// const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+const hemisphereLight = new THREE.HemisphereLight(0xeeeeff, 0x777788, 1);
 
 const cameraTypes = ['Perspective', 'Ortographic', 'Walking'];
 const mouse = new THREE.Vector2();
@@ -62,16 +62,49 @@ let ifc_building_elements = [];
 // list of all meshes for mouse cliking
 const mesh_all = [];
 
+function setup_first_person_control() {
+    const new_controls = new THREE.FirstPersonControls(camera, renderer.domElement);
+    new_controls.movementSpeed = 20.0;
+    new_controls.lookSpeed = 0.5;
+    controls = new_controls;
+}
+
+function setup_orbit_control() {
+    const new_controls = new THREE.OrbitControls(camera, renderer.domElement);
+    if (typeof controls !== 'undefined') {
+        new_controls.target.copy(controls.target);
+    } else {
+        new_controls.target.set(0, 0, 0);
+    }
+    new_controls.enableDamping = true;
+    new_controls.screenSpacePanning = true;
+    new_controls.panSpeed = 0.3;
+    new_controls.rotateSpeed = 0.2;
+    new_controls.screenSpacePanning = true;
+    controls = new_controls;
+}
+
+function copy_old_pos_rot(new_camera, old_camera) {
+    if (typeof old_camera !== 'undefined') {
+        new_camera.position.copy(old_camera.position);
+        new_camera.rotation.copy(old_camera.rotation);
+    }
+}
+
+function apply_camera(new_camera) {
+    // in  a future the process can be improved
+    camera = new_camera;
+}
+
 function setup_camera(type, old_camera) {
     let new_camera;
     if (type === cameraTypes[0]) {
         new_camera = new THREE.PerspectiveCamera(
             75, window.innerWidth / window.innerHeight, 0.1, 1000,
         );
-        if (typeof old_camera !== 'undefined') {
-            new_camera.position.copy(old_camera.position);
-            new_camera.rotation.copy(old_camera.rotation);
-        }
+        copy_old_pos_rot(new_camera, old_camera);
+        apply_camera(new_camera);
+        setup_orbit_control();
     } else if (type === cameraTypes[1]) {
         const ratio = window.innerWidth / window.innerHeight;
         const height = 100;
@@ -79,32 +112,25 @@ function setup_camera(type, old_camera) {
         new_camera = new THREE.OrthographicCamera(
             width / -2, width / 2, height / 2, height / -2, -1000, 1000,
         );
-        if (typeof old_camera !== 'undefined') {
-            new_camera.position.copy(old_camera.position);
-            new_camera.rotation.copy(old_camera.rotation);
-        }
+        copy_old_pos_rot(new_camera, old_camera);
+        apply_camera(new_camera);
+        setup_orbit_control();
+    } else if (type === cameraTypes[2]) {
+        new_camera = new THREE.PerspectiveCamera(
+            75, window.innerWidth / window.innerHeight, 0.1, 1000,
+        );
+        // copy_old_pos_rot(new_camera, old_camera);
+        apply_camera(new_camera);
+        setup_first_person_control();
     } else {
-        console.log('camera not recognized');
+        console.log(`camera "${type}" not recognized`);
     }
-    camera = new_camera;
-    const new_controls = new THREE.OrbitControls(camera, renderer.domElement);
-    if (typeof controls !== 'undefined') {
-        new_controls.target.copy(controls.target);
-    } else {
-        new_controls.target.set(80, 0, 20);
-    }
-    new_controls.enableDamping = true;
-    new_controls.screenSpacePanning = true;
-    new_controls.panSpeed = 0.3;
-    new_controls.rotateSpeed = 0.2;
-    new_controls.screenSpacePanning = true;
-
-    controls = new_controls;
+    // setup_orbit_control();
 }
 
-function populate_gui_camera() {
+function populate_gui_camera(type_n) {
     const gui_camera = gui.addFolder('Camera options');
-    const new_camera = { type: cameraTypes[0] };
+    const new_camera = { type: cameraTypes[type_n] };
     const controller = gui_camera.add(new_camera, 'type', cameraTypes);
     controller.onChange((value) => {
         setup_camera(value, camera);
@@ -294,7 +320,7 @@ function onDocumentMouseClick(event) {
     const intersects = raycaster.intersectObjects(mesh_all);
 
     if (intersects.length > 0) {
-        add_sphere_on_click(intersects[0]);
+        // add_sphere_on_click(intersects[0]);
         const intersected_obj = intersects[0].object;
 
         obj_selection.ifc_tag = intersected_obj.ifc_tag;
@@ -344,8 +370,7 @@ function init_scene() {
     document.addEventListener('mouseup', onDocumentMouseClick, false);
     document.addEventListener('touchend', onDocumentTouchEnd, false);
     window.addEventListener('resize', onWindowResize, false);
-    // scene.add(ambientLight);
-    scene.add(directionalLight);
+    // scene.add(directionalLight);
     scene.add(hemisphereLight);
     scene.background = new THREE.Color(0xaaaabb);
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -353,34 +378,14 @@ function init_scene() {
 
     stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 
-    setup_camera(cameraTypes[0], camera);
-    populate_gui_camera();
+    setup_camera(cameraTypes[2], camera);
+    populate_gui_camera(2);
 }
 
 init_scene();
 
-
-// function find_center(object3D) {
-//     const length = object3D.children.length;
-//     const centers = object3D.children.map(({ position: center }) => center);
-
-//     let x = 0;
-//     let y = 0;
-//     let z = 0;
-//     centers.forEach((vector) => {
-//         x += vector.x;
-//         y += vector.y;
-//         z += vector.z;
-//     });
-//     x /= length;
-//     y /= length;
-//     z /= length;
-//     const center = new THREE.Vector3(x,  y, z);
-//     return center;
-// }
-
-
-// const clock = new THREE.Clock( true );
+// just needed for certain kind of controls
+const clock = new THREE.Clock(true);
 
 function render() {
     renderer.render(scene, camera);
@@ -392,13 +397,12 @@ function animate() {
     stats.begin();
 
     // required if controls.enableDamping or controls.autoRotate are set to true
-    // controls.update( clock.getDelta() );
-    controls.update();
+    controls.update(clock.getDelta());
+    // controls.update();
 
     render();
 
     stats.end();
 }
-
 
 animate();
