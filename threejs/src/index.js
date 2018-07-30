@@ -13,6 +13,7 @@ import 'three/examples/js/loaders/GLTFLoader';
 import 'three/examples/js/loaders/MTLLoader';
 import 'three/examples/js/loaders/OBJLoader';
 import { get_building } from './utils/get_from_scene';
+import './utils/FirstPersonControlsClovis';
 
 
 const scene = new THREE.Scene();
@@ -62,12 +63,21 @@ let ifc_building_elements = [];
 // list of all meshes for mouse cliking
 const mesh_all = [];
 
-function setup_first_person_control() {
-    const new_controls = new THREE.FirstPersonControls(camera, renderer.domElement);
+// function setup_first_person_control() {
+//     const new_controls = new THREE.FirstPersonControls(camera, renderer.domElement);
+//     new_controls.movementSpeed = 20.0;
+//     new_controls.lookSpeed = 0.5;
+//     controls = new_controls;
+// }
+
+function setup_first_person_control_clovis() {
+    const new_controls = new THREE.FirstPersonControlsClovis(camera, renderer.domElement);
     new_controls.movementSpeed = 20.0;
-    new_controls.lookSpeed = 0.5;
+    new_controls.lookSpeed = 20;
     controls = new_controls;
+    console.log(controls);
 }
+
 
 function setup_orbit_control() {
     const new_controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -98,6 +108,9 @@ function apply_camera(new_camera) {
 
 function setup_camera(type, old_camera) {
     let new_camera;
+    if (typeof controls !== 'undefined') {
+        controls.dispose();
+    }
     if (type === cameraTypes[0]) {
         new_camera = new THREE.PerspectiveCamera(
             75, window.innerWidth / window.innerHeight, 0.1, 1000,
@@ -121,7 +134,8 @@ function setup_camera(type, old_camera) {
         );
         // copy_old_pos_rot(new_camera, old_camera);
         apply_camera(new_camera);
-        setup_first_person_control();
+        // setup_first_person_control();
+        setup_first_person_control_clovis();
     } else {
         console.log(`camera "${type}" not recognized`);
     }
@@ -146,6 +160,8 @@ function center_and_position_camera(object) {
     box.getCenter(center);
     controls.target.copy(center);
     camera.position.copy(center.add(size));
+    console.log('target', controls.target);
+    console.log('camera postion', camera.position);
 }
 function populate_gui_floors() {
     const gui_floor_folder = gui.addFolder('Floors');
@@ -364,6 +380,8 @@ function onDocumentTouchEnd(event) {
 }
 
 function init_scene() {
+    // const axis = new THREE.AxesHelper(100);
+    // scene.add(axis);
     document.body.appendChild(renderer.domElement);
     document.body.appendChild(stats.dom);
     load_gltf_file(gltfFiles[0]);
@@ -378,8 +396,8 @@ function init_scene() {
 
     stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 
-    setup_camera(cameraTypes[2], camera);
-    populate_gui_camera(2);
+    setup_camera(cameraTypes[0], camera);
+    populate_gui_camera(0);
 }
 
 init_scene();
