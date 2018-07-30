@@ -33,6 +33,12 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
 
     this.mouseX = 0;
     this.mouseY = 0;
+    this.mouseX_delta = 0;
+    this.mouseY_delta = 0;
+    this.mouseX_old = 0;
+    this.mouseY_old = 0;
+    this.mouseX_start = 0;
+    this.mouseY_start = 0;
 
     this.lat = 0;
     this.lon = 0;
@@ -48,8 +54,11 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
 
     this.viewHalfX = 0;
     this.viewHalfY = 0;
-    this.previousX = 0;
-    this.previousY = 0;
+    // this.STATE = {
+    //     NONE: undefined,
+    //     ROTATE: 1,
+    // };
+    // this.state = STATE.NONE;
 
     if (this.domElement !== document) {
         this.domElement.setAttribute('tabindex', -1);
@@ -75,42 +84,75 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
         event.preventDefault();
         event.stopPropagation();
 
-        if (this.activeLook) {
-            switch (event.button) {
-            case 0: this.moveForward = true; break;
-            case 2: this.moveBackward = true; break;
-            default: break;
-            }
-        }
+        // state = STATE.DOWN;
+
+        // if (this.domElement === document) {
+        //     this.mouseX = event.pageX - this.viewHalfX;
+        //     this.mouseY = event.pageY - this.viewHalfY;
+        // } else {
+        //     this.mouseX = event.pageX - this.domElement.offsetLeft - this.viewHalfX;
+        //     this.mouseY = event.pageY - this.domElement.offsetTop - this.viewHalfY;
+        // }
+
+
+        // this.lon += this.mouseX;
+        // if (this.lookVertical) this.lat -= this.mouseY;
+        // this.lat = Math.max(-85, Math.min(85, this.lat));
+
+        // console.log(this.lon, this.lat);
 
         this.mouseDragOn = true;
+
+
+        // CLOVIS
+
+        if (this.domElement === document) {
+            this.mouseX_start = event.pageX - this.viewHalfX;
+            this.mouseY_start = event.pageY - this.viewHalfY;
+        } else {
+            this.mouseX_start = event.pageX - this.domElement.offsetLeft - this.viewHalfX;
+            this.mouseY_start = event.pageY - this.domElement.offsetTop - this.viewHalfY;
+        }
     };
 
     this.onMouseUp = function onMouseUp(event) {
         event.preventDefault();
         event.stopPropagation();
 
-        if (this.activeLook) {
-            switch (event.button) {
-            case 0: this.moveForward = false; break;
-            case 2: this.moveBackward = false; break;
-            default: break;
-            }
-        }
+        // if (this.activeLook) {
+        //     switch (event.button) {
+        //     case 0: this.moveForward = false; break;
+        //     case 2: this.moveBackward = false; break;
+        //     }
+        // }
+
+        // this.state = STATE.NONE;
 
         this.mouseDragOn = false;
+        this.mouseX_old = 0;
+        this.mouseY_old = 0;
+        this.mouseX = 0;
+        this.mouseY = 0;
     };
 
     this.onMouseMove = function onMouseMove(event) {
-        if (this.domElement === document) {
-            this.mouseX = event.pageX - this.viewHalfX - this.previousX;
-            this.mouseY = event.pageY - this.viewHalfY - this.previousY;
-        } else {
-            this.mouseX = event.pageX - this.domElement.offsetLeft - this.viewHalfX - this.previousX;
-            this.mouseY = event.pageY - this.domElement.offsetTop - this.viewHalfY - this.previousY;
+        if (this.mouseDragOn) {
+            if (this.domElement === document) {
+                this.mouseX = event.pageX - this.viewHalfX - this.mouseX_start;
+                this.mouseY = event.pageY - this.viewHalfY - this.mouseY_start;
+            } else {
+                this.mouseX = event.pageX - this.domElement.offsetLeft - this.viewHalfX - this.mouseX_start;
+                this.mouseY = event.pageY - this.domElement.offsetTop - this.viewHalfY - this.mouseY_start;
+            }
         }
-        // this.previousX = this.mouseX;
-        // this.previousY = this.mouseY;
+        console.log(this.mouseX, this.mouseY);
+        // if (this.domElement === document) {
+        //     this.mouseX = event.pageX - this.viewHalfX;
+        //     this.mouseY = event.pageY - this.viewHalfY;
+        // } else {
+        //     this.mouseX = event.pageX - this.domElement.offsetLeft - this.viewHalfX;
+        //     this.mouseY = event.pageY - this.domElement.offsetTop - this.viewHalfY;
+        // }
     };
 
     this.onKeyDown = function onKeyDown(event) {
@@ -131,7 +173,6 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
 
         case 82: /* R */ this.moveUp = true; break;
         case 70: /* F */ this.moveDown = true; break;
-        default:
         }
     };
 
@@ -151,9 +192,25 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
 
         case 82: /* R */ this.moveUp = false; break;
         case 70: /* F */ this.moveDown = false; break;
-        default:
         }
     };
+
+
+    //  attempt to use drag controls
+
+    // this.dragStartCallback = function dragStartCallback(event) {
+    //     console.log('dragStartCallback', event);
+    // };
+
+    // this.dragendCallback = function dragendCallback(event) {
+    //     console.log('dragendCallback', event);
+    // };
+    // const _dragStartCallback = bind(this, this.dragStartCallback);
+    // const _dragendCallback = bind(this, this.dragendCallback);
+
+    // this.domElement.addEventListener('dragstart', _dragStartCallback);
+    // this.domElement.addEventListener('dragend', _dragendCallback);
+
 
     this.update = function update(delta) {
         if (this.enabled === false) return;
@@ -190,10 +247,16 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
             verticalLookRatio = Math.PI / (this.verticalMax - this.verticalMin);
         }
 
-        this.lon += this.mouseX * actualLookSpeed;
-        if (this.lookVertical) this.lat -= this.mouseY * actualLookSpeed * verticalLookRatio;
+        this.mouseX_delta = this.mouseX - this.mouseX_old;
+        this.mouseY_delta = this.mouseY - this.mouseY_old;
 
+
+        this.lon += this.mouseX_delta * actualLookSpeed;
+        if (this.lookVertical) this.lat -= this.mouseY_delta * actualLookSpeed * verticalLookRatio;
         this.lat = Math.max(-85, Math.min(85, this.lat));
+        this.mouseX_old = this.mouseX;
+        this.mouseY_old = this.mouseY;
+
         this.phi = THREE.Math.degToRad(90 - this.lat);
 
         this.theta = THREE.Math.degToRad(this.lon);
@@ -202,8 +265,8 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
             this.phi = THREE.Math.mapLinear(this.phi, 0, Math.PI, this.verticalMin, this.verticalMax);
         }
 
-        const targetPosition = this.target;
-        const position = this.object.position;
+        let targetPosition = this.target,
+            position = this.object.position;
 
         targetPosition.x = position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
         targetPosition.y = position.y + 100 * Math.cos(this.phi);
@@ -218,7 +281,7 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
 
     this.dispose = function dispose() {
         this.domElement.removeEventListener('contextmenu', contextmenu, false);
-        // this.domElement.removeEventListener('mousedown', _onMouseDown, false);
+        this.domElement.removeEventListener('mousedown', _onMouseDown, false);
         this.domElement.removeEventListener('mousemove', _onMouseMove, false);
         this.domElement.removeEventListener('mouseup', _onMouseUp, false);
 
@@ -227,14 +290,14 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
     };
 
     const _onMouseMove = bind(this, this.onMouseMove);
-    // const _onMouseDown = bind(this, this.onMouseDown);
-    var _onMouseUp = bind(this, this.onMouseUp);
-    var _onKeyDown = bind(this, this.onKeyDown);
-    var _onKeyUp = bind(this, this.onKeyUp);
+    const _onMouseDown = bind(this, this.onMouseDown);
+    const _onMouseUp = bind(this, this.onMouseUp);
+    const _onKeyDown = bind(this, this.onKeyDown);
+    const _onKeyUp = bind(this, this.onKeyUp);
 
     this.domElement.addEventListener('contextmenu', contextmenu, false);
     this.domElement.addEventListener('mousemove', _onMouseMove, false);
-    // this.domElement.addEventListener('mousedown', _onMouseDown, false);
+    this.domElement.addEventListener('mousedown', _onMouseDown, false);
     this.domElement.addEventListener('mouseup', _onMouseUp, false);
 
     window.addEventListener('keydown', _onKeyDown, false);
