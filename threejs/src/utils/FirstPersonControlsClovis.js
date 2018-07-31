@@ -144,14 +144,6 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
                 this.mouseY = event.pageY - this.domElement.offsetTop - this.viewHalfY - this.mouseY_start;
             }
         }
-        console.log(this.mouseX, this.mouseY);
-        // if (this.domElement === document) {
-        //     this.mouseX = event.pageX - this.viewHalfX;
-        //     this.mouseY = event.pageY - this.viewHalfY;
-        // } else {
-        //     this.mouseX = event.pageX - this.domElement.offsetLeft - this.viewHalfX;
-        //     this.mouseY = event.pageY - this.domElement.offsetTop - this.viewHalfY;
-        // }
     };
 
     this.onKeyDown = function onKeyDown(event) {
@@ -172,6 +164,7 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
 
         case 82: /* R */ this.moveUp = true; break;
         case 70: /* F */ this.moveDown = true; break;
+        default: break;
         }
     };
 
@@ -191,6 +184,7 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
 
         case 82: /* R */ this.moveUp = false; break;
         case 70: /* F */ this.moveDown = false; break;
+        default: break;
         }
     };
 
@@ -227,8 +221,8 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
         if (this.moveLeft) this.object.translateX(-actualMoveSpeed);
         if (this.moveRight) this.object.translateX(actualMoveSpeed);
 
-        if (this.moveUp) this.object.translateY(actualMoveSpeed);
-        if (this.moveDown) this.object.translateY(-actualMoveSpeed);
+        if (this.moveUp) this.object.position.y += (actualMoveSpeed);
+        if (this.moveDown) this.object.position.y += (-actualMoveSpeed);
 
 
         let actualLookSpeed = delta * this.lookSpeed;
@@ -267,12 +261,6 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
 
         const targetPosition = this.target;
 
-        // if (this.new_target) {
-        //     this.new_target = false;
-        // } else {
-
-        console.log(this.object.rotation);
-
         const position = this.object.position;
         targetPosition.x = position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
         targetPosition.y = position.y + 100 * Math.cos(this.phi);
@@ -285,29 +273,31 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
         event.preventDefault();
     }
 
+    const bind_onMouseMove = bind(this, this.onMouseMove);
+    const bind_onMouseDown = bind(this, this.onMouseDown);
+    const bind_onMouseUp = bind(this, this.onMouseUp);
+    const bind_onKeyDown = bind(this, this.onKeyDown);
+    const bind_onKeyUp = bind(this, this.onKeyUp);
+
+
     this.dispose = function dispose() {
         this.domElement.removeEventListener('contextmenu', contextmenu, false);
-        this.domElement.removeEventListener('mousedown', _onMouseDown, false);
-        this.domElement.removeEventListener('mousemove', _onMouseMove, false);
-        this.domElement.removeEventListener('mouseup', _onMouseUp, false);
+        this.domElement.removeEventListener('mousedown', bind_onMouseDown, false);
+        this.domElement.removeEventListener('mousemove', bind_onMouseMove, false);
+        this.domElement.removeEventListener('mouseup', bind_onMouseUp, false);
 
-        window.removeEventListener('keydown', _onKeyDown, false);
-        window.removeEventListener('keyup', _onKeyUp, false);
+        window.removeEventListener('keydown', bind_onKeyDown, false);
+        window.removeEventListener('keyup', bind_onKeyUp, false);
     };
 
-    const _onMouseMove = bind(this, this.onMouseMove);
-    const _onMouseDown = bind(this, this.onMouseDown);
-    const _onMouseUp = bind(this, this.onMouseUp);
-    const _onKeyDown = bind(this, this.onKeyDown);
-    const _onKeyUp = bind(this, this.onKeyUp);
 
-    this.domElement.addEventListener('contextmenu', contextmenu, false);
-    this.domElement.addEventListener('mousemove', _onMouseMove, false);
-    this.domElement.addEventListener('mousedown', _onMouseDown, false);
-    this.domElement.addEventListener('mouseup', _onMouseUp, false);
+    // this.domElement.addEventListener('contextmenu', contextmenu, false);
+    this.domElement.addEventListener('mousemove', bind_onMouseMove, false);
+    this.domElement.addEventListener('mousedown', bind_onMouseDown, false);
+    this.domElement.addEventListener('mouseup', bind_onMouseUp, false);
 
-    window.addEventListener('keydown', _onKeyDown, false);
-    window.addEventListener('keyup', _onKeyUp, false);
+    window.addEventListener('keydown', bind_onKeyDown, false);
+    window.addEventListener('keyup', bind_onKeyUp, false);
 
     function bind(scope, fn) {
         return function () {

@@ -29,6 +29,7 @@ const raycaster = new THREE.Raycaster();
 const hemisphereLight = new THREE.HemisphereLight(0xeeeeff, 0x777788, 1);
 
 const cameraTypes = ['Perspective', 'Ortographic', 'Flying drag Fps', 'Flying drag'];
+const starting_camera_number = 3;
 const mouse = new THREE.Vector2();
 const gltfFiles = [
     'gltfs/15-assimp.gltf',
@@ -72,8 +73,9 @@ const mesh_all = [];
 
 function setup_flying_drag_fps() {
     const new_controls = new THREE.FirstPersonControlsClovis(camera, renderer.domElement);
-    new_controls.movementSpeed = 20.0;
+    new_controls.movementSpeed = 5;
     new_controls.lookSpeed = 5;
+    new_controls.fps_style = false;
     // new_controls.constrainVertical = true; useless
     controls = new_controls;
     console.log(controls);
@@ -81,7 +83,7 @@ function setup_flying_drag_fps() {
 
 function setup_flying_drag() {
     const new_controls = new THREE.FirstPersonControlsClovis(camera, renderer.domElement);
-    new_controls.movementSpeed = 20.0;
+    new_controls.movementSpeed = 5;
     new_controls.lookSpeed = 5;
     new_controls.fps_style = true;
     controls = new_controls;
@@ -143,7 +145,7 @@ function setup_camera(type, old_camera) {
         );
         apply_camera(new_camera);
         setup_flying_drag_fps();
-    } else if (type === cameraTypes[2]) {
+    } else if (type === cameraTypes[3]) {
         new_camera = new THREE.PerspectiveCamera(
             75, window.innerWidth / window.innerHeight, 0.1, 1000,
         );
@@ -411,10 +413,9 @@ function init_scene() {
 
     stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 
-    const camera_number = 2;
 
-    setup_camera(cameraTypes[camera_number], camera);
-    populate_gui_camera(camera_number);
+    setup_camera(cameraTypes[starting_camera_number], camera);
+    populate_gui_camera(starting_camera_number);
 }
 
 init_scene();
