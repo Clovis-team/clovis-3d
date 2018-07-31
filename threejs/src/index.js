@@ -28,7 +28,7 @@ const raycaster = new THREE.Raycaster();
 // const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 const hemisphereLight = new THREE.HemisphereLight(0xeeeeff, 0x777788, 1);
 
-const cameraTypes = ['Perspective', 'Ortographic', 'Walking'];
+const cameraTypes = ['Perspective', 'Ortographic', 'Flying drag Fps', 'Flying drag'];
 const mouse = new THREE.Vector2();
 const gltfFiles = [
     'gltfs/15-assimp.gltf',
@@ -70,14 +70,23 @@ const mesh_all = [];
 //     controls = new_controls;
 // }
 
-function setup_first_person_control_clovis() {
+function setup_flying_drag_fps() {
     const new_controls = new THREE.FirstPersonControlsClovis(camera, renderer.domElement);
     new_controls.movementSpeed = 20.0;
-    new_controls.lookSpeed = 20;
+    new_controls.lookSpeed = 5;
+    // new_controls.constrainVertical = true; useless
     controls = new_controls;
     console.log(controls);
 }
 
+function setup_flying_drag() {
+    const new_controls = new THREE.FirstPersonControlsClovis(camera, renderer.domElement);
+    new_controls.movementSpeed = 20.0;
+    new_controls.lookSpeed = 5;
+    new_controls.fps_style = true;
+    controls = new_controls;
+    console.log(controls);
+}
 
 function setup_orbit_control() {
     const new_controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -132,10 +141,14 @@ function setup_camera(type, old_camera) {
         new_camera = new THREE.PerspectiveCamera(
             75, window.innerWidth / window.innerHeight, 0.1, 1000,
         );
-        // copy_old_pos_rot(new_camera, old_camera);
         apply_camera(new_camera);
-        // setup_first_person_control();
-        setup_first_person_control_clovis();
+        setup_flying_drag_fps();
+    } else if (type === cameraTypes[2]) {
+        new_camera = new THREE.PerspectiveCamera(
+            75, window.innerWidth / window.innerHeight, 0.1, 1000,
+        );
+        apply_camera(new_camera);
+        setup_flying_drag();
     } else {
         console.log(`camera "${type}" not recognized`);
     }
@@ -158,8 +171,10 @@ function center_and_position_camera(object) {
     box.getSize(size);
     const center = new THREE.Vector3();
     box.getCenter(center);
-    controls.target.copy(center);
-    camera.position.copy(center.add(size));
+    controls.target = (center);
+    // controls.target.copy(center);
+    controls.new_target = true;
+    camera.position.copy(center.add(size / 2));
     console.log('target', controls.target);
     console.log('camera postion', camera.position);
 }
@@ -281,7 +296,7 @@ function load_gltf_file(URL) {
             console.log(`load gltf took ${Math.round(t1 - t0)} milliseconds.`);
 
             scene.add(gltf.scene);
-            center_and_position_camera(scene);
+            // center_and_position_camera(scene);
 
             // building = gltf.scene.children[0].children[0].children[0].children[0];
             building = get_building(gltf.scene);
@@ -396,8 +411,10 @@ function init_scene() {
 
     stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 
-    setup_camera(cameraTypes[0], camera);
-    populate_gui_camera(0);
+    const camera_number = 2;
+
+    setup_camera(cameraTypes[camera_number], camera);
+    populate_gui_camera(camera_number);
 }
 
 init_scene();

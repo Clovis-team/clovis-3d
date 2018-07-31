@@ -7,6 +7,7 @@
 THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, domElement) {
     this.object = object;
     this.target = new THREE.Vector3(0, 0, 0);
+    this.new_target = false;
 
     this.domElement = (domElement !== undefined) ? domElement : document;
 
@@ -54,11 +55,9 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
 
     this.viewHalfX = 0;
     this.viewHalfY = 0;
-    // this.STATE = {
-    //     NONE: undefined,
-    //     ROTATE: 1,
-    // };
-    // this.state = STATE.NONE;
+
+    this.fps_style = false;
+    this.plane_movements = true;
 
     if (this.domElement !== document) {
         this.domElement.setAttribute('tabindex', -1);
@@ -196,22 +195,6 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
     };
 
 
-    //  attempt to use drag controls
-
-    // this.dragStartCallback = function dragStartCallback(event) {
-    //     console.log('dragStartCallback', event);
-    // };
-
-    // this.dragendCallback = function dragendCallback(event) {
-    //     console.log('dragendCallback', event);
-    // };
-    // const _dragStartCallback = bind(this, this.dragStartCallback);
-    // const _dragendCallback = bind(this, this.dragendCallback);
-
-    // this.domElement.addEventListener('dragstart', _dragStartCallback);
-    // this.domElement.addEventListener('dragend', _dragendCallback);
-
-
     this.update = function update(delta) {
         if (this.enabled === false) return;
 
@@ -226,14 +209,27 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
 
         const actualMoveSpeed = delta * this.movementSpeed;
 
-        if (this.moveForward || (this.autoForward && !this.moveBackward)) this.object.translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
-        if (this.moveBackward) this.object.translateZ(actualMoveSpeed);
+        if (this.plane_movements) {
+            if (this.moveForward || (this.autoForward && !this.moveBackward)) {
+                this.object.position.z += actualMoveSpeed * Math.sin(this.phi) * Math.sin(this.theta);
+                this.object.position.x += actualMoveSpeed * Math.sin(this.phi) * Math.cos(this.theta);
+            }
+            if (this.moveBackward) {
+                this.object.position.z -= actualMoveSpeed * Math.sin(this.phi) * Math.sin(this.theta);
+                this.object.position.x -= actualMoveSpeed * Math.sin(this.phi) * Math.cos(this.theta);
+            }
+        } else {
+            if (this.moveForward || (this.autoForward && !this.moveBackward)) this.object.translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
+            if (this.moveBackward) this.object.translateZ(actualMoveSpeed);
+        }
+
 
         if (this.moveLeft) this.object.translateX(-actualMoveSpeed);
         if (this.moveRight) this.object.translateX(actualMoveSpeed);
 
         if (this.moveUp) this.object.translateY(actualMoveSpeed);
         if (this.moveDown) this.object.translateY(-actualMoveSpeed);
+
 
         let actualLookSpeed = delta * this.lookSpeed;
 
@@ -250,9 +246,13 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
         this.mouseX_delta = this.mouseX - this.mouseX_old;
         this.mouseY_delta = this.mouseY - this.mouseY_old;
 
-
-        this.lon += this.mouseX_delta * actualLookSpeed;
-        if (this.lookVertical) this.lat -= this.mouseY_delta * actualLookSpeed * verticalLookRatio;
+        if (this.fps_style) {
+            this.lon -= this.mouseX_delta * actualLookSpeed;
+            if (this.lookVertical) this.lat += this.mouseY_delta * actualLookSpeed * verticalLookRatio;
+        } else {
+            this.lon += this.mouseX_delta * actualLookSpeed;
+            if (this.lookVertical) this.lat -= this.mouseY_delta * actualLookSpeed * verticalLookRatio;
+        }
         this.lat = Math.max(-85, Math.min(85, this.lat));
         this.mouseX_old = this.mouseX;
         this.mouseY_old = this.mouseY;
@@ -265,9 +265,15 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
             this.phi = THREE.Math.mapLinear(this.phi, 0, Math.PI, this.verticalMin, this.verticalMax);
         }
 
-        let targetPosition = this.target,
-            position = this.object.position;
+        const targetPosition = this.target;
 
+        // if (this.new_target) {
+        //     this.new_target = false;
+        // } else {
+
+        console.log(this.object.rotation);
+
+        const position = this.object.position;
         targetPosition.x = position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
         targetPosition.y = position.y + 100 * Math.cos(this.phi);
         targetPosition.z = position.z + 100 * Math.sin(this.phi) * Math.sin(this.theta);
