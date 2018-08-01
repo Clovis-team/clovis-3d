@@ -1,12 +1,32 @@
-AFRAME.registerComponent('school-playground', {
+// AFRAME.registerComponent('clovis',{
+//     init: function () {
+//         document.querySelector('a-scene').setAttribute('log', 'message: Hello fucker!');
+//     }
+// });
+
+AFRAME.registerComponent('log', {
+    schema: {
+      message: {type: 'string', default: 'Hello, World!'},
+      event: {type: 'string', default: ''},
+    },
+  
     init: function () {
-      // Solution for Getting Entities.
-      var sceneEl = document.querySelector('a-scene');  // Or this.el since we're in a component.
-      console.log(sceneEl);
-      console.log("wowwowo")
-      console.log(sceneEl.querySelectorAll('a-entity'));
-      console.log(sceneEl.querySelector('a-box'));
-      console.log(sceneEl.querySelectorAll('a-sphere, a-cylinder'));
-      console.log(sceneEl.querySelectorAll('.coolshape'));
+      
+    },
+
+    update: function () {
+        var data = this.data;  // Component property values.
+        var el = this.el;  // Reference to the component's entity.
+
+        if (data.event) {
+        // This will log the `message` when the entity emits the `event`.
+        el.addEventListener(data.event, function () {
+            console.log(data.message);
+        });
+        } else {
+        // `event` not specified, just log the message.
+        console.log(data.message);
+        }
+
     }
   });
