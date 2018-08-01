@@ -28,8 +28,8 @@ const raycaster = new THREE.Raycaster();
 // const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 const hemisphereLight = new THREE.HemisphereLight(0xeeeeff, 0x777788, 1);
 
-const cameraTypes = ['Perspective', 'Ortographic', 'Flying drag Fps', 'Flying drag'];
-const starting_camera_number = 3;
+const cameraTypes = ['Perspective', 'Ortographic', 'Flying drag Fps', 'Flying drag', 'walking drag fps', 'walking drag'];
+const starting_camera_number = 5;
 const mouse = new THREE.Vector2();
 const gltfFiles = [
     'gltfs/15-assimp.gltf',
@@ -64,30 +64,36 @@ let ifc_building_elements = [];
 // list of all meshes for mouse cliking
 const mesh_all = [];
 
-// function setup_first_person_control() {
-//     const new_controls = new THREE.FirstPersonControls(camera, renderer.domElement);
-//     new_controls.movementSpeed = 20.0;
-//     new_controls.lookSpeed = 0.5;
-//     controls = new_controls;
-// }
-
 function setup_flying_drag_fps() {
     const new_controls = new THREE.FirstPersonControlsClovis(camera, renderer.domElement);
     new_controls.movementSpeed = 5;
     new_controls.lookSpeed = 5;
-    new_controls.fps_style = false;
-    // new_controls.constrainVertical = true; useless
-    controls = new_controls;
-    console.log(controls);
+    new_controls.fps_style = true;
+    return new_controls;
 }
 
 function setup_flying_drag() {
     const new_controls = new THREE.FirstPersonControlsClovis(camera, renderer.domElement);
     new_controls.movementSpeed = 5;
     new_controls.lookSpeed = 5;
+    return new_controls;
+}
+
+function setup_walking_drag() {
+    const new_controls = new THREE.FirstPersonControlsClovis(camera, renderer.domElement);
+    new_controls.movementSpeed = 5;
+    new_controls.lookSpeed = 5;
+    new_controls.plane_movements = true;
+    return new_controls;
+}
+
+function setup_walking_drag_fps() {
+    const new_controls = new THREE.FirstPersonControlsClovis(camera, renderer.domElement);
+    new_controls.movementSpeed = 5;
+    new_controls.lookSpeed = 5;
     new_controls.fps_style = true;
-    controls = new_controls;
-    console.log(controls);
+    new_controls.plane_movements = true;
+    return new_controls;
 }
 
 function setup_orbit_control() {
@@ -105,10 +111,17 @@ function setup_orbit_control() {
     controls = new_controls;
 }
 
-function copy_old_pos_rot(new_camera, old_camera) {
+function copy_camera_old_pos_rot(new_camera, old_camera) {
     if (typeof old_camera !== 'undefined') {
         new_camera.position.copy(old_camera.position);
         new_camera.rotation.copy(old_camera.rotation);
+    }
+}
+
+function copy_controls_old_phi_theta(new_controls, old_controls) {
+    if (typeof old_controls !== 'undefined' && typeof old_controls.phi !== 'undefined') {
+        new_controls.phi = old_controls.phi;
+        new_controls.theta = old_controls.theta;
     }
 }
 
@@ -117,16 +130,25 @@ function apply_camera(new_camera) {
     camera = new_camera;
 }
 
-function setup_camera(type, old_camera) {
+function apply_controls(new_controls) {
+    controls = new_controls;
+}
+
+function new_perspective_camera() {
+    return new THREE.PerspectiveCamera(
+        75, window.innerWidth / window.innerHeight, 0.1, 1000,
+    );
+}
+
+function setup_camera(type, old_camera, old_controls) {
     let new_camera;
-    if (typeof controls !== 'undefined') {
-        controls.dispose();
+    let new_controls;
+    if (typeof old_controls !== 'undefined') {
+        old_controls.dispose();
     }
     if (type === cameraTypes[0]) {
-        new_camera = new THREE.PerspectiveCamera(
-            75, window.innerWidth / window.innerHeight, 0.1, 1000,
-        );
-        copy_old_pos_rot(new_camera, old_camera);
+        new_camera = new_perspective_camera();
+        copy_camera_old_pos_rot(new_camera, old_camera);
         apply_camera(new_camera);
         setup_orbit_control();
     } else if (type === cameraTypes[1]) {
@@ -136,21 +158,40 @@ function setup_camera(type, old_camera) {
         new_camera = new THREE.OrthographicCamera(
             width / -2, width / 2, height / 2, height / -2, -1000, 1000,
         );
-        copy_old_pos_rot(new_camera, old_camera);
+        copy_camera_old_pos_rot(new_camera, old_camera);
         apply_camera(new_camera);
         setup_orbit_control();
     } else if (type === cameraTypes[2]) {
-        new_camera = new THREE.PerspectiveCamera(
-            75, window.innerWidth / window.innerHeight, 0.1, 1000,
-        );
+        new_camera = new_perspective_camera();
+        copy_camera_old_pos_rot(new_camera, old_camera);
         apply_camera(new_camera);
-        setup_flying_drag_fps();
+
+        new_controls = setup_flying_drag_fps();
+        // copy_controls_old_phi_theta(new_controls, old_controls);
+        apply_controls(new_controls);
     } else if (type === cameraTypes[3]) {
-        new_camera = new THREE.PerspectiveCamera(
-            75, window.innerWidth / window.innerHeight, 0.1, 1000,
-        );
+        new_camera = new_perspective_camera();
+        copy_camera_old_pos_rot(new_camera, old_camera);
         apply_camera(new_camera);
-        setup_flying_drag();
+
+        new_controls = setup_flying_drag();
+        // copy_controls_old_phi_theta(new_controls, old_controls);
+        apply_controls(new_controls);
+    } else if (type === cameraTypes[4]) {
+        new_camera = new_perspective_camera();
+        copy_camera_old_pos_rot(new_camera, old_camera);
+        apply_camera(new_camera);
+
+        new_controls = setup_walking_drag_fps();
+        // copy_controls_old_phi_theta(new_controls, old_controls);
+        apply_controls(new_controls);
+    } else if (type === cameraTypes[5]) {
+        new_camera = new_perspective_camera();
+        copy_camera_old_pos_rot(new_camera, old_camera);
+        apply_camera(new_camera);
+        new_controls = setup_walking_drag();
+        // copy_controls_old_phi_theta(new_controls, old_controls);
+        apply_controls(new_controls);
     } else {
         console.log(`camera "${type}" not recognized`);
     }
@@ -162,7 +203,7 @@ function populate_gui_camera(type_n) {
     const new_camera = { type: cameraTypes[type_n] };
     const controller = gui_camera.add(new_camera, 'type', cameraTypes);
     controller.onChange((value) => {
-        setup_camera(value, camera);
+        setup_camera(value, camera, controls);
     });
 }
 
@@ -414,7 +455,7 @@ function init_scene() {
     stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 
 
-    setup_camera(cameraTypes[starting_camera_number], camera);
+    setup_camera(cameraTypes[starting_camera_number], camera, controls);
     populate_gui_camera(starting_camera_number);
 }
 
