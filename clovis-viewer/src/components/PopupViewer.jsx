@@ -4,7 +4,7 @@ import React from 'react';
 
 const PopupViewer = () => (
 
-  <div className="popup-viewer">
+  <div className="popu-viewer">
 
     Hello
 

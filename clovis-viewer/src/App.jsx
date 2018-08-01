@@ -1,7 +1,6 @@
 import React from 'react';
 
 import PopupViewer from './components/PopupViewer';
-import AppPlaceholder from './components/AppPlaceholder';
 import './App.css';
 
 const App = () => (
@@ -11,7 +10,6 @@ const App = () => (
     Hello Clovis App
 
 
-    <AppPlaceholder />
     <PopupViewer />
 
   </div>
