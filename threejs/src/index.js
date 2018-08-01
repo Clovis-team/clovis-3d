@@ -13,21 +13,24 @@ import 'three/examples/js/loaders/GLTFLoader';
 import 'three/examples/js/loaders/MTLLoader';
 import 'three/examples/js/loaders/OBJLoader';
 import { get_building } from './utils/get_from_scene';
+import './utils/FirstPersonControlsClovis';
 
 
 const scene = new THREE.Scene();
 let camera;
 let controls;
-const renderer = new THREE.WebGLRenderer({ antialias: false });
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 const gui = new dat.GUI();
 const stats = new Stats();
 const loader = new THREE.GLTFLoader();
 const raycaster = new THREE.Raycaster();
+const raycaster_cam = new THREE.Raycaster();
 // const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-const hemisphereLight = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
+// const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+const hemisphereLight = new THREE.HemisphereLight(0xeeeeff, 0x777788, 1);
 
-const cameraTypes = ['Perspective', 'Ortographic', 'Walking'];
+const cameraTypes = ['Perspective', 'Ortographic', 'Flying drag Fps', 'Flying drag', 'walking drag fps', 'walking drag'];
+const starting_camera_number = 5;
 const mouse = new THREE.Vector2();
 const gltfFiles = [
     'gltfs/15-assimp.gltf',
@@ -62,16 +65,93 @@ let ifc_building_elements = [];
 // list of all meshes for mouse cliking
 const mesh_all = [];
 
-function setup_camera(type, old_camera) {
+function setup_flying_drag_fps() {
+    const new_controls = new THREE.FirstPersonControlsClovis(camera, renderer.domElement);
+    new_controls.movementSpeed = 5;
+    new_controls.lookSpeed = 5;
+    new_controls.fps_style = true;
+    return new_controls;
+}
+
+function setup_flying_drag() {
+    const new_controls = new THREE.FirstPersonControlsClovis(camera, renderer.domElement);
+    new_controls.movementSpeed = 5;
+    new_controls.lookSpeed = 5;
+    return new_controls;
+}
+
+function setup_walking_drag() {
+    const new_controls = new THREE.FirstPersonControlsClovis(camera, renderer.domElement);
+    new_controls.movementSpeed = 5;
+    new_controls.lookSpeed = 5;
+    new_controls.plane_movements = true;
+    return new_controls;
+}
+
+function setup_walking_drag_fps() {
+    const new_controls = new THREE.FirstPersonControlsClovis(camera, renderer.domElement);
+    new_controls.movementSpeed = 5;
+    new_controls.lookSpeed = 5;
+    new_controls.fps_style = true;
+    new_controls.plane_movements = true;
+    return new_controls;
+}
+
+function setup_orbit_control() {
+    const new_controls = new THREE.OrbitControls(camera, renderer.domElement);
+    if (typeof controls !== 'undefined') {
+        new_controls.target.copy(controls.target);
+    } else {
+        new_controls.target.set(0, 0, 0);
+    }
+    new_controls.enableDamping = true;
+    new_controls.screenSpacePanning = true;
+    new_controls.panSpeed = 0.3;
+    new_controls.rotateSpeed = 0.2;
+    new_controls.screenSpacePanning = true;
+    controls = new_controls;
+}
+
+function copy_camera_old_pos_rot(new_camera, old_camera) {
+    if (typeof old_camera !== 'undefined') {
+        new_camera.position.copy(old_camera.position);
+        new_camera.rotation.copy(old_camera.rotation);
+    }
+}
+
+function copy_controls_old_phi_theta(new_controls, old_controls) {
+    if (typeof old_controls !== 'undefined' && typeof old_controls.phi !== 'undefined') {
+        new_controls.phi = old_controls.phi;
+        new_controls.theta = old_controls.theta;
+    }
+}
+
+function apply_camera(new_camera) {
+    // in  a future the process can be improved
+    camera = new_camera;
+}
+
+function apply_controls(new_controls) {
+    controls = new_controls;
+}
+
+function new_perspective_camera() {
+    return new THREE.PerspectiveCamera(
+        75, window.innerWidth / window.innerHeight, 0.1, 1000,
+    );
+}
+
+function setup_camera(type, old_camera, old_controls) {
     let new_camera;
+    let new_controls;
+    if (typeof old_controls !== 'undefined') {
+        old_controls.dispose();
+    }
     if (type === cameraTypes[0]) {
-        new_camera = new THREE.PerspectiveCamera(
-            75, window.innerWidth / window.innerHeight, 0.1, 1000,
-        );
-        if (typeof old_camera !== 'undefined') {
-            new_camera.position.copy(old_camera.position);
-            new_camera.rotation.copy(old_camera.rotation);
-        }
+        new_camera = new_perspective_camera();
+        copy_camera_old_pos_rot(new_camera, old_camera);
+        apply_camera(new_camera);
+        setup_orbit_control();
     } else if (type === cameraTypes[1]) {
         const ratio = window.innerWidth / window.innerHeight;
         const height = 100;
@@ -79,35 +159,56 @@ function setup_camera(type, old_camera) {
         new_camera = new THREE.OrthographicCamera(
             width / -2, width / 2, height / 2, height / -2, -1000, 1000,
         );
-        if (typeof old_camera !== 'undefined') {
-            new_camera.position.copy(old_camera.position);
-            new_camera.rotation.copy(old_camera.rotation);
-        }
-    } else {
-        console.log('camera not recognized');
-    }
-    camera = new_camera;
-    const new_controls = new THREE.OrbitControls(camera, renderer.domElement);
-    if (typeof controls !== 'undefined') {
-        new_controls.target.copy(controls.target);
-    } else {
-        new_controls.target.set(80, 0, 20);
-    }
-    new_controls.enableDamping = true;
-    new_controls.screenSpacePanning = true;
-    new_controls.panSpeed = 0.3;
-    new_controls.rotateSpeed = 0.2;
-    new_controls.screenSpacePanning = true;
+        copy_camera_old_pos_rot(new_camera, old_camera);
+        apply_camera(new_camera);
+        setup_orbit_control();
+    } else if (type === cameraTypes[2]) {
+        new_camera = new_perspective_camera();
+        copy_camera_old_pos_rot(new_camera, old_camera);
+        apply_camera(new_camera);
 
-    controls = new_controls;
+        new_controls = setup_flying_drag_fps();
+        // copy_controls_old_phi_theta(new_controls, old_controls);
+        apply_controls(new_controls);
+    } else if (type === cameraTypes[3]) {
+        new_camera = new_perspective_camera();
+        copy_camera_old_pos_rot(new_camera, old_camera);
+        apply_camera(new_camera);
+
+        new_controls = setup_flying_drag();
+        // copy_controls_old_phi_theta(new_controls, old_controls);
+        apply_controls(new_controls);
+    } else if (type === cameraTypes[4]) {
+        new_camera = new_perspective_camera();
+        copy_camera_old_pos_rot(new_camera, old_camera);
+        apply_camera(new_camera);
+
+        new_controls = setup_walking_drag_fps();
+        // copy_controls_old_phi_theta(new_controls, old_controls);
+        apply_controls(new_controls);
+    } else if (type === cameraTypes[5]) {
+        new_camera = new_perspective_camera();
+        copy_camera_old_pos_rot(new_camera, old_camera);
+        apply_camera(new_camera);
+        new_controls = setup_walking_drag();
+        // copy_controls_old_phi_theta(new_controls, old_controls);
+        apply_controls(new_controls);
+    } else {
+        console.log(`camera "${type}" not recognized`);
+    }
+    camera.height = 'INIT';
 }
 
-function populate_gui_camera() {
+function populate_height_gui() {
+    const height = gui.add(camera, 'height').listen();
+}
+
+function populate_gui_camera(type_n) {
     const gui_camera = gui.addFolder('Camera options');
-    const new_camera = { type: cameraTypes[0] };
+    const new_camera = { type: cameraTypes[type_n] };
     const controller = gui_camera.add(new_camera, 'type', cameraTypes);
     controller.onChange((value) => {
-        setup_camera(value, camera);
+        setup_camera(value, camera, controls);
     });
 }
 
@@ -118,8 +219,12 @@ function center_and_position_camera(object) {
     box.getSize(size);
     const center = new THREE.Vector3();
     box.getCenter(center);
-    controls.target.copy(center);
-    camera.position.copy(center.add(size));
+    controls.target = (center);
+    // controls.target.copy(center);
+    controls.new_target = true;
+    camera.position.copy(center.add(size / 2));
+    console.log('target', controls.target);
+    console.log('camera postion', camera.position);
 }
 function populate_gui_floors() {
     const gui_floor_folder = gui.addFolder('Floors');
@@ -239,7 +344,7 @@ function load_gltf_file(URL) {
             console.log(`load gltf took ${Math.round(t1 - t0)} milliseconds.`);
 
             scene.add(gltf.scene);
-            center_and_position_camera(scene);
+            // center_and_position_camera(scene);
 
             // building = gltf.scene.children[0].children[0].children[0].children[0];
             building = get_building(gltf.scene);
@@ -294,7 +399,7 @@ function onDocumentMouseClick(event) {
     const intersects = raycaster.intersectObjects(mesh_all);
 
     if (intersects.length > 0) {
-        add_sphere_on_click(intersects[0]);
+        // add_sphere_on_click(intersects[0]);
         const intersected_obj = intersects[0].object;
 
         obj_selection.ifc_tag = intersected_obj.ifc_tag;
@@ -306,6 +411,20 @@ function onDocumentMouseClick(event) {
         obj_selection.obj_old = intersected_obj;
         obj_selection.obj_old_material = intersected_obj.material;
         intersected_obj.material = event_material;
+    }
+}
+
+function update_height_of_camera(camera, objects) {
+    const direction = new THREE.Vector3(0, -1, 0);
+
+    raycaster_cam.set(camera.position, direction);
+    const objects_below = raycaster_cam.intersectObjects(objects);
+    console.log(objects_below);
+    // console.log(camera.position);
+    if (objects_below.length > 0) {
+        camera.height = objects_below[0].distance;
+    } else {
+        camera.height = 'No height';
     }
 }
 
@@ -321,7 +440,8 @@ function onDocumentTouchEnd(event) {
 
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObjects(mesh_all);
-
+    // TODO: recursive intersection .intersectObject (  recursive : Boolean)
+    // so there would be no need to create an array of meshes
     if (intersects.length > 0) {
         add_sphere_on_click(intersects[0]);
         const intersected_obj = intersects[0].object;
@@ -338,14 +458,15 @@ function onDocumentTouchEnd(event) {
 }
 
 function init_scene() {
+    // const axis = new THREE.AxesHelper(100);
+    // scene.add(axis);
     document.body.appendChild(renderer.domElement);
     document.body.appendChild(stats.dom);
     load_gltf_file(gltfFiles[0]);
     document.addEventListener('mouseup', onDocumentMouseClick, false);
     document.addEventListener('touchend', onDocumentTouchEnd, false);
     window.addEventListener('resize', onWindowResize, false);
-    // scene.add(ambientLight);
-    scene.add(directionalLight);
+    // scene.add(directionalLight);
     scene.add(hemisphereLight);
     scene.background = new THREE.Color(0xaaaabb);
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -353,36 +474,19 @@ function init_scene() {
 
     stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 
-    setup_camera(cameraTypes[0], camera);
-    populate_gui_camera();
+
+    setup_camera(cameraTypes[starting_camera_number], camera, controls);
+    populate_gui_camera(starting_camera_number);
+    populate_height_gui();
 }
 
 init_scene();
 
-
-// function find_center(object3D) {
-//     const length = object3D.children.length;
-//     const centers = object3D.children.map(({ position: center }) => center);
-
-//     let x = 0;
-//     let y = 0;
-//     let z = 0;
-//     centers.forEach((vector) => {
-//         x += vector.x;
-//         y += vector.y;
-//         z += vector.z;
-//     });
-//     x /= length;
-//     y /= length;
-//     z /= length;
-//     const center = new THREE.Vector3(x,  y, z);
-//     return center;
-// }
-
-
-// const clock = new THREE.Clock( true );
+// just needed for certain kind of controls
+const clock = new THREE.Clock(true);
 
 function render() {
+    update_height_of_camera(camera, mesh_all);
     renderer.render(scene, camera);
 }
 
@@ -392,13 +496,12 @@ function animate() {
     stats.begin();
 
     // required if controls.enableDamping or controls.autoRotate are set to true
-    // controls.update( clock.getDelta() );
-    controls.update();
+    controls.update(clock.getDelta());
+    // controls.update();
 
     render();
 
     stats.end();
 }
-
 
 animate();
