@@ -24,6 +24,7 @@ const gui = new dat.GUI();
 const stats = new Stats();
 const loader = new THREE.GLTFLoader();
 const raycaster = new THREE.Raycaster();
+const raycaster_cam = new THREE.Raycaster();
 // const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
 // const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 const hemisphereLight = new THREE.HemisphereLight(0xeeeeff, 0x777788, 1);
@@ -195,7 +196,11 @@ function setup_camera(type, old_camera, old_controls) {
     } else {
         console.log(`camera "${type}" not recognized`);
     }
-    // setup_orbit_control();
+    camera.height = 'INIT';
+}
+
+function populate_height_gui() {
+    const height = gui.add(camera, 'height').listen();
 }
 
 function populate_gui_camera(type_n) {
@@ -409,6 +414,20 @@ function onDocumentMouseClick(event) {
     }
 }
 
+function update_height_of_camera(camera, objects) {
+    const direction = new THREE.Vector3(0, -1, 0);
+
+    raycaster_cam.set(camera.position, direction);
+    const objects_below = raycaster_cam.intersectObjects(objects);
+    console.log(objects_below);
+    // console.log(camera.position);
+    if (objects_below.length > 0) {
+        camera.height = objects_below[0].distance;
+    } else {
+        camera.height = 'No height';
+    }
+}
+
 function onDocumentTouchEnd(event) {
     event.preventDefault();
 
@@ -421,7 +440,8 @@ function onDocumentTouchEnd(event) {
 
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObjects(mesh_all);
-
+    // TODO: recursive intersection .intersectObject (  recursive : Boolean)
+    // so there would be no need to create an array of meshes
     if (intersects.length > 0) {
         add_sphere_on_click(intersects[0]);
         const intersected_obj = intersects[0].object;
@@ -457,6 +477,7 @@ function init_scene() {
 
     setup_camera(cameraTypes[starting_camera_number], camera, controls);
     populate_gui_camera(starting_camera_number);
+    populate_height_gui();
 }
 
 init_scene();
@@ -465,6 +486,7 @@ init_scene();
 const clock = new THREE.Clock(true);
 
 function render() {
+    update_height_of_camera(camera, mesh_all);
     renderer.render(scene, camera);
 }
 
