@@ -355,6 +355,8 @@ function load_gltf_file(URL) {
             populate_gui_ifc_tags(ifc_building_elements);
             populate_gui_explosion();
             populate_ifc_tag_gui();
+            controls.collision_objects = mesh_all;
+            controls.collision_floor = true;
             const t2 = performance.now();
             console.log(`load and name all groups ${Math.round(t2 - t1)} milliseconds.`);
         },

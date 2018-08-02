@@ -59,7 +59,13 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
 
     this.fps_style = false;
     this.plane_movements = false;
+
     this.collision_objects = undefined;
+    this.collision_floor = false;
+
+    this.collision_floor_vector = new THREE.Vector3(0, -1, 0);
+    this.collision_floor_ray = new THREE.Raycaster();
+    this.set_height = 1.75;
 
     if (this.domElement !== document) {
         this.domElement.setAttribute('tabindex', -1);
@@ -194,9 +200,22 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
         if (this.moveLeft) this.object.translateX(-actualMoveSpeed);
         if (this.moveRight) this.object.translateX(actualMoveSpeed);
 
-        if (this.moveUp) this.object.position.y += (actualMoveSpeed);
-        if (this.moveDown) this.object.position.y += (-actualMoveSpeed);
 
+        if (this.collision_floor && this.collision_objects) {
+            this.collision_floor_ray.set(this.object.position, this.collision_floor_vector);
+            const collision_objects = this.collision_objects;
+            const intersects = this.collision_floor_ray.intersectObject(collision_objects);
+
+            const dist_to_floor = intersects[0].distance;
+            if (dist_to_floor > this.set_height) {
+                this.object.position.y -= actualMoveSpeed;
+            } else if (dist_to_floor < this.set_height) {
+                this.object.position.y += this.set_height - dist_to_floor;
+            }
+        }
+
+        if (this.moveUp) this.object.position.y += actualMoveSpeed;
+        if (this.moveDown) this.object.position.y -= actualMoveSpeed;
 
         let actualLookSpeed = delta * this.lookSpeed;
 
