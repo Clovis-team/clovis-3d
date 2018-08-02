@@ -1,9 +1,13 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
+  /*animation: App-logo-spin infinite 20s linear;*/
   height: 80px;
 }
 
@@ -16,10 +20,38 @@
 
 .App-title {
   font-size: 1.5em;
+  color: white;
 }
 
 .App-intro {
   font-size: large;
+}
+
+.viewer-button {
+  color: white;
+  margin: auto;
+  width: 15rem;
+  padding: 1rem;
+  height: 15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  user-select: none;
+}
+
+.viewer-button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.viewer-button:active {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.viewer-button p {
+  margin-top: 1rem;
 }
 
 @keyframes App-logo-spin {
