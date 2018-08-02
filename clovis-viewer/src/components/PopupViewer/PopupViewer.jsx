@@ -2,6 +2,8 @@
 import React from 'react';
 import './PopupViewer.css';
 
+import ThreeJsCanvas from '../ThreeJsCanvas/ThreeJsCanvas'
+
 
 
 const PopupViewer = ({ isViewerOpened, OnViewerClose }) => {
@@ -18,9 +20,8 @@ const PopupViewer = ({ isViewerOpened, OnViewerClose }) => {
         X
       </div>
 
+      <ThreeJsCanvas />
 
-
-      Hello
     </div>
   )
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import PopupViewer from './components/PopupViewer';
+import PopupViewer from './components/PopupViewer/PopupViewer';
 import './App.css';
 import logo from './assets/logo/clovis-white.svg'
 
