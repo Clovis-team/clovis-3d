@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PopupViewer from './components/PopupViewer';
 import './App.css';
 import logo from './assets/logo/clovis-white.svg'
-import { throws } from 'assert';
+
 
 class App extends Component {
 
@@ -16,6 +16,7 @@ class App extends Component {
   }
 
   OnViewerOpen = () => {
+    console.log('hello :');
     this.setState({
       isViewerOpened: true,
     })
@@ -48,7 +49,7 @@ class App extends Component {
 
         <PopupViewer 
           isViewerOpened={this.state.isViewerOpened}
-          OnViewerClose={this.state.OnViewerClose}
+          OnViewerClose={this.OnViewerClose}
         />
       </div>
     )

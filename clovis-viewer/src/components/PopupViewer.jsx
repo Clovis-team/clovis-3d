@@ -1,15 +1,30 @@
 
 import React from 'react';
+import './PopupViewer.css';
 
 
-const PopupViewer = () => (
 
-  <div className="popup-viewer">
+const PopupViewer = ({ isViewerOpened, OnViewerClose }) => {
 
-    Hello
+  const popupClassName = `popup-viewer ${isViewerOpened ? 'popup-viewer-open' : ''}`
 
-  </div>
+  return (
+    <div className={popupClassName}>
 
-);
+      <div 
+        className="close-button"
+        onClick={e => OnViewerClose()}
+      >
+        X
+      </div>
+
+
+
+      Hello
+    </div>
+  )
+
+};
+
 
 export default PopupViewer;
