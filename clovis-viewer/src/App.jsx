@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import PopupViewer from './components/PopupViewer/PopupViewer';
+import ThreePopup from './components/ThreePopup/ThreePopup';
 import './App.css';
 import logo from './assets/logo/clovis-white.svg'
 
@@ -11,12 +11,11 @@ class App extends Component {
   constructor() {
     super()
     this.state = {
-      isViewerOpened: false,
+      isViewerOpened: true,
     }
   }
 
   OnViewerOpen = () => {
-    console.log('hello :');
     this.setState({
       isViewerOpened: true,
     })
@@ -47,7 +46,8 @@ class App extends Component {
           </p>
         </div>
 
-        <PopupViewer 
+
+        <ThreePopup
           isViewerOpened={this.state.isViewerOpened}
           OnViewerClose={this.OnViewerClose}
         />

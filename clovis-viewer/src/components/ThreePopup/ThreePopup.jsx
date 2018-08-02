@@ -1,12 +1,12 @@
 
 import React from 'react';
-import './PopupViewer.css';
+import './ThreePopup.css';
 
-import ThreeJsCanvas from '../ThreeJsCanvas/ThreeJsCanvas'
+import ThreeContainer from '../ThreeContainer/ThreeContainer'
 
 
 
-const PopupViewer = ({ isViewerOpened, OnViewerClose }) => {
+const ThreePopup = ({ isViewerOpened, OnViewerClose }) => {
 
   const popupClassName = `popup-viewer ${isViewerOpened ? 'popup-viewer-open' : ''}`
 
@@ -20,7 +20,10 @@ const PopupViewer = ({ isViewerOpened, OnViewerClose }) => {
         X
       </div>
 
-      <ThreeJsCanvas />
+      { isViewerOpened ?
+        <ThreeContainer /> :
+        'Loading Viewer...'
+      }
 
     </div>
   )
@@ -28,4 +31,4 @@ const PopupViewer = ({ isViewerOpened, OnViewerClose }) => {
 };
 
 
-export default PopupViewer;
+export default ThreePopup;
