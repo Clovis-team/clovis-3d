@@ -77,6 +77,7 @@ function setup_flying_drag() {
     const new_controls = new THREE.FirstPersonControlsClovis(camera, renderer.domElement);
     new_controls.movementSpeed = 5;
     new_controls.lookSpeed = 5;
+
     return new_controls;
 }
 
@@ -85,6 +86,10 @@ function setup_walking_drag() {
     new_controls.movementSpeed = 5;
     new_controls.lookSpeed = 5;
     new_controls.plane_movements = true;
+    if (typeof mesh_all !== 'undefined') {
+        new_controls.collision_objects = mesh_all;
+        new_controls.collision_floor = true;
+    }
     return new_controls;
 }
 
@@ -94,6 +99,10 @@ function setup_walking_drag_fps() {
     new_controls.lookSpeed = 5;
     new_controls.fps_style = true;
     new_controls.plane_movements = true;
+    if (typeof mesh_all !== 'undefined') {
+        new_controls.collision_objects = mesh_all;
+        new_controls.collision_floor = true;
+    }
     return new_controls;
 }
 
@@ -355,6 +364,8 @@ function load_gltf_file(URL) {
             populate_gui_ifc_tags(ifc_building_elements);
             populate_gui_explosion();
             populate_ifc_tag_gui();
+            controls.collision_objects = mesh_all;
+            controls.collision_floor = true;
             const t2 = performance.now();
             console.log(`load and name all groups ${Math.round(t2 - t1)} milliseconds.`);
         },
