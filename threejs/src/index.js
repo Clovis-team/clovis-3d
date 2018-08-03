@@ -7,11 +7,11 @@ import dat from 'dat.gui/build/dat.gui.module';
 import Stats from 'stats.js/src/Stats';
 import 'three/examples/js/controls/FirstPersonControls';
 import 'three/examples/js/controls/OrbitControls';
-import 'three/examples/js/controls/PointerLockControls';
-import 'three/examples/js/controls/TrackballControls';
+// import 'three/examples/js/controls/PointerLockControls';
+// import 'three/examples/js/controls/TrackballControls';
 import 'three/examples/js/loaders/GLTFLoader';
-import 'three/examples/js/loaders/MTLLoader';
-import 'three/examples/js/loaders/OBJLoader';
+// import 'three/examples/js/loaders/MTLLoader';
+// import 'three/examples/js/loaders/OBJLoader';
 import { get_building } from './utils/get_from_scene';
 import './utils/FirstPersonControlsClovis';
 
