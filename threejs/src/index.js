@@ -17,9 +17,9 @@ import './utils/FirstPersonControlsClovis';
 
 
 const scene = new THREE.Scene();
+const renderer = new THREE.WebGLRenderer({ antialias: false });
 let camera;
 let controls;
-const renderer = new THREE.WebGLRenderer({ antialias: true });
 const gui = new dat.GUI();
 const stats = new Stats();
 const loader = new THREE.GLTFLoader();
@@ -30,7 +30,7 @@ const raycaster_cam = new THREE.Raycaster();
 const hemisphereLight = new THREE.HemisphereLight(0xeeeeff, 0x777788, 1);
 
 const cameraTypes = ['Perspective', 'Ortographic', 'Flying drag Fps', 'Flying drag', 'walking drag fps', 'walking drag'];
-const starting_camera_number = 5;
+const starting_camera_number = 0;
 const mouse = new THREE.Vector2();
 const gltfFiles = [
     'gltfs/15-assimp.gltf',
@@ -89,6 +89,7 @@ function setup_walking_drag() {
     if (typeof mesh_all !== 'undefined') {
         new_controls.collision_objects = mesh_all;
         new_controls.collision_floor = true;
+        new_controls.building = building;
     }
     return new_controls;
 }
@@ -102,6 +103,7 @@ function setup_walking_drag_fps() {
     if (typeof mesh_all !== 'undefined') {
         new_controls.collision_objects = mesh_all;
         new_controls.collision_floor = true;
+        new_controls.building = building;
     }
     return new_controls;
 }
@@ -228,10 +230,11 @@ function center_and_position_camera(object) {
     box.getSize(size);
     const center = new THREE.Vector3();
     box.getCenter(center);
-    controls.target = (center);
-    // controls.target.copy(center);
+    // controls.target = (center);
+    controls.target.copy(center);
     controls.new_target = true;
-    camera.position.copy(center.add(size / 2));
+    camera.position.copy(center.add(size));
+    console.log('size', size);
     console.log('target', controls.target);
     console.log('camera postion', camera.position);
 }
@@ -364,7 +367,9 @@ function load_gltf_file(URL) {
             populate_gui_ifc_tags(ifc_building_elements);
             populate_gui_explosion();
             populate_ifc_tag_gui();
+            center_and_position_camera(scene);
             controls.collision_objects = mesh_all;
+            controls.building = building;
             controls.collision_floor = true;
             const t2 = performance.now();
             console.log(`load and name all groups ${Math.round(t2 - t1)} milliseconds.`);
@@ -430,8 +435,6 @@ function update_height_of_camera(camera, objects) {
 
     raycaster_cam.set(camera.position, direction);
     const objects_below = raycaster_cam.intersectObjects(objects);
-    console.log(objects_below);
-    // console.log(camera.position);
     if (objects_below.length > 0) {
         camera.height = objects_below[0].distance;
     } else {
@@ -454,7 +457,7 @@ function onDocumentTouchEnd(event) {
     // TODO: recursive intersection .intersectObject (  recursive : Boolean)
     // so there would be no need to create an array of meshes
     if (intersects.length > 0) {
-        add_sphere_on_click(intersects[0]);
+        // add_sphere_on_click(intersects[0]);
         const intersected_obj = intersects[0].object;
         obj_selection.ifc_tag = intersected_obj.ifc_tag;
         obj_selection.ifc_name = intersected_obj.ifc_name;
@@ -469,13 +472,13 @@ function onDocumentTouchEnd(event) {
 }
 
 function init_scene() {
-    // const axis = new THREE.AxesHelper(100);
-    // scene.add(axis);
+    const axis = new THREE.AxesHelper(100);
+    scene.add(axis);
     document.body.appendChild(renderer.domElement);
     document.body.appendChild(stats.dom);
     load_gltf_file(gltfFiles[0]);
-    document.addEventListener('mouseup', onDocumentMouseClick, false);
-    document.addEventListener('touchend', onDocumentTouchEnd, false);
+    renderer.domElement.addEventListener('mouseup', onDocumentMouseClick, false);
+    renderer.domElement.addEventListener('touchend', onDocumentTouchEnd, false);
     window.addEventListener('resize', onWindowResize, false);
     // scene.add(directionalLight);
     scene.add(hemisphereLight);
@@ -484,7 +487,6 @@ function init_scene() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-
 
     setup_camera(cameraTypes[starting_camera_number], camera, controls);
     populate_gui_camera(starting_camera_number);
@@ -497,7 +499,7 @@ init_scene();
 const clock = new THREE.Clock(true);
 
 function render() {
-    update_height_of_camera(camera, mesh_all);
+    // update_height_of_camera(camera, mesh_all);
     renderer.render(scene, camera);
 }
 

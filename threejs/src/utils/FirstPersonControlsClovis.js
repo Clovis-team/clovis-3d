@@ -61,11 +61,19 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
     this.plane_movements = false;
 
     this.collision_objects = undefined;
-    this.collision_floor = false;
+    this.building = undefined;
 
-    this.collision_floor_vector = new THREE.Vector3(0, -1, 0);
+    this.collision_floor = false;
+    const collision_floor_vector = new THREE.Vector3(0, -1, 0);
     const collision_floor_ray = new THREE.Raycaster();
     this.set_height = 1.75;
+
+    this.collision_front = true;
+    this.set_distance = 0.3;
+    const collision_front_ray = new THREE.Raycaster();
+    collision_front_ray.far = this.set_distance * 5;
+    let front_collision_stop = false;
+
 
     if (this.domElement !== document) {
         this.domElement.setAttribute('tabindex', -1);
@@ -165,7 +173,6 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
         }
     };
 
-
     this.update = function update(delta) {
         if (this.enabled === false) return;
 
@@ -180,8 +187,35 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
 
         const actualMoveSpeed = delta * this.movementSpeed;
 
+
+        if (this.collision_front && this.collision_objects && this.building) {
+            const collision_front_vector = new THREE.Vector3(0, 0, -1);
+            collision_front_vector.applyQuaternion(this.object.quaternion);
+            // console.log(collision_front_vector);
+            collision_front_vector.y = 0;
+            collision_front_ray.set(this.object.position, collision_front_vector);
+            const intersects = collision_front_ray.intersectObjects(this.collision_objects);
+
+            if (intersects.length) {
+                const dist_to_front = intersects[0].distance;
+
+                if (dist_to_front < this.set_distance) {
+                    console.log('front reached');
+                    front_collision_stop = true;
+                } else {
+                    console.log(dist_to_front);
+                    front_collision_stop = false;
+                    // TODO: it doesnt stop!!!!!!!!!!!!!!!!!!
+                }
+            } else {
+                front_collision_stop = false;
+                console.log('no hit');
+            }
+        }
+
+        // x/z movements:
         if (this.plane_movements) {
-            if (this.moveForward || (this.autoForward && !this.moveBackward)) {
+            if ((this.moveForward || (this.autoForward && !this.moveBackward)) && !front_collision_stop) {
                 this.object.position.z += actualMoveSpeed * Math.sin(this.phi) * Math.sin(this.theta);
                 this.object.position.x += actualMoveSpeed * Math.sin(this.phi) * Math.cos(this.theta);
             }
@@ -195,19 +229,14 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
             }
             if (this.moveBackward) this.object.translateZ(actualMoveSpeed);
         }
-
-
         if (this.moveLeft) this.object.translateX(-actualMoveSpeed);
         if (this.moveRight) this.object.translateX(actualMoveSpeed);
 
-
+        // y movements : and vertical collision with floor mechanics
         if (this.collision_floor && this.collision_objects) {
-            collision_floor_ray.set(this.object.position, this.collision_floor_vector);
-            const collision_objects = this.collision_objects;
-            const intersects = collision_floor_ray.intersectObjects(collision_objects);
-
+            collision_floor_ray.set(this.object.position, collision_floor_vector);
+            const intersects = collision_floor_ray.intersectObjects(this.collision_objects);
             const delta_y = actualMoveSpeed / 2;
-
             if (intersects.length) {
                 const dist_to_floor = intersects[0].distance;
                 if (dist_to_floor > this.set_height + delta_y) {
@@ -220,6 +249,7 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
             }
         }
 
+        // y movements : vertical controls F and R
         if (this.moveUp) this.object.position.y += actualMoveSpeed;
         if (this.moveDown) this.object.position.y -= actualMoveSpeed;
 
@@ -234,6 +264,8 @@ THREE.FirstPersonControlsClovis = function FirstPersonControlsClovis(object, dom
         if (this.constrainVertical) {
             verticalLookRatio = Math.PI / (this.verticalMax - this.verticalMin);
         }
+
+        // camera rotation phi and theta based on mouse inputs
 
         this.mouseX_delta = this.mouseX - this.mouseX_old;
         this.mouseY_delta = this.mouseY - this.mouseY_old;
