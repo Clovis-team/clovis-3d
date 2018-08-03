@@ -1,6 +1,6 @@
 
 /** 
- * To understand the implementation of Three.js in react, read this article :
+ * ^Clement : To understand the implementation of Three.js in React, read this article :
  * https://itnext.io/how-to-use-plain-three-js-in-your-react-apps-417a79d926e0
  */
 
