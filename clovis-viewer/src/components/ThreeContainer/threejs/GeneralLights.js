@@ -1,5 +1,3 @@
-import * as THREE from 'three'
-
 export default scene => {    
 
     const lightIn = new THREE.PointLight("#4CAF50", 30);

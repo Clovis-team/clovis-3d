@@ -1,9 +1,9 @@
-import * as THREE from 'three';
+import 'three/examples/js/controls/OrbitControls';
 import SceneSubject from './SceneSubject';
 import GeneralLights from './GeneralLights';
 
 export default canvas => {
-
+    console.log(THREE.OrbitControls)
     const clock = new THREE.Clock();
     const origin = new THREE.Vector3(0,0,0);
 

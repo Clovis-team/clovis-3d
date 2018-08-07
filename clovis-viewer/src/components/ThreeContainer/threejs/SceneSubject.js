@@ -1,4 +1,3 @@
-import * as THREE from 'three'
 import alphaTexture from '../../../assets/textures/stripes_gradient.jpg';
 
 export default scene => {    
