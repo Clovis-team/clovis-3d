@@ -19,6 +19,12 @@ export default (container) => {
     function bindEventListeners() {
         window.onresize = resizeCanvas;
         window.onmousemove = mouseMove;
+        window.onkeypress = keyPressed;
+
+
+        window.addEventListener('loadedGltf', loadedGltf, false);
+        // the old option doesnt work
+        // window.addEventListener('onkeypress', keyPressed, false);
         resizeCanvas();
     }
 
@@ -37,6 +43,14 @@ export default (container) => {
 
     function mouseMove({ screenX, screenY }) {
         sceneManager.onMouseMove(screenX - canvasHalfWidth, screenY - canvasHalfHeight);
+    }
+
+    function keyPressed(e) {
+        sceneManager.onKeyPressed(e);
+    }
+
+    function loadedGltf(e) {
+        sceneManager.onLoadedGltf(e);
     }
 
     function render(time) {
