@@ -1,3 +1,8 @@
+/**
+ * TODO: We can split the events controllers from this file (and let the core of this file for the build)
+ */
+
+
 import 'three/examples/js/controls/OrbitControls';
 import 'three/examples/js/loaders/GLTFLoader';
 
@@ -5,32 +10,38 @@ import Stats from 'stats.js/src/Stats';
 import dat from 'dat.gui/build/dat.gui.module';
 import loadGltf from './LoadGltf';
 
-export default (canvas) => {
+const SceneManager = (canvas, buildingGltfPath) => {
+    // // // // // // // // // //
+    // 3D SCENE STATE
+    // // // // // // // // // //
+
+    // TODO: explain why do we use clock
     const clock = new THREE.Clock();
+    // TODO: explain what is the reference of the origin ? When is that different
+    // than (0,0,0) ?
     const origin = new THREE.Vector3(0, 0, 0);
-    // const buildingGltfPath = '/gltfs/Project1-assimp.gltf';
-    const buildingGltfPath = '/gltfs/15-assimp.gltf';
-
-    const screenDimensions = {
-        width: canvas.width,
-        height: canvas.height,
-    };
-
+    // TODO: explain why mousePosition is a fixed variable
     const mousePosition = {
         x: 0,
         y: 0,
     };
 
-    // here all the bloacks that have to be loaded at the beginning
-    const scene = buildScene();
-    const renderer = buildRender(screenDimensions);
-    const camera = buildCamera(screenDimensions);
-    const controls = buildControls(camera, renderer);
-    const gltf = loadGltf(scene, buildingGltfPath);
-    // const stats = loadStats();
-    // const gui = loadGui();
 
-    const sceneSubjects = createSceneSubjects(scene);
+    // // // // // // // // // //
+    // PROPS
+    // // // // // // // // // //
+
+    // TODO: is screenDimensions very usefull ? seems big duplicate of canvas because
+    // here it's a const,  so tt's immutable ...
+    const screenDimensions = {
+        width: canvas.width,
+        height: canvas.height,
+    };
+
+
+    // // // // // // // // // //
+    // BUILD FUNCTIONS
+    // // // // // // // // // //
 
     function buildScene() {
         const new_scene = new THREE.Scene();
@@ -60,12 +71,18 @@ export default (canvas) => {
         const fieldOfView = 75;
         const nearPlane = 0.2;
         const farPlane = 1000;
-        const new_camera = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
+        const new_camera = new THREE.PerspectiveCamera(
+            fieldOfView,
+            aspectRatio,
+            nearPlane,
+            farPlane,
+        );
 
         new_camera.position.z = 40;
 
         return new_camera;
     }
+
     function buildControls(controls_camera, controls_renderer) {
         const new_controls = new THREE.OrbitControls(controls_camera, controls_renderer.domElement);
         new_controls.enableDamping = true;
@@ -75,6 +92,7 @@ export default (canvas) => {
         return new_controls;
     }
 
+    // TODO: put a comment here to explain what is LoadStats()
     function loadStats() {
         const new_stats = new Stats();
         // TODO: find the best place to dom the stats (this is only developer stuff)
@@ -99,6 +117,22 @@ export default (canvas) => {
         return sceneSubjects;
     }
 
+    // here all the bloacks that have to be loaded at the beginning
+    const scene = buildScene();
+    const renderer = buildRender(screenDimensions);
+    const camera = buildCamera(screenDimensions);
+    const controls = buildControls(camera, renderer);
+    const gltf = loadGltf(scene, buildingGltfPath);
+    // const stats = loadStats();
+    // const gui = loadGui();
+
+    const sceneSubjects = createSceneSubjects(scene);
+
+
+    // // // // // // // // // //
+    // UTILITARY FUNCTIONS
+    // // // // // // // // // //
+
     function update() {
         const elapsedTime = clock.getElapsedTime();
 
@@ -116,9 +150,15 @@ export default (canvas) => {
         camera.lookAt(origin);
     }
 
+
+    // // // // // // // // // //
+    // EVENTS CONTROLLERS
+    // // // // // // // // // //
+
     function onWindowResize() {
         const { width, height } = canvas;
 
+        // TODO: Warning, screenDimensions is a const so should be immutable
         screenDimensions.width = width;
         screenDimensions.height = height;
 
@@ -155,6 +195,7 @@ export default (canvas) => {
         // remove eventual listeners;
     }
 
+
     return {
         update,
         onWindowResize,
@@ -164,3 +205,5 @@ export default (canvas) => {
         onClose,
     };
 };
+
+export default SceneManager;

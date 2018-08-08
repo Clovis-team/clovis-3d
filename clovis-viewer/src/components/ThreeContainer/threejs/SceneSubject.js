@@ -1,6 +1,8 @@
+/** TODO: Explain what this file does */
+
 import alphaTexture from '../../../assets/textures/stripes_gradient.jpg';
 
-export default (scene) => {
+const SceneSubject = (scene) => {
     const group = new THREE.Group();
 
     const subjectGeometry = deformGeometry(new THREE.IcosahedronGeometry(10, 2));
@@ -55,3 +57,5 @@ export default (scene) => {
         update,
     };
 };
+
+export default SceneSubject;
