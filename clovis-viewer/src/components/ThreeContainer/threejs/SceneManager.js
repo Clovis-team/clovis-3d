@@ -1,11 +1,15 @@
 import 'three/examples/js/controls/OrbitControls';
-import SceneSubject from './SceneSubject';
+import 'three/examples/js/loaders/GLTFLoader';
+
 import GeneralLights from './GeneralLights';
+import loadGltf from './LoadGltf';
 
 export default (canvas) => {
-    console.log(THREE.OrbitControls);
     const clock = new THREE.Clock();
     const origin = new THREE.Vector3(0, 0, 0);
+    // const buildingGltfPath = '/gltfs/Project1-assimp.gltf';
+    const buildingGltfPath = '/gltfs/15-assimp.gltf';
+
 
     const screenDimensions = {
         width: canvas.width,
@@ -15,18 +19,22 @@ export default (canvas) => {
     const mousePosition = {
         x: 0,
         y: 0,
-
     };
 
     const scene = buildScene();
     const renderer = buildRender(screenDimensions);
     const camera = buildCamera(screenDimensions);
     const controls = buildControls(camera, renderer);
+    const gltf = loadGltf(scene, buildingGltfPath);
     const sceneSubjects = createSceneSubjects(scene);
 
+
     function buildScene() {
+        // builds a basic scene (the entire 3d world in threejs)
         const scene = new THREE.Scene();
         scene.background = new THREE.Color('#FFF');
+        const hemisphereLight = new THREE.HemisphereLight(0xeeeeff, 0x777788, 1);
+        scene.add(hemisphereLight);
 
         return scene;
     }
@@ -34,8 +42,9 @@ export default (canvas) => {
     function buildRender({ width, height }) {
         const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
         const DPR = window.devicePixelRatio ? window.devicePixelRatio : 1;
+
         renderer.setPixelRatio(DPR);
-        renderer.setSize(width, height);
+        renderer.setSize(window.innerWidth, window.innerHeight);
 
         renderer.gammaInput = true;
         renderer.gammaOutput = true;
@@ -47,7 +56,7 @@ export default (canvas) => {
         const aspectRatio = width / height;
         const fieldOfView = 60;
         const nearPlane = 4;
-        const farPlane = 100;
+        const farPlane = 1000;
         const camera = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
 
         camera.position.z = 40;
@@ -55,14 +64,18 @@ export default (canvas) => {
         return camera;
     }
     function buildControls(camera, renderer) {
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        return controls;
+        const new_controls = new THREE.OrbitControls(camera, renderer.domElement);
+        new_controls.enableDamping = true;
+        new_controls.screenSpacePanning = true;
+        new_controls.panSpeed = 0.3;
+        new_controls.rotateSpeed = 0.2;
+        return new_controls;
     }
+
 
     function createSceneSubjects(scene) {
         const sceneSubjects = [
-            new GeneralLights(scene),
-            new SceneSubject(scene),
+            // new GeneralLights(scene),
         ];
 
         return sceneSubjects;
