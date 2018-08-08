@@ -1,6 +1,6 @@
 import SceneManager from './SceneManager';
 
-export default container => {
+export default (container) => {
     const canvas = createCanvas(document, container);
     const sceneManager = new SceneManager(canvas);
 
@@ -11,7 +11,7 @@ export default container => {
     render();
 
     function createCanvas(document, container) {
-        const canvas = document.createElement('canvas');     
+        const canvas = document.createElement('canvas');
         container.appendChild(canvas);
         return canvas;
     }
@@ -19,28 +19,42 @@ export default container => {
     function bindEventListeners() {
         window.onresize = resizeCanvas;
         window.onmousemove = mouseMove;
-        resizeCanvas();	
+        window.onkeypress = keyPressed;
+
+
+        window.addEventListener('loadedGltf', loadedGltf, false);
+        // the old option doesnt work
+        // window.addEventListener('onkeypress', keyPressed, false);
+        resizeCanvas();
     }
 
-    function resizeCanvas() {        
+    function resizeCanvas() {
         canvas.style.width = '100%';
-        canvas.style.height= '100%';
-        
-        canvas.width  = canvas.offsetWidth;
+        canvas.style.height = '100%';
+
+        canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
 
-        canvasHalfWidth = Math.round(canvas.offsetWidth/2);
-        canvasHalfHeight = Math.round(canvas.offsetHeight/2);
+        canvasHalfWidth = Math.round(canvas.offsetWidth / 2);
+        canvasHalfHeight = Math.round(canvas.offsetHeight / 2);
 
-        sceneManager.onWindowResize()
+        sceneManager.onWindowResize();
     }
 
-    function mouseMove({screenX, screenY}) {
-        sceneManager.onMouseMove(screenX-canvasHalfWidth, screenY-canvasHalfHeight);
+    function mouseMove({ screenX, screenY }) {
+        sceneManager.onMouseMove(screenX - canvasHalfWidth, screenY - canvasHalfHeight);
+    }
+
+    function keyPressed(e) {
+        sceneManager.onKeyPressed(e);
+    }
+
+    function loadedGltf(e) {
+        sceneManager.onLoadedGltf(e);
     }
 
     function render(time) {
         requestAnimationFrame(render);
         sceneManager.update();
     }
-}
+};

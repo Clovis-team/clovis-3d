@@ -1,9 +1,15 @@
 {
- "extends": "airbnb",
- "env": {
-    "browser": true,
-    "jest": true,
-    "jsx": true,
-    "modules": true
-  }
+    "extends": "airbnb",
+    "rules": {
+        "camelcase": [0, {"properties": "never"}],
+        "no-console" : 0,
+        "indent": ["error", 4],
+        "no-use-before-define" : 0
+    },
+    "globals":{
+        "THREE":true
+    },
+    "env": {
+        "browser": true
+    }
 }
