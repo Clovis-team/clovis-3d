@@ -86,11 +86,6 @@ function initScene(canvas, buildingGltfPath) {
         new_stats.showPanel(0);
         return new_stats;
     }
-    // TODO: @Clement put in the gui in the right dom and position
-    function loadGui() {
-        const new_gui = new dat.GUI();
-        return new_gui;
-    }
 
     // CALCULATE STUFF
 
@@ -149,7 +144,6 @@ function initScene(canvas, buildingGltfPath) {
     loadGltf(scene, buildingGltfPath, gltfLoadedCallback);
 
     // const stats = loadStats();
-    // const gui = loadGui();
 
     return {
         scene,

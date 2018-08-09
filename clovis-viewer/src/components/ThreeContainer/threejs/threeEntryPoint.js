@@ -23,6 +23,13 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
         sceneManager.onWindowResize();
     }
 
+    // TODO: @Clement put in the gui in the right dom and position
+    function loadGui() {
+        // TODO: the gui stays in thre entry point because it is not a THREE element
+        const new_gui = new dat.GUI();
+        return new_gui;
+    }
+
     function bindEventListeners() {
         // window.onkeypress = keyPressed;
         window.addEventListener(
@@ -57,7 +64,11 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
     }
 
 
+    // const gui = loadGui();
+
+
     // LAUNCH MAIN FUNCTIONS
+    loadGui();
     bindEventListeners();
     resizeCanvas();
     render();

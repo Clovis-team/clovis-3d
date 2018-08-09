@@ -16,6 +16,7 @@ const SceneManager = (canvas, buildingGltfPath) => {
      * @returns an array of scenes
      */
     function createSceneSubjects(scene) {
+        // not yet implemented
         const sceneSubjects = [
             // new GeneralLights(scene),
         ];
@@ -24,14 +25,13 @@ const SceneManager = (canvas, buildingGltfPath) => {
 
     /**
      * updates the stuff that has to be updated every cycle
-     *
      */
     function update() {
         // update sceneSubjects every cycle
         const elapsedTime = clock.getElapsedTime();
         for (let i = 0; i < sceneSubjects.length; i++) { sceneSubjects[i].update(elapsedTime); }
         // required if controls.enableDamping or controls.autoRotate are set to true
-	    controls.update();
+	    // controls.update();
         renderer.render(scene, camera);
     }
 
@@ -55,6 +55,7 @@ const SceneManager = (canvas, buildingGltfPath) => {
         }
     }
 
+    // function to be implemented
     function onClose() {
         // gui.destroy();
         // remove stats
