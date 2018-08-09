@@ -2,28 +2,11 @@ import SceneManager from './SceneManager';
 import { createCanvas } from './utils';
 
 const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReact) => {
-    // // // // // // // // // //
-    // CREATE THE THREE.JS CANVAS
-    // // // // // // // // // //
-
     const canvas = createCanvas(document, domContainer);
 
+    const sceneManager = SceneManager(canvas, buildingGltfPath);
 
-    // // // // // // // // // //
-    // INITIALIZE THE SCENE MANAGER
-    // // // // // // // // // //
-
-    // ^Clement @Mathias : why do we use fucking `new` here instead of simply Scenemanager(canvas)
-    // . there's absolutely no constructor inside
-    const sceneManager = new SceneManager(canvas, buildingGltfPath);
-
-
-    // // // // // // // // // //
-    // KIND OF CONTROLLERS ?
-    // // // // // // // // // //
-    // TOFIX : this block looks like a huge duplicate of sceneManager functions
-    // which are suppose to be the controllers, why ?
-
+    // this might go away soon
     let canvasHalfWidth;
     let canvasHalfHeight;
 
@@ -40,55 +23,43 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
         sceneManager.onWindowResize();
     }
 
-    function mouseMove({ screenX, screenY }) {
-        sceneManager.onMouseMove(screenX - canvasHalfWidth, screenY - canvasHalfHeight);
-    }
-
-    function keyPressed(e) {
-        sceneManager.onKeyPressed(e);
-    }
-
-    function loadedGltf(e) {
-        sceneManager.onLoadedGltf(e);
-    }
-
-
-    // // // // // // // // // //
-    // LISTENERS
-    // // // // // // // // // //
-
     function bindEventListeners() {
-        window.onresize = resizeCanvas;
-        window.onmousemove = mouseMove;
-        window.onkeypress = keyPressed;
-        window.addEventListener('loadedGltf', loadedGltf, false);
-        // the old option doesnt work
-        // window.addEventListener('onkeypress', keyPressed, false);
+        // window.onkeypress = keyPressed;
+        window.addEventListener(
+            'resize',
+            resizeCanvas,
+            false,
+        );
 
-        // TOFIX : do we resize the canvas after window.resizeCanvas ?
-        // Maybe the function is triggered two times
-        resizeCanvas();
+        window.addEventListener(
+            'mousemove',
+            ({ screenX, screenY }) => {
+                sceneManager.onMouseMove(screenX - canvasHalfWidth, screenY - canvasHalfHeight);
+            },
+            false,
+        );
+
+        window.addEventListener(
+            'keypress',
+            (e) => {
+                sceneManager.onKeyPressed(e);
+            },
+            false,
+        );
     }
 
-
-    // // // // // // // // // //
-    // RENDERING
-    // // // // // // // // // //
-    // TOFIX: seems that this render function was made to re-calculate the
-    // geometry many times no ?
-
-    function render(time) {
-        // TODO : explain why it is for, why do we pass back render()
+    // its a function that loops 60 times per second
+    function render() {
+        // FrameRequestCallback. updates the frame when it is needed, allegedly
         requestAnimationFrame(render);
-        // TODO : explain why it is for, why do we update on render ?
+        // renders the frame and updates the controls and sceneSubjects
         sceneManager.update();
     }
 
 
-    // // // // // // // // // //
     // LAUNCH MAIN FUNCTIONS
-    // // // // // // // // // //
     bindEventListeners();
+    resizeCanvas();
     render();
 };
 

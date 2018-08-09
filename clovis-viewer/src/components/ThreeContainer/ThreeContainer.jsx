@@ -14,8 +14,6 @@ class ThreeContainer extends Component {
         super(props);
         // this.buildingGltfPath = '/gltfs/Project1-assimp.gltf';
         this.buildingGltfPath = '/gltfs/15-assimp.gltf';
-        // @Nicola : this an idea of datas we will pass later to the viewer
-        // to display a task on it (or maybe many tasks markers)
         this.beautifullDatasFromReact = {
             x: 12,
             y: 24,
@@ -31,6 +29,10 @@ class ThreeContainer extends Component {
                 20,
             ],
             color: 'red',
+            tasks: [
+                {},
+                {},
+            ],
         };
     }
 
