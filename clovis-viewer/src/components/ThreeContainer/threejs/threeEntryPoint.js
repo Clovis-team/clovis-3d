@@ -1,3 +1,4 @@
+import dat from 'dat.gui/build/dat.gui.module';
 import SceneManager from './SceneManager';
 import { createCanvas } from './utils';
 
@@ -68,7 +69,7 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
 
 
     // LAUNCH MAIN FUNCTIONS
-    loadGui();
+    // loadGui();
     bindEventListeners();
     resizeCanvas();
     render();

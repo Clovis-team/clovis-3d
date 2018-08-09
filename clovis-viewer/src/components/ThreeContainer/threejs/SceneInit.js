@@ -1,5 +1,4 @@
 import Stats from 'stats.js/src/Stats';
-import dat from 'dat.gui/build/dat.gui.module';
 import loadGltf from './LoadGltf';
 
 function initScene(canvas, buildingGltfPath) {
