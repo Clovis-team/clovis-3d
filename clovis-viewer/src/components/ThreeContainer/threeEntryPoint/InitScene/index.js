@@ -1,5 +1,3 @@
-import Stats from 'stats.js/src/Stats';
-
 import loadGltf from './loadGltf';
 // TODO: split init anylisis here
 import analyseInit from './analyseInit';
@@ -82,15 +80,6 @@ function InitScene(canvas, buildingGltfPath) {
         return new_controls;
     }
 
-
-    /**
-     * Show the Three.js Stats panel on top left
-     */
-    function loadStats() {
-        const new_stats = new Stats();
-        new_stats.showPanel(0);
-        return new_stats;
-    }
 
     // CALCULATE STUFF
     // TODO: put this part inside './analyseInit.js'

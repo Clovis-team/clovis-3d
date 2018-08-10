@@ -13,7 +13,7 @@ class ThreeContainer extends Component {
     constructor(props) {
         super(props);
         // this.buildingGltfPath = '/gltfs/Project1-assimp.gltf';
-        this.buildingGltfPath = '/gltfs/15-assimp.gltf';
+        this.buildingGltfPath = '../../gltfs/15-assimp.gltf';
         this.beautifullDatasFromReact = {
             x: 12,
             y: 24,
@@ -47,10 +47,10 @@ class ThreeContainer extends Component {
     render() {
         return (
 
-          <div
-              ref={element => this.threeRootElement = element}
-              className="canvas-wrapper"
-            />
+            <div
+                ref={element => this.threeRootElement = element}
+                className="canvas-wrapper"
+          />
 
         );
     }
