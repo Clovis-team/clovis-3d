@@ -8,20 +8,20 @@ import Stats from 'stats.js/src/Stats';
 
 /** GUI is the black top left menu with many controls */
 function loadGui() {
-    const new_gui = new dat.GUI();
-    return new_gui;
+    window.gui = new dat.GUI();
+    return window.gui;
 }
 /** Stats is the Three.js Stats panel on bottom left */
 function loadStats() {
-    const new_stats = new Stats();
-    new_stats.showPanel(0);
-    new_stats.dom.style = {
+    window.stats = new Stats();
+    window.stats.showPanel(0);
+    window.stats.dom.style = {
         position: 'absolute',
         bottom: 0,
         left: 0,
     };
-    document.getElementById('stats-container').appendChild(new_stats.dom);
-    return new_stats;
+    document.getElementById('stats-container').appendChild(window.stats.dom);
+    return window.stats;
 }
 
 const DatGui = (canvas, InitializedScene, sceneManager) => {

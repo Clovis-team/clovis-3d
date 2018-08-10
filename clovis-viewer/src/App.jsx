@@ -25,6 +25,14 @@ class App extends Component {
     this.setState({
       isViewerOpened: false,
     })
+
+    /** Clean GUI and Stats when popup closes */
+    const gui_container = document.getElementById('gui-container') && 
+    document.getElementById('gui-container');
+    gui_container.removeChild(gui_container.childNodes[0]);
+    const stats_container = document.getElementById('stats-container') && 
+    document.getElementById('stats-container');
+    stats_container.removeChild(stats_container.childNodes[0]); 
   }
 
   render() {
