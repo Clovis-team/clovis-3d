@@ -2,32 +2,33 @@
 import React from 'react';
 import './ThreePopup.css';
 
-import ThreeContainer from '../ThreeContainer/ThreeContainer'
-
+import ThreeContainer from '../ThreeContainer/ThreeContainer';
 
 
 const ThreePopup = ({ isViewerOpened, OnViewerClose }) => {
+    const popupClassName = `popup-viewer ${isViewerOpened ? 'popup-viewer-open' : ''}`;
 
-  const popupClassName = `popup-viewer ${isViewerOpened ? 'popup-viewer-open' : ''}`
+    return (
+      <div className={popupClassName}>
 
-  return (
-    <div className={popupClassName}>
+          <div
+          className="popup-close-button"
+          onClick={e => OnViewerClose()}
+        >
+          X
+            </div>
+          <div
+                id="gui-container"
+                className="gui-container"
+            />
 
-      <div 
-        className="close-button"
-        onClick={e => OnViewerClose()}
-      >
-        X
-      </div>
+          { isViewerOpened
+                ? <ThreeContainer />
+                : 'Loading Viewer...'
+            }
 
-      { isViewerOpened ?
-        <ThreeContainer /> :
-        'Loading Viewer...'
-      }
-
-    </div>
-  )
-
+        </div>
+    );
 };
 
 

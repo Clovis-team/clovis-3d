@@ -15,7 +15,7 @@
   display: flex;
 }
 
-.close-button {
+.popup-close-button {
   border-radius: 50%;
   position: absolute;
   top: 0.5rem;
@@ -30,11 +30,23 @@
   cursor: pointer;
 }
 
-.close-button:hover {
+.popup-close-button:hover {
   background-color: rgba(255, 255, 255, 0.4);
 }
 
-.close-button:active {
+.popup-close-button:active {
   background-color: rgba(255, 255, 255, 0.8);
+}
+
+.gui-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.dg.a {
+  position: absolute;
+  top: 0;
+  height: 0;
 }
 

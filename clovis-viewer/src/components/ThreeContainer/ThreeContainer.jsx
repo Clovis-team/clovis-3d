@@ -46,10 +46,12 @@ class ThreeContainer extends Component {
 
     render() {
         return (
-            <div
-                ref={element => this.threeRootElement = element}
-                className="canvas-wrapper"
-          />
+
+          <div
+              ref={element => this.threeRootElement = element}
+              className="canvas-wrapper"
+            />
+
         );
     }
 }

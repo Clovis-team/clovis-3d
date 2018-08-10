@@ -12,7 +12,24 @@ function loadGui() {
 
 const DatGui = (canvas, InitializedScene, sceneManager) => {
     // Initialize gui
-    const gui = loadGui();
+    const gui = loadGui({
+        autoPlace: false,
+    });
+
+    // Place the GUI inside the dom container
+    const customContainer = document.getElementById('gui-container');
+    customContainer.appendChild(gui.domElement);
+
+    const text = {
+        message: 'dat.gui',
+        speed: 0.8,
+        displayOutline: false,
+    };
+
+    const menu = gui.addFolder('folder');
+    menu.add(text, 'message');
+    menu.add(text, 'speed', -5, 5);
+    menu.add(text, 'displayOutline');
 };
 
 export default DatGui;
