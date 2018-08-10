@@ -1,7 +1,7 @@
 import 'three/examples/js/loaders/GLTFLoader';
 
 
-const LoadGltf = (scene, buildingPath, gltfLoadedCallback) => {
+const loadGltf = (scene, buildingPath, gltfLoadedCallback) => {
     const loader = new THREE.GLTFLoader();
 
     loader.load(
@@ -30,4 +30,4 @@ const LoadGltf = (scene, buildingPath, gltfLoadedCallback) => {
 };
 
 
-export default LoadGltf;
+export default loadGltf;

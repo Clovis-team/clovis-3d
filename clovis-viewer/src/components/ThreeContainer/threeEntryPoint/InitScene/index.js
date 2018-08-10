@@ -1,7 +1,10 @@
 import Stats from 'stats.js/src/Stats';
-import loadGltf from './LoadGltf';
 
-function initScene(canvas, buildingGltfPath) {
+import loadGltf from './loadGltf';
+// TODO: split init anylisis here
+import analyseInit from './analyseInit';
+
+function InitScene(canvas, buildingGltfPath) {
     // BUILD STUFF FUNCTIONS
 
     /**
@@ -79,7 +82,10 @@ function initScene(canvas, buildingGltfPath) {
         return new_controls;
     }
 
-    // TODO: @Clement put in the stats in the right dom and position
+
+    /**
+     * Show the Three.js Stats panel on top left
+     */
     function loadStats() {
         const new_stats = new Stats();
         new_stats.showPanel(0);
@@ -87,6 +93,7 @@ function initScene(canvas, buildingGltfPath) {
     }
 
     // CALCULATE STUFF
+    // TODO: put this part inside './analyseInit.js'
 
     /**
      * given a object3d returns a vector from origin to the object's BOX center
@@ -152,4 +159,4 @@ function initScene(canvas, buildingGltfPath) {
     };
 }
 
-export default initScene;
+export default InitScene;

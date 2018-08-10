@@ -1,66 +1,31 @@
+/**
+ * Documentation of our Three.js architecture :
+ * https://docs.google.com/presentation/d/1Nye76RTf3oc-8zQSNVjURh9bquHFQRs7dF9QJIVQU_o/edit#slide=id.p
+ */
+
 import dat from 'dat.gui/build/dat.gui.module';
 
-import sceneInit from './SceneInit';
+import InitScene from './InitScene';
 import SceneManager from './SceneManager';
 import { createCanvas } from './utils';
+import Listeners from './Listeners';
 
 const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReact) => {
     const canvas = createCanvas(document, domContainer);
+    const InitializedScene = InitScene(canvas, buildingGltfPath);
 
     const sceneManager = SceneManager(
         canvas,
         // Passing initialized objects like {scene}, {camera}, {renderer}, {controls}
-        sceneInit(canvas, buildingGltfPath),
+        InitializedScene,
         buildingGltfPath,
     );
-
-    // this might go away soon
-    let canvasHalfWidth;
-    let canvasHalfHeight;
-
-    function resizeCanvas() {
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
-
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-
-        canvasHalfWidth = Math.round(canvas.offsetWidth / 2);
-        canvasHalfHeight = Math.round(canvas.offsetHeight / 2);
-
-        sceneManager.onWindowResize();
-    }
 
     // TODO: @Clement put in the gui in the right dom and position
     function loadGui() {
         // TODO: the gui stays in thre entry point because it is not a THREE element
         const new_gui = new dat.GUI();
         return new_gui;
-    }
-
-    function bindEventListeners() {
-        // window.onkeypress = keyPressed;
-        window.addEventListener(
-            'resize',
-            resizeCanvas,
-            false,
-        );
-
-        window.addEventListener(
-            'mousemove',
-            ({ screenX, screenY }) => {
-                sceneManager.onMouseMove(screenX - canvasHalfWidth, screenY - canvasHalfHeight);
-            },
-            false,
-        );
-
-        window.addEventListener(
-            'keypress',
-            (e) => {
-                sceneManager.onKeyPressed(e);
-            },
-            false,
-        );
     }
 
     // its a function that loops 60 times per second
@@ -77,8 +42,12 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
 
     // LAUNCH MAIN FUNCTIONS
     // loadGui();
-    bindEventListeners();
-    resizeCanvas();
+    Listeners(
+        canvas,
+        InitializedScene,
+        sceneManager,
+    );
+
     render();
 };
 

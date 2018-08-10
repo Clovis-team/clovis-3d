@@ -1,7 +1,16 @@
 import 'three/examples/js/controls/OrbitControls';
 import 'three/examples/js/loaders/GLTFLoader';
 
-const SceneManager = (canvas, sceneInit, buildingGltfPath) => {
+import controllers from './controllers';
+
+const SceneManager = (canvas, InitializedScene) => {
+    const {
+        scene,
+        camera,
+        renderer,
+        controls,
+    } = InitializedScene;
+
     /**
      * creates the scene subjects. modular elements meant for plug and play
      * @param {*} scene the main scene as an input for the SUbjects
@@ -27,52 +36,14 @@ const SceneManager = (canvas, sceneInit, buildingGltfPath) => {
         renderer.render(scene, camera);
     }
 
-    // EVENTS CONTROLLERS
-
-    function onWindowResize() {
-        camera.aspect = canvas.width / canvas.height;
-        camera.updateProjectionMatrix();
-        renderer.setSize(canvas.width, canvas.height);
-    }
-
-    function onMouseMove(x, y) {
-        console.log('mouse moved');
-    }
-
-    function onKeyPressed(event) {
-        // TODO: implement a submodule of walking around;
-        const walking_keys = ['w', 'a', 's', 'd'];
-        if (walking_keys.indexOf(event.key) > -1) {
-            console.log(event);
-        }
-    }
-
-    // function to be implemented
-    function onClose() {
-        // gui.destroy();
-        // remove stats
-        // remove eventual listeners;
-    }
-
     // used for getting time between frames for calculating updates
     const clock = new THREE.Clock();
 
-    const {
-        scene,
-        camera,
-        renderer,
-        controls,
-    } = sceneInit;
-
     const sceneSubjects = createSceneSubjects(scene);
-
 
     return {
         update,
-        onWindowResize,
-        onMouseMove,
-        onKeyPressed,
-        onClose,
+        controllers,
     };
 };
 
