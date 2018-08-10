@@ -3,11 +3,10 @@
  * https://docs.google.com/presentation/d/1Nye76RTf3oc-8zQSNVjURh9bquHFQRs7dF9QJIVQU_o/edit#slide=id.p
  */
 
-import dat from 'dat.gui/build/dat.gui.module';
-
 import InitScene from './InitScene';
 import SceneManager from './SceneManager';
 import { createCanvas } from './utils';
+import DatGui from './DatGui.js';
 import Listeners from './Listeners';
 
 const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReact) => {
@@ -21,13 +20,6 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
         buildingGltfPath,
     );
 
-    // TODO: @Clement put in the gui in the right dom and position
-    function loadGui() {
-        // TODO: the gui stays in thre entry point because it is not a THREE element
-        const new_gui = new dat.GUI();
-        return new_gui;
-    }
-
     // its a function that loops 60 times per second
     function render() {
         // FrameRequestCallback. updates the frame when it is needed, allegedly
@@ -37,11 +29,12 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
     }
 
 
-    // const gui = loadGui();
-
-
     // LAUNCH MAIN FUNCTIONS
-    // loadGui();
+    DatGui(
+        canvas,
+        InitializedScene,
+        sceneManager,
+    );
     Listeners(
         canvas,
         InitializedScene,
