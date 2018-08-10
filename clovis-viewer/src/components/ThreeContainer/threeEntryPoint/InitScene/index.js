@@ -125,7 +125,9 @@ function InitScene(canvas, buildingGltfPath) {
      * callback from when the gltf file is loaded
      */
     function gltfLoadedCallback(building) {
+        console.log('Start to set the camera position :');
         positionCameraToBuilding();
+        console.log('End to set the camera position :');
         console.log('building loaded', building);
     }
 

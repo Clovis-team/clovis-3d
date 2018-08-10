@@ -1,7 +1,7 @@
 // EVENTS CONTROLLERS
 
 function onMouseMove(x, y) {
-    console.log('mouse moved');
+    // console.log('mouse moved');
 }
 
 function onKeyPressed(event) {
