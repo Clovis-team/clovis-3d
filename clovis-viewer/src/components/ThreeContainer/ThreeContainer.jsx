@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import threeEntryPoint from './threejs/threeEntryPoint';
+import threeEntryPoint from './threeEntryPoint';
 
 import './ThreeContainer.css';
 

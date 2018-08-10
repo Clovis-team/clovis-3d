@@ -1,11 +1,18 @@
 import dat from 'dat.gui/build/dat.gui.module';
+
+import sceneInit from './SceneInit';
 import SceneManager from './SceneManager';
 import { createCanvas } from './utils';
 
 const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReact) => {
     const canvas = createCanvas(document, domContainer);
 
-    const sceneManager = SceneManager(canvas, buildingGltfPath);
+    const sceneManager = SceneManager(
+        canvas,
+        // Passing initialized objects like {scene}, {camera}, {renderer}, {controls}
+        sceneInit(canvas, buildingGltfPath),
+        buildingGltfPath,
+    );
 
     // this might go away soon
     let canvasHalfWidth;

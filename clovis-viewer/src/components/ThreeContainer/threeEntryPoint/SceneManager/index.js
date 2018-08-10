@@ -1,15 +1,7 @@
-/**
- * TODO: We can split the events controllers from this file (and let the core of this file for the build)
- */
-
-
 import 'three/examples/js/controls/OrbitControls';
 import 'three/examples/js/loaders/GLTFLoader';
 
-
-import sceneInit from './SceneInit';
-
-const SceneManager = (canvas, buildingGltfPath) => {
+const SceneManager = (canvas, sceneInit, buildingGltfPath) => {
     /**
      * creates the scene subjects. modular elements meant for plug and play
      * @param {*} scene the main scene as an input for the SUbjects
@@ -70,7 +62,7 @@ const SceneManager = (canvas, buildingGltfPath) => {
         camera,
         renderer,
         controls,
-    } = sceneInit(canvas, buildingGltfPath);
+    } = sceneInit;
 
     const sceneSubjects = createSceneSubjects(scene);
 
