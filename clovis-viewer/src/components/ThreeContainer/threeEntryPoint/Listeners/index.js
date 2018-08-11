@@ -1,9 +1,6 @@
 const Listeners = (canvas, InitializedScene, SceneManager) => {
     const {
-        scene,
-        camera,
-        renderer,
-        controls,
+        scene, camera, renderer, controls,
     } = InitializedScene;
 
     const {

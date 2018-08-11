@@ -2,13 +2,11 @@ import 'three/examples/js/controls/OrbitControls';
 import 'three/examples/js/loaders/GLTFLoader';
 
 import controllers from './controllers';
+import cameras from './cameras';
 
 const SceneManager = (canvas, InitializedScene) => {
     const {
-        scene,
-        camera,
-        renderer,
-        controls,
+        scene, camera, renderer, controls,
     } = InitializedScene;
 
     /**
@@ -25,7 +23,8 @@ const SceneManager = (canvas, InitializedScene) => {
     }
 
     /**
-     * updates the stuff that has to be updated every cycle
+     * updates the stuff that has to be updated every frame cycle
+     * (This function is launched many times per second)
      */
     function update() {
         // update sceneSubjects every cycle
@@ -44,6 +43,7 @@ const SceneManager = (canvas, InitializedScene) => {
     return {
         update,
         controllers,
+        cameras,
     };
 };
 

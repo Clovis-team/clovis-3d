@@ -1,8 +1,9 @@
 import loadGltf from './loadGltf';
 // TODO: split init anylisis here
 import analyseInit from './analyseInit';
+import cameras from '../SceneManager/cameras';
 
-function InitScene(canvas, buildingGltfPath) {
+function BuildScene(canvas, buildingGltfPath) {
     // BUILD STUFF FUNCTIONS
 
     /**
@@ -40,6 +41,17 @@ function InitScene(canvas, buildingGltfPath) {
         return new_renderer;
     }
 
+    // CAMERA
+
+    const cameraTypes = [
+        'Perspective',
+        'Ortographic',
+        'Flying drag Fps',
+        'Flying drag',
+        'walking drag fps',
+        'walking drag',
+    ];
+    const starting_camera_number = 5;
     /**
          * creates a perspective camera in THREE
          *
@@ -51,6 +63,7 @@ function InitScene(canvas, buildingGltfPath) {
         const fieldOfView = 75;
         const nearPlane = 0.2;
         const farPlane = 1000;
+
         const new_camera = new THREE.PerspectiveCamera(
             fieldOfView,
             aspectRatio,
@@ -59,9 +72,12 @@ function InitScene(canvas, buildingGltfPath) {
         );
 
         new_camera.position.z = 40;
+        new_camera.height = 'INIT';
 
         return new_camera;
     }
+
+    // CONTROLS
 
     /**
          * loads Orbitcontrols and configure it for our visualizer
@@ -125,10 +141,7 @@ function InitScene(canvas, buildingGltfPath) {
      * callback from when the gltf file is loaded
      */
     function gltfLoadedCallback(building) {
-        console.log('Start to set the camera position :');
         positionCameraToBuilding();
-        console.log('End to set the camera position :');
-        console.log('building loaded', building);
     }
 
     // BUILD STUFF
@@ -140,14 +153,14 @@ function InitScene(canvas, buildingGltfPath) {
 
     loadGltf(scene, buildingGltfPath, gltfLoadedCallback);
 
-    // const stats = loadStats();
-
     return {
         scene,
-        camera,
         renderer,
+        camera,
         controls,
+        cameraTypes,
+        starting_camera_number,
     };
 }
 
-export default InitScene;
+export default BuildScene;

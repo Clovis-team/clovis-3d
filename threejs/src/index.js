@@ -215,6 +215,8 @@ function populate_height_gui() {
 function populate_gui_camera(type_n) {
     const gui_camera = gui.addFolder('Camera options');
     const new_camera = { type: cameraTypes[type_n] };
+    console.log('#### type_n :', type_n);
+    console.log('#### cameraTypes :', cameraTypes);
     const controller = gui_camera.add(new_camera, 'type', cameraTypes);
     controller.onChange((value) => {
         setup_camera(value, camera, controls);

@@ -5,9 +5,15 @@
 
 import InitScene from './InitScene';
 import SceneManager from './SceneManager';
-import { createCanvas } from './utils';
-import DatGui from './DatGui.js';
+import DatGui from './DatGui';
 import Listeners from './Listeners';
+
+
+function createCanvas(document, container) {
+    const canvas = document.createElement('canvas');
+    container.appendChild(canvas);
+    return canvas;
+}
 
 const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReact) => {
     const canvas = createCanvas(document, domContainer);
