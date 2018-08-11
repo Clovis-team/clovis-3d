@@ -3,7 +3,7 @@
  * https://docs.google.com/presentation/d/1Nye76RTf3oc-8zQSNVjURh9bquHFQRs7dF9QJIVQU_o/edit#slide=id.p
  */
 
-import InitScene from './InitScene';
+import BuildScene from './BuildScene';
 import SceneManager from './SceneManager';
 import DatGui from './DatGui';
 import Listeners from './Listeners';
@@ -17,7 +17,7 @@ function createCanvas(document, container) {
 
 const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReact) => {
     const canvas = createCanvas(document, domContainer);
-    const InitializedScene = InitScene(canvas, buildingGltfPath);
+    const InitializedScene = BuildScene(canvas, buildingGltfPath);
 
     const sceneManager = SceneManager(
         canvas,

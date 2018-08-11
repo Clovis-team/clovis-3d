@@ -1,5 +1,14 @@
 import './utils/FirstPersonControlsClovis';
 
+function new_perspective_camera() {
+    return new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000,
+    );
+}
+
 function setup_flying_drag_fps(new_camera, renderer) {
     const new_controls = new THREE.FirstPersonControlsClovis(new_camera, renderer.domElement);
     new_controls.movementSpeed = 5;
@@ -16,10 +25,11 @@ function setup_flying_drag(new_camera, renderer) {
     return new_controls;
 }
 
-function setup_walking_drag(new_camera, renderer) {
+function setup_walking_drag_fps(new_camera, renderer) {
     const new_controls = new THREE.FirstPersonControlsClovis(new_camera, renderer.domElement);
     new_controls.movementSpeed = 5;
     new_controls.lookSpeed = 5;
+    new_controls.fps_style = true;
     new_controls.plane_movements = true;
     if (typeof mesh_all !== 'undefined') {
         new_controls.collision_objects = mesh_all;
@@ -28,11 +38,10 @@ function setup_walking_drag(new_camera, renderer) {
     return new_controls;
 }
 
-function setup_walking_drag_fps(new_camera, renderer) {
+function setup_walking_drag(new_camera, renderer) {
     const new_controls = new THREE.FirstPersonControlsClovis(new_camera, renderer.domElement);
     new_controls.movementSpeed = 5;
     new_controls.lookSpeed = 5;
-    new_controls.fps_style = true;
     new_controls.plane_movements = true;
     if (typeof mesh_all !== 'undefined') {
         new_controls.collision_objects = mesh_all;
@@ -81,12 +90,6 @@ function apply_camera(camera, new_camera) {
 
 function apply_controls(controls, new_controls) {
     controls = new_controls;
-}
-
-function new_perspective_camera() {
-    return new THREE.PerspectiveCamera(
-        75, window.innerWidth / window.innerHeight, 0.1, 1000,
-    );
 }
 
 
