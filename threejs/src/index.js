@@ -15,6 +15,7 @@ import 'three/examples/js/loaders/OBJLoader';
 import { get_building } from './utils/get_from_scene';
 import './utils/FirstPersonControlsClovis';
 
+console.log('### HEEEEEY :');
 
 const scene = new THREE.Scene();
 let camera;
@@ -216,6 +217,7 @@ function populate_gui_camera(type_n) {
     const gui_camera = gui.addFolder('Camera options');
     const new_camera = { type: cameraTypes[type_n] };
     console.log('#### type_n :', type_n);
+    console.log('#### type_n :', type_n);
     console.log('#### cameraTypes :', cameraTypes);
     const controller = gui_camera.add(new_camera, 'type', cameraTypes);
     controller.onChange((value) => {
@@ -399,6 +401,7 @@ function add_sphere_on_click(intersected) {
 }
 
 function onDocumentMouseClick(event) {
+    console.log('1111 CLICK 2:');
     event.preventDefault();
 
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -471,6 +474,7 @@ function onDocumentTouchEnd(event) {
 }
 
 function init_scene() {
+    console.log('#### init_scene :');
     // const axis = new THREE.AxesHelper(100);
     // scene.add(axis);
     document.body.appendChild(renderer.domElement);
