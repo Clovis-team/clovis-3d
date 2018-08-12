@@ -5,7 +5,7 @@
 
 import BuildScene from './BuildScene';
 import SceneManager from './SceneManager';
-import DatGui from './DatGui';
+import MenuAndTools from './MenuAndTools';
 import Listeners from './Listeners';
 
 
@@ -47,7 +47,7 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
     );
 
     // Display the dat.gui menu
-    DatGui(
+    MenuAndTools(
         canvas,
         InitializedScene,
         sceneManager,

@@ -10,7 +10,7 @@ import {
 } from './utils';
 
 
-const DatGui = (canvas, InitializedScene, sceneManager) => {
+const MenuAndTools = (canvas, InitializedScene, sceneManager) => {
     const {
         scene,
         getSceneCamera,
@@ -23,7 +23,7 @@ const DatGui = (canvas, InitializedScene, sceneManager) => {
     } = InitializedScene;
     const { change_camera_and_controls } = sceneManager.cameras;
 
-    // Initialize gui
+    // Initialize dat.gui menu
     const gui = loadGui({ autoPlace: false });
 
     // Initialize the Three.js Stats panel on top left
@@ -46,4 +46,4 @@ const DatGui = (canvas, InitializedScene, sceneManager) => {
 };
 
 
-export default DatGui;
+export default MenuAndTools;
