@@ -1,5 +1,7 @@
 import './utils/FirstPersonControlsClovis';
 
+// COMMON CAMERA
+
 function new_perspective_camera() {
     return new THREE.PerspectiveCamera(
         75,
@@ -9,11 +11,20 @@ function new_perspective_camera() {
     );
 }
 
+// CAMERA CONTROLS
+
 function setup_flying_drag_fps(new_camera, renderer) {
-    const new_controls = new THREE.FirstPersonControlsClovis(new_camera, renderer.domElement);
+    console.log('Setup flying drag fps controls :');
+    const new_controls = new THREE.FirstPersonControlsClovis(
+        // (required) The camera to be controlled.
+        new_camera,
+        // (optional) The HTML element used for event listeners.
+        renderer.domElement,
+    );
     new_controls.movementSpeed = 5;
     new_controls.lookSpeed = 5;
     new_controls.fps_style = true;
+
     return new_controls;
 }
 
@@ -69,6 +80,8 @@ function setup_orbit_control(new_camera, renderer, controls) {
     console.log('final controls :', controls);
 }
 
+// UTILS
+
 function copy_camera_old_pos_rot(new_camera, camera) {
     if (typeof camera !== 'undefined') {
         new_camera.position.copy(camera.position);
@@ -89,9 +102,12 @@ function apply_camera(camera, new_camera) {
 }
 
 function apply_controls(controls, new_controls) {
+    console.log('## controls :', controls);
+    console.log('## new_controls :', new_controls);
     controls = new_controls;
 }
 
+// CAMERAS
 
 /** Only for update, not build. It's too messy either */
 function change_camera(cameraTypes, type, camera, controls, renderer) {
@@ -109,7 +125,7 @@ function change_camera(cameraTypes, type, camera, controls, renderer) {
         new_camera = new_perspective_camera();
         copy_camera_old_pos_rot(new_camera, camera);
         apply_camera(camera, new_camera);
-        setup_orbit_control(new_camera, renderer, controls);
+        setup_orbit_control(camera, renderer, controls);
         break;
 
     case 'Ortographic': {
@@ -122,7 +138,7 @@ function change_camera(cameraTypes, type, camera, controls, renderer) {
         );
         copy_camera_old_pos_rot(new_camera, camera);
         apply_camera(new_camera);
-        setup_orbit_control(new_camera, renderer, controls);
+        setup_orbit_control(camera, renderer, controls);
         break;
     }
 
@@ -132,7 +148,7 @@ function change_camera(cameraTypes, type, camera, controls, renderer) {
         copy_camera_old_pos_rot(new_camera, camera);
         apply_camera(new_camera);
 
-        new_controls = setup_flying_drag_fps(new_camera, renderer);
+        new_controls = setup_flying_drag_fps(camera, renderer);
         // copy_controls_old_phi_theta(new_controls, controls);
         apply_controls(controls, new_controls);
         break;
@@ -144,7 +160,7 @@ function change_camera(cameraTypes, type, camera, controls, renderer) {
         copy_camera_old_pos_rot(new_camera, camera);
         apply_camera(camera, new_camera);
 
-        new_controls = setup_flying_drag(new_camera, renderer);
+        new_controls = setup_flying_drag(camera, renderer);
         // copy_controls_old_phi_theta(new_controls, controls);
         apply_controls(controls, new_controls);
         break;
@@ -156,7 +172,7 @@ function change_camera(cameraTypes, type, camera, controls, renderer) {
         copy_camera_old_pos_rot(new_camera, camera);
         apply_camera(camera, new_camera);
 
-        new_controls = setup_walking_drag_fps(new_camera, renderer);
+        new_controls = setup_walking_drag_fps(camera, renderer);
         // copy_controls_old_phi_theta(new_controls, controls);
         apply_controls(controls, new_controls);
         break;
@@ -167,9 +183,7 @@ function change_camera(cameraTypes, type, camera, controls, renderer) {
         new_camera = new_perspective_camera();
         copy_camera_old_pos_rot(new_camera, camera);
         apply_camera(camera, new_camera);
-        console.log('camera 3 :', camera);
-        console.log('new_camera 4 :', new_camera);
-        new_controls = setup_walking_drag(new_camera, renderer);
+        new_controls = setup_walking_drag(camera, renderer);
         // copy_controls_old_phi_theta(new_controls, controls);
         apply_controls(controls, new_controls);
         break;

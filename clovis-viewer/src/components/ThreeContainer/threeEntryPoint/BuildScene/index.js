@@ -87,7 +87,15 @@ function BuildScene(canvas, buildingGltfPath) {
          * @returns the new controls
          */
     function buildControls(controls_camera, controls_renderer) {
-        const new_controls = new THREE.OrbitControls(controls_camera, controls_renderer.domElement);
+        const new_controls = new THREE.OrbitControls(
+            // (required) The camera to be controlled.
+            controls_camera,
+            // (optional) The HTML element used for event listeners.
+            // By default this is the whole document, however if you only
+            // want the controls to work over a specific element (e.g. the
+            // canvas) you can specify that here.
+            controls_renderer.domElement,
+        );
         new_controls.enableDamping = true;
         new_controls.screenSpacePanning = true;
         new_controls.panSpeed = 0.3;
