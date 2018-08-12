@@ -1,4 +1,4 @@
-import loadGltf from './loadGltf';
+import loadBuilding from './loadBuilding';
 // TODO: split init anylisis here
 import analyseBuilding from './analyseBuilding';
 import cameras from '../SceneManager/cameras';
@@ -142,7 +142,7 @@ function BuildScene(canvas, buildingGltfPath) {
 
     buildCameraAndControls();
 
-    loadGltf(scene, buildingGltfPath, gltfLoadedCallback);
+    loadBuilding(scene, buildingGltfPath, gltfLoadedCallback);
 
     return {
         scene,

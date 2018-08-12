@@ -2,7 +2,8 @@ import 'three/examples/js/loaders/GLTFLoader';
 import { get_building } from './utils';
 
 
-const loadGltf = (scene, buildingPath, gltfLoadedCallback) => {
+const loadBuilding = (scene, buildingPath, gltfLoadedCallback) => {
+    // Building is in Gltf format, so we use Three.js Gltf loader
     const loader = new THREE.GLTFLoader();
     const t0 = performance.now();
 
@@ -43,4 +44,4 @@ const loadGltf = (scene, buildingPath, gltfLoadedCallback) => {
 };
 
 
-export default loadGltf;
+export default loadBuilding;
