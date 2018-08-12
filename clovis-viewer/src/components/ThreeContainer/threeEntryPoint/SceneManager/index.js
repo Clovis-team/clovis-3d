@@ -1,7 +1,5 @@
-import 'three/examples/js/controls/OrbitControls';
-import 'three/examples/js/loaders/GLTFLoader';
-
 import controllers from './controllers';
+import Walking from './walking';
 
 const SceneManager = (canvas, InitializedScene) => {
     const {
@@ -19,6 +17,7 @@ const SceneManager = (canvas, InitializedScene) => {
     function createSceneSubjects(scene) {
         // not yet implemented
         const sceneSubjects = [
+            new Walking(camera, controls),
             // new GeneralLights(scene),
         ];
         return sceneSubjects;
@@ -32,7 +31,7 @@ const SceneManager = (canvas, InitializedScene) => {
         const elapsedTime = clock.getElapsedTime();
         for (let i = 0; i < sceneSubjects.length; i++) { sceneSubjects[i].update(elapsedTime); }
         // required if controls.enableDamping or controls.autoRotate are set to true
-	    // controls.update();
+	    controls.update();
         renderer.render(scene, camera);
     }
 
