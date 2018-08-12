@@ -1,8 +1,10 @@
 import 'three/examples/js/loaders/GLTFLoader';
+import { get_building } from './utils';
 
 
 const loadGltf = (scene, buildingPath, gltfLoadedCallback) => {
     const loader = new THREE.GLTFLoader();
+    const t0 = performance.now();
 
     loader.load(
         // .gltf resource URL
@@ -13,10 +15,16 @@ const loadGltf = (scene, buildingPath, gltfLoadedCallback) => {
             // Remove css class "loading to the loader"
             document.getElementById('three-progress-container').classList.remove('loading');
 
+            const t1 = performance.now();
+
             scene.add(gltf.scene);
             // reaching the building from the gltf file. it is deep into the structure
-            const gltfBuilding = gltf.scene.children[0].children[0].children[0].children[0];
+            const gltfBuilding = get_building(gltf.scene);
+
             gltfLoadedCallback(gltfBuilding);
+
+            const t2 = performance.now();
+            console.log(`load and name all groups took ${Math.round(t2 - t1)} milliseconds.`);
         },
         // Called while loading is progressing
         (xhr) => {

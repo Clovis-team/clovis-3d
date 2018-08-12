@@ -1,6 +1,6 @@
 import loadGltf from './loadGltf';
 // TODO: split init anylisis here
-import analyseInit from './analyseInit';
+import analyseBuilding from './analyseBuilding';
 import cameras from '../SceneManager/cameras';
 
 function BuildScene(canvas, buildingGltfPath) {
@@ -119,7 +119,7 @@ function BuildScene(canvas, buildingGltfPath) {
      * it centers the camera in the right position based on the center and size of the building
     */
     function positionCameraToBuilding() {
-        console.log('here we fix the camera');
+        console.log('position Camera To Building');
         const cameraPosition = getObjectCenter(scene).add(getgetObjectSize(scene).divideScalar(2));
         camera.position.copy(cameraPosition);
         controls.target.copy(getObjectCenter(scene));
