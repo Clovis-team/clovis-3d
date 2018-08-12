@@ -4,7 +4,6 @@ import analyseInit from './analyseInit';
 import cameras from '../SceneManager/cameras';
 
 function BuildScene(canvas, buildingGltfPath) {
-    console.log('new build');
     // BUILD STUFF FUNCTIONS
 
     /**
@@ -64,7 +63,7 @@ function BuildScene(canvas, buildingGltfPath) {
         controls = new_controls;
     }
 
-    // CAMERA
+    // CAMERA AND CONTROLS
 
     const cameraTypes = [
         'Perspective',
@@ -74,59 +73,19 @@ function BuildScene(canvas, buildingGltfPath) {
         'walking drag fps',
         'walking drag',
     ];
-    const starting_camera_number = 5;
-    /**
-         * creates a perspective camera in THREE
-         *
-         * @param {*} { width, height } to calculate its proportions
-         * @returns new camera
-         */
-    function buildCamera({ width, height }) {
-        const aspectRatio = width / height;
-        const fieldOfView = 75;
-        const nearPlane = 0.2;
-        const farPlane = 1000;
+    const starting_camera_type = 'Perspective';
 
-        const new_camera = new THREE.PerspectiveCamera(
-            fieldOfView,
-            aspectRatio,
-            nearPlane,
-            farPlane,
+    function buildCameraAndControls() {
+        cameras.change_camera_and_controls(
+            cameraTypes,
+            starting_camera_type,
+            getSceneCamera,
+            getSceneControls,
+            renderer,
+            modifySceneCamera,
+            modifySceneControls,
         );
-
-        new_camera.position.z = 40;
-        new_camera.height = 'INIT';
-
-        return new_camera;
     }
-
-    // CONTROLS
-
-    /**
-         * loads Orbitcontrols and configure it for our visualizer
-         *
-         * @param {*} controls_camera the camera tha he is going to move
-         * @param {*} controls_renderer the renderer frame he has to lsiten too
-         * @returns the new controls
-         */
-    function buildControls(controls_camera, controls_renderer) {
-        const new_controls = new THREE.OrbitControls(
-            // (required) The camera to be controlled.
-            controls_camera,
-            // (optional) The HTML element used for event listeners.
-            // By default this is the whole document, however if you only
-            // want the controls to work over a specific element (e.g. the
-            // canvas) you can specify that here.
-            controls_renderer.domElement,
-        );
-        new_controls.enableDamping = true;
-        new_controls.screenSpacePanning = true;
-        new_controls.panSpeed = 0.3;
-        new_controls.rotateSpeed = 0.2;
-        new_controls.update();
-        return new_controls;
-    }
-
 
     // CALCULATE STUFF
     // TODO: put this part inside './analyseInit.js'
@@ -178,8 +137,10 @@ function BuildScene(canvas, buildingGltfPath) {
     // BUILD STUFF
     const scene = buildScene();
     const renderer = buildRender(canvas);
-    let camera = buildCamera(canvas);
-    let controls = buildControls(camera, renderer);
+    let camera;
+    let controls;
+
+    buildCameraAndControls();
 
     loadGltf(scene, buildingGltfPath, gltfLoadedCallback);
 
@@ -191,7 +152,7 @@ function BuildScene(canvas, buildingGltfPath) {
         modifySceneCamera,
         modifySceneControls,
         cameraTypes,
-        starting_camera_number,
+        starting_camera_type,
     };
 }
 

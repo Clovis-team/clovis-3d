@@ -9,14 +9,14 @@ function populate_gui_camera(
     getSceneCamera,
     getSceneControls,
     cameraTypes,
-    camera_number,
+    camera_type,
     renderer,
     change_camera_and_controls,
     modifySceneCamera,
     modifySceneControls,
 ) {
     const gui_camera = gui.addFolder('Camera options');
-    const new_camera = { type: cameraTypes[camera_number] };
+    const new_camera = { type: camera_type };
     const controller = gui_camera.add(new_camera, 'type', cameraTypes);
 
     controller.onChange((value) => {
@@ -48,7 +48,7 @@ const DatGui = (canvas, InitializedScene, sceneManager) => {
         modifySceneCamera,
         modifySceneControls,
         cameraTypes,
-        starting_camera_number,
+        starting_camera_type,
     } = InitializedScene;
     const { change_camera_and_controls } = sceneManager.cameras;
 
@@ -64,7 +64,7 @@ const DatGui = (canvas, InitializedScene, sceneManager) => {
         getSceneCamera,
         getSceneControls,
         cameraTypes,
-        starting_camera_number,
+        starting_camera_type,
         renderer,
         change_camera_and_controls,
         modifySceneCamera,
