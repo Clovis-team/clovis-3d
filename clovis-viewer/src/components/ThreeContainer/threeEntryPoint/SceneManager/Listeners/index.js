@@ -3,13 +3,17 @@ const Listeners = (
     InitializedScene,
     Cameras,
     Controllers,
+    mouse,
+    object_selected,
+    raycaster,
 ) => {
     const {
-        scene, getSceneCamera, getSceneControls, renderer,
+        scene,
+        getSceneCamera,
+        getSceneControls,
+        renderer,
+        getBuildingDatas,
     } = InitializedScene;
-
-
-    // window.onkeypress = keyPressed;
 
     // Manage Window Resize
     window.addEventListener(
@@ -47,10 +51,11 @@ const Listeners = (
     window.addEventListener(
         'endOfLoaderCallback',
         () => {
-            Controllers.onEndOfLoaderCallback(
+            Controllers.displayMenuAndButtons(
                 canvas,
                 InitializedScene,
                 Cameras,
+                object_selected,
             );
         },
         false,
@@ -59,7 +64,14 @@ const Listeners = (
     window.addEventListener(
         'mouseup',
         (e) => {
-            Controllers.onDocumentMouseClick(e);
+            Controllers.onDocumentMouseClick(
+                e,
+                mouse,
+                object_selected,
+                getSceneCamera,
+                raycaster,
+                getBuildingDatas,
+            );
         },
         false,
     );

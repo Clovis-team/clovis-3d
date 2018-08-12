@@ -47,44 +47,57 @@ function resizeCanvas(canvas, getSceneCamera, renderer) {
     renderer.setSize(canvas.width, canvas.height);
 }
 
-function onEndOfLoaderCallback(canvas, InitializedScene, Cameras) {
+function displayMenuAndButtons(canvas, InitializedScene, Cameras, object_selected) {
     MenuAndButtons(
         canvas,
         InitializedScene,
         Cameras,
+        object_selected,
     );
 }
 
-function onDocumentMouseClick(event, mouse, obj_selection, camera, raycaster, mesh_all) {
+function onDocumentMouseClick(
+    event,
+    mouse,
+    object_selected,
+    getSceneCamera,
+    raycaster,
+    getBuildingDatas,
+) {
     console.log('onDocumentMouseClick:', event);
     event.preventDefault();
 
-    // const new_mouse = mouse;
+    const camera = getSceneCamera();
+    const { mesh_all } = getBuildingDatas();
 
-    // new_mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    // new_mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    const new_mouse = mouse;
 
-    // if (obj_selection.obj_old && obj_selection.obj_old_material) {
-    //     obj_selection.obj_old.material = obj_selection.obj_old_material;
-    // }
+    // Correct the mouse position
+    new_mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    new_mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-    // raycaster.setFromCamera(new_mouse, camera);
-    // const intersects = raycaster.intersectObjects(mesh_all);
+    // TODO: right now it works, but coorect later to avoid param reassign
+    if (object_selected.obj_old && object_selected.obj_old_material) {
+        object_selected.obj_old.material = object_selected.obj_old_material;
+    }
 
-    // if (intersects.length > 0) {
-    //     // add_sphere_on_click(intersects[0]);
-    //     const intersected_obj = intersects[0].object;
+    raycaster.setFromCamera(new_mouse, camera);
+    const intersects = raycaster.intersectObjects(mesh_all);
 
-    //     obj_selection.ifc_tag = intersected_obj.ifc_tag;
-    //     obj_selection.ifc_name = intersected_obj.ifc_name;
+    if (intersects.length > 0) {
+        // add_sphere_on_click(intersects[0]);
+        const intersected_obj = intersects[0].object;
 
-    //     const event_color = new THREE.Color(0x51f787);
+        object_selected.ifc_tag = intersected_obj.ifc_tag;
+        object_selected.ifc_name = intersected_obj.ifc_name;
 
-    //     const event_material = new THREE.MeshBasicMaterial({ color: event_color });
-    //     obj_selection.obj_old = intersected_obj;
-    //     obj_selection.obj_old_material = intersected_obj.material;
-    //     intersected_obj.material = event_material;
-    // }
+        const event_color = new THREE.Color(0x51f787);
+
+        const event_material = new THREE.MeshBasicMaterial({ color: event_color });
+        object_selected.obj_old = intersected_obj;
+        object_selected.obj_old_material = intersected_obj.material;
+        intersected_obj.material = event_material;
+    }
 }
 
 
@@ -94,6 +107,6 @@ export default {
     onMouseMove,
     onKeyPressed,
     onClose,
-    onEndOfLoaderCallback,
+    displayMenuAndButtons,
     onDocumentMouseClick,
 };

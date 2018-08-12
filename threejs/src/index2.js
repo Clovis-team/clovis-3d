@@ -24,7 +24,7 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 const gui = new dat.GUI();
 const stats = new Stats();
 const loader = new THREE.GLTFLoader();
-const raycaster = new THREE.Raycaster();
+// const raycaster = new THREE.Raycaster();
 const raycaster_cam = new THREE.Raycaster();
 // const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
 // const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -32,7 +32,7 @@ const hemisphereLight = new THREE.HemisphereLight(0xeeeeff, 0x777788, 1);
 
 // const cameraTypes = ['Perspective', 'Ortographic', 'Flying drag Fps', 'Flying drag', 'walking drag fps', 'walking drag'];
 // const starting_camera_number = 5;
-const mouse = new THREE.Vector2();
+// const mouse = new THREE.Vector2();
 // const gltfFiles = [
 //     'gltfs/15-assimp.gltf',
 //     'gltfs/Project1-assimp.gltf',

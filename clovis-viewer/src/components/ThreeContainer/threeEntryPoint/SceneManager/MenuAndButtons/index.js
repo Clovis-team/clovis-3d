@@ -13,13 +13,8 @@ import {
 } from './utils';
 
 
-const MenuAndButtons = (canvas, InitializedScene, Cameras) => {
-    const object_selected = {
-        ifc_tag: 'none',
-        ifc_name: 'none',
-        obj_old: undefined,
-        obj_old_material: undefined,
-    };
+const MenuAndButtons = (canvas, InitializedScene, Cameras, object_selected) => {
+    console.log('##### object_selected :', object_selected);
 
     const {
         scene,

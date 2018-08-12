@@ -7,11 +7,23 @@ import Cameras from './Cameras';
 
 const SceneManager = (canvas, InitializedScene) => {
     const {
-        scene, renderer,
+        scene,
+        renderer,
     } = InitializedScene;
 
     // used for getting time between frames for calculating updates
     const clock = new THREE.Clock();
+    // Tool to detect collisions with objects
+    const raycaster = new THREE.Raycaster();
+    // usef to click on object_selected
+    const mouse = new THREE.Vector2();
+    // The selected Object on Click
+    const object_selected = {
+        ifc_tag: 'none',
+        ifc_name: 'none',
+        obj_old: undefined,
+        obj_old_material: undefined,
+    };
 
 
     /**
@@ -63,12 +75,17 @@ const SceneManager = (canvas, InitializedScene) => {
         InitializedScene,
         Cameras,
         Controllers,
+        mouse,
+        object_selected,
+        raycaster,
     );
+
 
     return {
         update,
         Controllers,
         Cameras,
+        mouse,
     };
 };
 
