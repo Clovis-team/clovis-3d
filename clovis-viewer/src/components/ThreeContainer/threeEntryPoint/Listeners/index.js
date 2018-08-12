@@ -11,10 +11,18 @@ const Listeners = (canvas, InitializedScene, SceneManager) => {
 
     // window.onkeypress = keyPressed;
 
-    // TODO: this listener is working only on first load,
-    // not working on page resize, find why
+    // Manage Window Resize. Both functions are needed
+    window.onresize = () => {
+        // this one is when window is actually loaded
+        controllers.resizeCanvas(
+            canvas,
+            getSceneCamera,
+            renderer,
+        );
+    };
     window.addEventListener(
-        'resize',
+        // this one is for when the popup is opened
+        'resize', // this one is fo
         controllers.resizeCanvas(
             canvas,
             getSceneCamera,

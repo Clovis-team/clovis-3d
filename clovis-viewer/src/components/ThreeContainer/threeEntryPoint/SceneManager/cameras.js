@@ -151,9 +151,6 @@ function change_camera_and_controls(
     let new_camera;
     let new_controls;
 
-    console.log('STARTING old_camera :', old_camera);
-    console.log('STARTING old_controls :', old_controls);
-
     // Necessary to fully clean old controls
     if (typeof old_controls !== 'undefined') {
         old_controls.dispose();
@@ -206,8 +203,6 @@ function change_camera_and_controls(
 
     // TODO: explain why we re-set the height at each camera update
     new_camera.height = 'INIT';
-    console.log('FINAL new_camera :', new_camera);
-    console.log('FINAL new_controls :', new_controls);
 
     if (typeof new_camera !== 'undefined') {
         modifySceneCamera(new_camera);
