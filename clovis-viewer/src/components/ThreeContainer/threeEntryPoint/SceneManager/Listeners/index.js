@@ -48,9 +48,11 @@ const Listeners = (
 
     // We have to wait the end of Gltf treatment to display the Menus and Tools
     // because they need the resulting datas
+    // TODO: there's a problem with this event when we close / open back the popup
     window.addEventListener(
         'endOfLoaderCallback',
-        () => {
+        (e) => {
+            console.log('endOfLoaderCallback :', e);
             Controllers.displayMenuAndButtons(
                 canvas,
                 InitializedScene,

@@ -22,11 +22,11 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
 
     // its a function that loops 60 times per second
     function render() {
-        update_height_of_camera(
-            InitializedScene.getSceneCamera,
-            InitializedScene.getBuildingDatas,
-            sceneManager.raycaster_cam,
-        );
+        // update_height_of_camera(
+        //     InitializedScene.getSceneCamera,
+        //     InitializedScene.getBuildingDatas,
+        //     sceneManager.raycaster_cam,
+        // );
         // FrameRequestCallback. updates the frame when it is needed, allegedly
         requestAnimationFrame(render);
         // renders the frame and updates the controls and sceneSubjects

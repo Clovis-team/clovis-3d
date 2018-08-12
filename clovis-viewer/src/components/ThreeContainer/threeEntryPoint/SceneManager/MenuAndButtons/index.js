@@ -26,7 +26,6 @@ const MenuAndButtons = (canvas, InitializedScene, Cameras, object_selected) => {
         getBuildingDatas,
     } = InitializedScene;
 
-
     const { change_camera_and_controls } = Cameras;
     const buildingDatas = getBuildingDatas();
 
