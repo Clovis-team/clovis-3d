@@ -51,3 +51,19 @@ export const get_building_ifc_elements = (object) => {
         mesh_all,
     };
 };
+
+// TODO: make it cleaner (and work)
+export function center_and_position_camera(object, controls) {
+    object.updateMatrixWorld();
+    const box = new THREE.Box3().setFromObject(object);
+    const size = new THREE.Vector3();
+    box.getSize(size);
+    const center = new THREE.Vector3();
+    box.getCenter(center);
+    controls.target = (center);
+    // controls.target.copy(center);
+    controls.new_target = true;
+    camera.position.copy(center.add(size / 2));
+    console.log('target', controls.target);
+    console.log('camera postion', camera.position);
+}

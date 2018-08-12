@@ -25,10 +25,10 @@ import './utils/FirstPersonControlsClovis';
 //const stats = new Stats();
 //const loader = new THREE.GLTFLoader();
 // const raycaster = new THREE.Raycaster();
-const raycaster_cam = new THREE.Raycaster();
-// const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
-// const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-const hemisphereLight = new THREE.HemisphereLight(0xeeeeff, 0x777788, 1);
+// const raycaster_cam = new THREE.Raycaster();
+// // const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
+// // const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+// const hemisphereLight = new THREE.HemisphereLight(0xeeeeff, 0x777788, 1);
 
 // const cameraTypes = ['Perspective', 'Ortographic', 'Flying drag Fps', 'Flying drag', 'walking drag fps', 'walking drag'];
 // const starting_camera_number = 5;
@@ -227,20 +227,20 @@ const hemisphereLight = new THREE.HemisphereLight(0xeeeeff, 0x777788, 1);
 //     });
 // }
 
-function center_and_position_camera(object) {
-    object.updateMatrixWorld();
-    const box = new THREE.Box3().setFromObject(object);
-    const size = new THREE.Vector3();
-    box.getSize(size);
-    const center = new THREE.Vector3();
-    box.getCenter(center);
-    controls.target = (center);
-    // controls.target.copy(center);
-    controls.new_target = true;
-    camera.position.copy(center.add(size / 2));
-    console.log('target', controls.target);
-    console.log('camera postion', camera.position);
-}
+// function center_and_position_camera(object) {
+//     object.updateMatrixWorld();
+//     const box = new THREE.Box3().setFromObject(object);
+//     const size = new THREE.Vector3();
+//     box.getSize(size);
+//     const center = new THREE.Vector3();
+//     box.getCenter(center);
+//     controls.target = (center);
+//     // controls.target.copy(center);
+//     controls.new_target = true;
+//     camera.position.copy(center.add(size / 2));
+//     console.log('target', controls.target);
+//     console.log('camera postion', camera.position);
+// }
 // function populate_gui_floors() {
 //     const gui_floor_folder = gui.addFolder('Floors');
 //     for (let i = floors.length - 1; i >= 0; i -= 1) {
@@ -340,15 +340,15 @@ function center_and_position_camera(object) {
 // }
 
 
-function load_gltf_file(URL) {
-    const t0 = performance.now();
-    // Load a glTF resource
-    loader.load(
-    // resource URL
-        URL,
+// function load_gltf_file(URL) {
+//     const t0 = performance.now();
+//     // Load a glTF resource
+//     loader.load(
+//     // resource URL
+//         URL,
 
-        // called when the resource is loaded
-        (gltf) => {
+//         // called when the resource is loaded
+//         (gltf) => {
             // scene.add( gltf.scene );
             // gltf.animations; // Array<THREE.AnimationClip>
             // gltf.scene; // THREE.Scene
@@ -386,7 +386,7 @@ function load_gltf_file(URL) {
     // function ( error ) {
     //     console.log( 'An error happened' );
     // }
-    );
+    // );
 }
 
 // function onWindowResize() {
@@ -395,15 +395,15 @@ function load_gltf_file(URL) {
 //     renderer.setSize(window.innerWidth, window.innerHeight);
 // }
 
-function add_sphere_on_click(intersected) {
-    const geometry = new THREE.SphereGeometry(1, 32, 32);
-    const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-    const sphere = new THREE.Mesh(geometry, material);
-    const position = intersected.point;
+// function add_sphere_on_click(intersected) {
+//     const geometry = new THREE.SphereGeometry(1, 32, 32);
+//     const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+//     const sphere = new THREE.Mesh(geometry, material);
+//     const position = intersected.point;
 
-    sphere.position.copy(position);
-    scene.add(sphere);
-}
+//     sphere.position.copy(position);
+//     scene.add(sphere);
+// }
 
 // function onDocumentMouseClick(event) {
 //     console.log('1111 CLICK 2:');
@@ -436,94 +436,94 @@ function add_sphere_on_click(intersected) {
 // }
 
 
-function onDocumentTouchEnd(event) {
-    event.preventDefault();
+// function onDocumentTouchEnd(event) {
+//     event.preventDefault();
 
-    mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+//     mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+//     mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
 
-    if (obj_selection.obj_old && obj_selection.obj_old_material) {
-        obj_selection.obj_old.material = obj_selection.obj_old_material;
-    }
+//     if (obj_selection.obj_old && obj_selection.obj_old_material) {
+//         obj_selection.obj_old.material = obj_selection.obj_old_material;
+//     }
 
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(mesh_all);
-    // TODO: recursive intersection .intersectObject (  recursive : Boolean)
-    // so there would be no need to create an array of meshes
-    if (intersects.length > 0) {
-        add_sphere_on_click(intersects[0]);
-        const intersected_obj = intersects[0].object;
-        obj_selection.ifc_tag = intersected_obj.ifc_tag;
-        obj_selection.ifc_name = intersected_obj.ifc_name;
+//     raycaster.setFromCamera(mouse, camera);
+//     const intersects = raycaster.intersectObjects(mesh_all);
+//     // TODO: recursive intersection .intersectObject (  recursive : Boolean)
+//     // so there would be no need to create an array of meshes
+//     if (intersects.length > 0) {
+//         add_sphere_on_click(intersects[0]);
+//         const intersected_obj = intersects[0].object;
+//         obj_selection.ifc_tag = intersected_obj.ifc_tag;
+//         obj_selection.ifc_name = intersected_obj.ifc_name;
 
-        const event_color = new THREE.Color(0x51f787);
+//         const event_color = new THREE.Color(0x51f787);
 
-        const event_material = new THREE.MeshBasicMaterial({ color: event_color });
-        obj_selection.obj_old = intersected_obj;
-        obj_selection.obj_old_material = intersected_obj.material;
-        intersected_obj.material = event_material;
-    }
-}
+//         const event_material = new THREE.MeshBasicMaterial({ color: event_color });
+//         obj_selection.obj_old = intersected_obj;
+//         obj_selection.obj_old_material = intersected_obj.material;
+//         intersected_obj.material = event_material;
+//     }
+// }
 
-function update_height_of_camera(camera, objects) {
-    const direction = new THREE.Vector3(0, -1, 0);
+// function update_height_of_camera(camera, objects) {
+//     const direction = new THREE.Vector3(0, -1, 0);
 
-    raycaster_cam.set(camera.position, direction);
-    const objects_below = raycaster_cam.intersectObjects(objects);
-    // console.log(camera.position);
-    if (objects_below.length > 0) {
-        camera.height = objects_below[0].distance;
-    } else {
-        camera.height = 'No height';
-    }
-}
+//     raycaster_cam.set(camera.position, direction);
+//     const objects_below = raycaster_cam.intersectObjects(objects);
+//     // console.log(camera.position);
+//     if (objects_below.length > 0) {
+//         camera.height = objects_below[0].distance;
+//     } else {
+//         camera.height = 'No height';
+//     }
+// }
 
-function init_scene() {
-    console.log('#### init_scene :');
+// function init_scene() {
+    //console.log('#### init_scene :');
     // const axis = new THREE.AxesHelper(100);
     // scene.add(axis);
-    document.body.appendChild(renderer.domElement);
-    document.body.appendChild(stats.dom);
-    load_gltf_file(gltfFiles[0]);
+    // document.body.appendChild(renderer.domElement);
+    // document.body.appendChild(stats.dom);
+    //load_gltf_file(gltfFiles[0]);
     // document.addEventListener('mouseup', onDocumentMouseClick, false);
-    document.addEventListener('touchend', onDocumentTouchEnd, false);
-    window.addEventListener('resize', onWindowResize, false);
+    //document.addEventListener('touchend', onDocumentTouchEnd, false);
+    //window.addEventListener('resize', onWindowResize, false);
     // scene.add(directionalLight);
-    scene.add(hemisphereLight);
-    scene.background = new THREE.Color(0xaaaabb);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    //scene.add(hemisphereLight);
+    //scene.background = new THREE.Color(0xaaaabb);
+    //renderer.setPixelRatio(window.devicePixelRatio);
+    //renderer.setSize(window.innerWidth, window.innerHeight);
 
-    stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+    //stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 
 
-    setup_camera(cameraTypes[starting_camera_number], camera, controls);
-    populate_gui_camera(starting_camera_number);
-    populate_height_gui();
+    //setup_camera(cameraTypes[starting_camera_number], camera, controls);
+    //populate_gui_camera(starting_camera_number);
+    //populate_height_gui();
 }
 
-init_scene();
+//init_scene();
 
 // just needed for certain kind of controls
-const clock = new THREE.Clock(true);
+//const clock = new THREE.Clock(true);
 
-function render() {
-    update_height_of_camera(camera, mesh_all);
-    renderer.render(scene, camera);
-}
+// function render() {
+//     update_height_of_camera(camera, mesh_all);
+//     renderer.render(scene, camera);
+// }
 
-function animate() {
-    requestAnimationFrame(animate);
+// function animate() {
+//     requestAnimationFrame(animate);
 
-    stats.begin();
+//     stats.begin();
 
-    // required if controls.enableDamping or controls.autoRotate are set to true
-    controls.update(clock.getDelta());
-    // controls.update();
+//     // required if controls.enableDamping or controls.autoRotate are set to true
+//     controls.update(clock.getDelta());
+//     // controls.update();
 
-    render();
+//     // render();
 
-    stats.end();
-}
+//     // stats.end();
+// }
 
-animate();
+// animate();

@@ -16,7 +16,20 @@ function onMouseMove({ screenX, screenY }) {
 
 function onKeyPressed(event) {
     // TODO: implement a submodule of walking around;
-    const walking_keys = ['w', 'a', 's', 'd'];
+    const walking_keys = [
+        // Forward
+        'e',
+        // Step Left
+        's',
+        // Backward
+        'd',
+        // Step Right
+        'f',
+        // Go up
+        't',
+        // Go down
+        'g',
+    ];
     if (walking_keys.indexOf(event.key) > -1) {
         console.log(event);
     }
@@ -58,13 +71,7 @@ function displayMenuAndButtons(canvas, InitializedScene, Cameras, object_selecte
 }
 
 function onDocumentMouseClick(
-    event,
-    mouse,
-    object_selected,
-    getSceneCamera,
-    raycaster,
-    getBuildingDatas,
-    scene,
+    event, mouse, object_selected, getSceneCamera, raycaster, getBuildingDatas, scene,
 ) {
     event.preventDefault();
 
@@ -85,13 +92,7 @@ function onDocumentMouseClick(
 }
 
 function onDocumentTouchEnd(
-    event,
-    mouse,
-    object_selected,
-    getSceneCamera,
-    raycaster,
-    getBuildingDatas,
-    scene,
+    event, mouse, object_selected, getSceneCamera, raycaster, getBuildingDatas, scene,
 ) {
     event.preventDefault();
 

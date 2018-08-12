@@ -15,6 +15,7 @@ const SceneManager = (canvas, InitializedScene) => {
     const clock = new THREE.Clock();
     // Tool to detect collisions with objects
     const raycaster = new THREE.Raycaster();
+    const raycaster_cam = new THREE.Raycaster();
     // usef to click on object_selected
     const mouse = new THREE.Vector2();
     // The selected Object on Click
@@ -86,6 +87,7 @@ const SceneManager = (canvas, InitializedScene) => {
         Controllers,
         Cameras,
         mouse,
+        raycaster_cam,
     };
 };
 

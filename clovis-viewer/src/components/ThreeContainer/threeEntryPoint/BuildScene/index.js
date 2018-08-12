@@ -2,6 +2,7 @@ import loadBuilding from './loadBuilding';
 // TODO: split init anylisis here
 import analyseBuilding from './analyseBuilding';
 import Cameras from '../SceneManager/Cameras';
+import { controllers } from '../../../../../node_modules/dat.gui/build/dat.gui.module';
 
 function BuildScene(canvas, buildingGltfPath) {
     const cameraTypes = [
@@ -133,9 +134,15 @@ function BuildScene(canvas, buildingGltfPath) {
     /**
      * callback from when the gltf file is loaded
      */
-    function gltfLoadedCallback(building) {
+    function gltfLoadedCallback(building, controls) {
         positionCameraToBuilding();
         buildingDatas = analyseBuilding(building);
+
+        // TODO: describe why we do this
+        const new_controls = controls;
+        new_controls.collision_objects = buildingDatas.mesh_all;
+        new_controls.collision_floor = true;
+        modifySceneControls(new_controls);
     }
 
     // BUILD STUFF
@@ -146,7 +153,12 @@ function BuildScene(canvas, buildingGltfPath) {
 
     buildCameraAndControls();
 
-    loadBuilding(scene, buildingGltfPath, gltfLoadedCallback);
+    loadBuilding(
+        scene,
+        buildingGltfPath,
+        gltfLoadedCallback,
+        controls,
+    );
 
     return {
         scene,
