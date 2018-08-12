@@ -155,7 +155,9 @@ function setup_camera(type, old_camera, old_controls) {
     let new_camera;
     let new_controls;
     if (typeof old_controls !== 'undefined') {
+        console.log('dispose controls :', old_controls);
         old_controls.dispose();
+        console.log('old_controls are disposed :', old_controls);
     }
     if (type === cameraTypes[0]) {
         new_camera = new_perspective_camera();
@@ -435,7 +437,6 @@ function update_height_of_camera(camera, objects) {
 
     raycaster_cam.set(camera.position, direction);
     const objects_below = raycaster_cam.intersectObjects(objects);
-    console.log(objects_below);
     // console.log(camera.position);
     if (objects_below.length > 0) {
         camera.height = objects_below[0].distance;

@@ -30,7 +30,7 @@ const DatGui = (canvas, InitializedScene, sceneManager) => {
     const {
         scene, camera, renderer, controls, cameraTypes, starting_camera_number,
     } = InitializedScene;
-    const { change_camera } = sceneManager.cameras;
+    const { change_camera_and_controls } = sceneManager.cameras;
 
     // Initialize gui
     const gui = loadGui({ autoPlace: false });
@@ -47,7 +47,7 @@ const DatGui = (canvas, InitializedScene, sceneManager) => {
         cameraTypes,
         starting_camera_number,
         renderer,
-        change_camera,
+        change_camera_and_controls,
     );
     // TODO: explain this part
     populate_height_gui(gui, camera);
