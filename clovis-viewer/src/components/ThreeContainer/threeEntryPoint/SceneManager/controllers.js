@@ -26,7 +26,6 @@ function onClose() {
     // TODO: remove eventual listeners;
 }
 
-
 function resizeCanvas(canvas, getSceneCamera, renderer) {
     console.log('Resize Window :');
     const camera = getSceneCamera();

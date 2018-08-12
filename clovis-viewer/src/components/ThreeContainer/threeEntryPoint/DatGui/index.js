@@ -2,41 +2,12 @@
  * dat.gui is a lightweight graphical user interface (GUI) to controll
  * the viewer
  */
-import { loadGui, loadStats } from './utils';
-
-function populate_gui_camera(
-    gui,
-    getSceneCamera,
-    getSceneControls,
-    cameraTypes,
-    camera_type,
-    renderer,
-    change_camera_and_controls,
-    modifySceneCamera,
-    modifySceneControls,
-) {
-    const gui_camera = gui.addFolder('Camera options');
-    const new_camera = { type: camera_type };
-    const controller = gui_camera.add(new_camera, 'type', cameraTypes);
-
-    controller.onChange((value) => {
-        change_camera_and_controls(
-            cameraTypes,
-            value,
-            getSceneCamera,
-            getSceneControls,
-            renderer,
-            modifySceneCamera,
-            modifySceneControls,
-        );
-    });
-}
-
-function populate_height_gui(gui, getSceneCamera) {
-    const camera = getSceneCamera();
-
-    const height = gui.add(camera, 'height').listen();
-}
+import {
+    loadGui,
+    loadStats,
+    populate_gui_camera,
+    populate_height_gui,
+} from './utils';
 
 
 const DatGui = (canvas, InitializedScene, sceneManager) => {
