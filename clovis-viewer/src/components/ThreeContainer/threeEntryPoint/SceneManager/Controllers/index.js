@@ -1,4 +1,5 @@
 import MenuAndButtons from '../MenuAndButtons';
+import { selectionHandler } from './utils';
 
 // TODO: put this variables in an other "stable" place
 let canvasHalfWidth;
@@ -56,40 +57,6 @@ function displayMenuAndButtons(canvas, InitializedScene, Cameras, object_selecte
     );
 }
 
-// TODO: rename it better to match the logic inside
-function selectionHandler(
-    new_mouse,
-    object_selected,
-    getSceneCamera,
-    raycaster,
-    getBuildingDatas,
-) {
-    const camera = getSceneCamera();
-    const { mesh_all } = getBuildingDatas();
-
-    // TODO: right now it works, but coorect later to avoid param reassign
-    if (object_selected.obj_old && object_selected.obj_old_material) {
-        object_selected.obj_old.material = object_selected.obj_old_material;
-    }
-
-    raycaster.setFromCamera(new_mouse, camera);
-    const intersects = raycaster.intersectObjects(mesh_all);
-
-    if (intersects.length > 0) {
-        // add_sphere_on_click(intersects[0]);
-        const intersected_obj = intersects[0].object;
-
-        object_selected.ifc_tag = intersected_obj.ifc_tag;
-        object_selected.ifc_name = intersected_obj.ifc_name;
-
-        const event_color = new THREE.Color(0x51f787);
-
-        const event_material = new THREE.MeshBasicMaterial({ color: event_color });
-        object_selected.obj_old = intersected_obj;
-        object_selected.obj_old_material = intersected_obj.material;
-        intersected_obj.material = event_material;
-    }
-}
 function onDocumentMouseClick(
     event,
     mouse,
@@ -97,6 +64,7 @@ function onDocumentMouseClick(
     getSceneCamera,
     raycaster,
     getBuildingDatas,
+    scene,
 ) {
     event.preventDefault();
 
@@ -112,6 +80,7 @@ function onDocumentMouseClick(
         getSceneCamera,
         raycaster,
         getBuildingDatas,
+        scene,
     );
 }
 
@@ -122,6 +91,7 @@ function onDocumentTouchEnd(
     getSceneCamera,
     raycaster,
     getBuildingDatas,
+    scene,
 ) {
     event.preventDefault();
 
@@ -136,6 +106,7 @@ function onDocumentTouchEnd(
         getSceneCamera,
         raycaster,
         getBuildingDatas,
+        scene,
     );
 }
 

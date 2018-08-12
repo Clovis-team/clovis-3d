@@ -71,6 +71,7 @@ const Listeners = (
                 getSceneCamera,
                 raycaster,
                 getBuildingDatas,
+                scene,
             );
         },
         false,
@@ -86,6 +87,7 @@ const Listeners = (
                 getSceneCamera,
                 raycaster,
                 getBuildingDatas,
+                scene,
             );
         },
         false,
