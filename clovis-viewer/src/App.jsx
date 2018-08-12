@@ -32,7 +32,9 @@ class App extends Component {
     gui_container.removeChild(gui_container.childNodes[0]);
     const stats_container = document.getElementById('stats-container') && 
     document.getElementById('stats-container');
-    stats_container.removeChild(stats_container.childNodes[0]); 
+    while (stats_container.firstChild) {
+        stats_container.removeChild(stats_container.firstChild);
+    }
   }
 
   render() {

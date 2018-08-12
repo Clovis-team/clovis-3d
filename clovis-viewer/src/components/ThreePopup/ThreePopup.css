@@ -22,7 +22,7 @@
   right: 0.5rem;
   width: 3rem;
   height: 3rem;
-  background-color: rgba(6, 13, 45, 0.1);
+  background-color: rgba(6, 13, 45, 0.05);
   color: #060d2d;
   display: flex;
   justify-content: center;
@@ -31,7 +31,7 @@
 }
 
 .popup-close-button:hover {
-  background-color: rgba(6, 13, 45, 0.2);
+  background-color: rgba(6, 13, 45, 0.15);
 }
 
 .popup-close-button:active {
