@@ -20,9 +20,16 @@ const MenuAndButtons = (canvas, InitializedScene, Cameras) => {
         modifySceneControls,
         cameraTypes,
         starting_camera_type,
-        buildingDatas,
+        getBuildingDatas,
     } = InitializedScene;
+
+    console.log('>>> InitializedScene :', InitializedScene);
+
+
     const { change_camera_and_controls } = Cameras;
+    const buildingDatas = getBuildingDatas();
+
+    console.log('>>>>>> buildingDatas :', buildingDatas);
 
     // Initialize dat.gui menu
     const gui = loadGui({ autoPlace: false });

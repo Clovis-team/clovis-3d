@@ -63,6 +63,9 @@ function BuildScene(canvas, buildingGltfPath) {
     function getSceneControls() {
         return controls;
     }
+    function getBuildingDatas() {
+        return buildingDatas;
+    }
 
     /**
      * Functions to change camera, controls and renderer from other files
@@ -146,8 +149,6 @@ function BuildScene(canvas, buildingGltfPath) {
 
     loadBuilding(scene, buildingGltfPath, gltfLoadedCallback);
 
-    console.log('buildingDatas :', buildingDatas);
-
     return {
         scene,
         renderer,
@@ -157,7 +158,7 @@ function BuildScene(canvas, buildingGltfPath) {
         modifySceneControls,
         cameraTypes,
         starting_camera_type,
-        buildingDatas,
+        getBuildingDatas,
     };
 }
 
