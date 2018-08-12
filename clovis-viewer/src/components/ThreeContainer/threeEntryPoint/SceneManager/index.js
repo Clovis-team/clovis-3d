@@ -6,8 +6,11 @@ import cameras from './cameras';
 
 const SceneManager = (canvas, InitializedScene) => {
     const {
-        scene, getSceneCamera, renderer, getSceneControls,
+        scene, renderer,
     } = InitializedScene;
+
+    // used for getting time between frames for calculating updates
+    const clock = new THREE.Clock();
 
 
     /**
@@ -23,23 +26,32 @@ const SceneManager = (canvas, InitializedScene) => {
         return sceneSubjects;
     }
 
+
     /**
      * updates the stuff that has to be updated every frame cycle
      * (This function is launched many times per second)
      */
-    function update() {
+    function update(stats, getSceneCamera, getSceneControls) {
         const camera = getSceneCamera();
+        const controls = getSceneControls();
+
+        // For the Stats Frame/s Tool
+        stats.begin();
+
+        // required if controls.enableDamping or controls.autoRotate are set to true
+        controls.update(clock.getDelta());
 
         // update sceneSubjects every cycle
         const elapsedTime = clock.getElapsedTime();
         for (let i = 0; i < sceneSubjects.length; i++) { sceneSubjects[i].update(elapsedTime); }
+
         // required if controls.enableDamping or controls.autoRotate are set to true
         // controls.update();
         renderer.render(scene, camera);
+
+        stats.end();
     }
 
-    // used for getting time between frames for calculating updates
-    const clock = new THREE.Clock();
 
     const sceneSubjects = createSceneSubjects(scene);
 

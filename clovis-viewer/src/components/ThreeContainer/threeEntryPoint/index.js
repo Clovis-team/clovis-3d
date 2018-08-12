@@ -34,7 +34,11 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
         // FrameRequestCallback. updates the frame when it is needed, allegedly
         requestAnimationFrame(render);
         // renders the frame and updates the controls and sceneSubjects
-        sceneManager.update();
+        sceneManager.update(
+            menuAndTools.stats,
+            InitializedScene.getSceneCamera,
+            InitializedScene.getSceneControls,
+        );
     }
 
     // LAUNCH MAIN FUNCTIONS
@@ -47,7 +51,7 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
     );
 
     // Display the dat.gui menu
-    MenuAndTools(
+    const menuAndTools = MenuAndTools(
         canvas,
         InitializedScene,
         sceneManager,

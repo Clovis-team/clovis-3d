@@ -29,6 +29,7 @@ const MenuAndTools = (canvas, InitializedScene, sceneManager) => {
     // Initialize the Three.js Stats panel on top left
     const stats = loadStats();
 
+
     // Populate Gui cameras menu
     populate_gui_camera(
         gui,
@@ -43,6 +44,12 @@ const MenuAndTools = (canvas, InitializedScene, sceneManager) => {
     );
     // TODO: explain this part
     populate_height_gui(gui, getSceneCamera);
+
+
+    return {
+        gui,
+        stats,
+    };
 };
 
 
