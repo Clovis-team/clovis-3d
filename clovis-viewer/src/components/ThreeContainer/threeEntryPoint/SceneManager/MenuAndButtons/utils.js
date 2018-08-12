@@ -15,7 +15,7 @@ export function loadGui() {
     return window.gui;
 }
 
-export function populate_gui_camera(
+export function populate_gui_cameras(
     gui,
     getSceneCamera,
     getSceneControls,
@@ -80,5 +80,40 @@ export function populate_gui_ifc_tags(gui, elements) {
                 element.visible = element.visible_order;
             }
         });
+    });
+}
+
+
+function get_main_floor(floor_array) {
+    let max_value = 0;
+    let max_id = 0;
+    floor_array.forEach((floor, index) => {
+        if (floor.children.length > max_value) {
+            max_value = floor.children.length;
+            max_id = index;
+        }
+    });
+    return max_id;
+}
+export function populate_gui_explosion(gui, floors) {
+    const explosion = {
+        z_old: 0,
+        z_new: 0,
+        z_delta: 0,
+    };
+
+    const main_floor = get_main_floor(floors);
+
+    const controller = gui.add(explosion, 'z_new', 0, 100).name('z_explosion');
+
+    controller.onChange(() => {
+        explosion.z_delta = explosion.z_new - explosion.z_old;
+        floors.forEach((floor_no, index) => {
+            const floor = floor_no;
+            floor.position.z += (explosion.z_delta * (index - main_floor));
+        });
+
+        explosion.z_old = explosion.z_new;
+        explosion.z_delta = 0;
     });
 }

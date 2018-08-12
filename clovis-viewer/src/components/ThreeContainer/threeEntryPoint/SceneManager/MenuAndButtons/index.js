@@ -4,10 +4,11 @@
  */
 import {
     loadGui,
-    populate_gui_camera,
+    populate_gui_cameras,
     populate_height_gui,
     populate_gui_floors,
     populate_gui_ifc_tags,
+    populate_gui_explosion,
 } from './utils';
 
 
@@ -34,7 +35,7 @@ const MenuAndButtons = (canvas, InitializedScene, Cameras) => {
     const gui = loadGui({ autoPlace: false });
 
     // Populate Gui cameras menu
-    populate_gui_camera(
+    populate_gui_cameras(
         gui,
         getSceneCamera,
         getSceneControls,
@@ -51,6 +52,8 @@ const MenuAndButtons = (canvas, InitializedScene, Cameras) => {
     populate_gui_floors(gui, buildingDatas.floors);
     // Gui ifc tags selection
     populate_gui_ifc_tags(gui, buildingDatas.building_ifc_elements);
+    // Little explosion interraction with gui
+    populate_gui_explosion(gui, buildingDatas.floors);
 
     return {
         gui,

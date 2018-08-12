@@ -268,40 +268,40 @@ function center_and_position_camera(object) {
 //     });
 // }
 
-function get_main_floor(floor_array) {
-    let max_value = 0;
-    let max_id = 0;
-    floor_array.forEach((floor, index) => {
-        if (floor.children.length > max_value) {
-            max_value = floor.children.length;
-            max_id = index;
-        }
-    });
-    return max_id;
-}
+// function get_main_floor(floor_array) {
+//     let max_value = 0;
+//     let max_id = 0;
+//     floor_array.forEach((floor, index) => {
+//         if (floor.children.length > max_value) {
+//             max_value = floor.children.length;
+//             max_id = index;
+//         }
+//     });
+//     return max_id;
+// }
 
-function populate_gui_explosion() {
-    const explosion = {
-        z_old: 0,
-        z_new: 0,
-        z_delta: 0,
-    };
+// function populate_gui_explosion() {
+//     const explosion = {
+//         z_old: 0,
+//         z_new: 0,
+//         z_delta: 0,
+//     };
 
-    const main_floor = get_main_floor(floors);
+//     const main_floor = get_main_floor(floors);
 
-    const controller = gui.add(explosion, 'z_new', 0, 100).name('z_explosion');
+//     const controller = gui.add(explosion, 'z_new', 0, 100).name('z_explosion');
 
-    controller.onChange(() => {
-        explosion.z_delta = explosion.z_new - explosion.z_old;
-        floors.forEach((floor_no, index) => {
-            const floor = floor_no;
-            floor.position.z += (explosion.z_delta * (index - main_floor));
-        });
+//     controller.onChange(() => {
+//         explosion.z_delta = explosion.z_new - explosion.z_old;
+//         floors.forEach((floor_no, index) => {
+//             const floor = floor_no;
+//             floor.position.z += (explosion.z_delta * (index - main_floor));
+//         });
 
-        explosion.z_old = explosion.z_new;
-        explosion.z_delta = 0;
-    });
-}
+//         explosion.z_old = explosion.z_new;
+//         explosion.z_delta = 0;
+//     });
+// }
 
 
 function populate_ifc_tag_gui() {
@@ -355,10 +355,10 @@ function load_gltf_file(URL) {
             // gltf.scenes; // Array<THREE.Scene>
             // gltf.cameras; // Array<THREE.Camera>
             // gltf.asset; // Object
-            const t1 = performance.now();
-            console.log(`load gltf took ${Math.round(t1 - t0)} milliseconds.`);
+            // const t1 = performance.now();
+            // console.log(`load gltf took ${Math.round(t1 - t0)} milliseconds.`);
 
-            scene.add(gltf.scene);
+            // scene.add(gltf.scene);
             // center_and_position_camera(scene);
 
             // building = gltf.scene.children[0].children[0].children[0].children[0];
@@ -369,8 +369,8 @@ function load_gltf_file(URL) {
 
             // ifc_building_elements = get_building_elements(building);
 
-            populate_gui_ifc_tags(ifc_building_elements);
-            populate_gui_explosion();
+            // populate_gui_ifc_tags(ifc_building_elements);
+            // populate_gui_explosion();
             populate_ifc_tag_gui();
             controls.collision_objects = mesh_all;
             controls.collision_floor = true;
