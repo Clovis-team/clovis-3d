@@ -54,7 +54,99 @@
 .dg.main {
   height: auto;
   overflow-y: scroll;
+  overflow-x: hidden;
+  width: 200px;
+  min-width: 200px;
+  border-bottom-right-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 12px 1px;
+  background-color: #060d2d;
+  font-size: 12px !important;
 }
+
+/* Clovis theme for dat.gui */
+.dg.main.taller-than-window .close-button {
+  border-top: 1px solid #060d2d !important;
+}
+
+.dg.main .close-button {
+  display: none !important;
+  background-color: #ccc !important;
+  width: 100% !important;
+}
+
+.dg.main .close-button:hover {
+  background-color: #ddd !important;
+}
+
+.dg {
+  color: #white !important;
+  text-shadow: none !important;
+}
+
+.dg.main::-webkit-scrollbar {
+  background: #272a3a !important;
+}
+
+.dg.main::-webkit-scrollbar-thumb {
+  background: #30323b !important;
+}
+
+.dg li:not(.folder) {
+  background: #060d2d !important;
+}
+
+.dg li.save-row .button {
+  text-shadow: none !important;
+}
+
+.dg ul li.title {
+  background: #060d2d !important;
+  color: white !important;
+  height: 40px !important;
+  font-size: 12px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dg ul.closed li.title {
+  background: #060d2d !important;
+  color: white !important;
+  font-weight: bold;
+  margin: 2px;
+  margin-left: 0;
+  margin-right: 4px;
+  border-radius: 4px;
+}
+.dg ul.closed li.title:hover {
+  background: #23283f !important;
+}
+
+.dg .cr.function:hover,.dg .cr.boolean:hover {
+  background: #060d2d !important;
+}
+
+.dg .c input[type=text] {
+  background: #212535 !important;
+}
+
+.dg .c input[type=text]:hover {
+  background: #212535!important;
+}
+
+.dg .c input[type=text]:focus {
+  background: #212535 !important;
+  color: #555 !important;
+}
+
+.dg .c .slider {
+  background: #e9e9e9 !important;
+}
+
+.dg .c .slider:hover {
+  background: #eee !important;
+}
+/* Light theme for dat.gui */
 
 .stats-container {
   position: absolute;
