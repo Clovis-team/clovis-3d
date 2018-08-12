@@ -1,7 +1,8 @@
 const Listeners = (canvas, InitializedScene, SceneManager) => {
     const {
-        scene, camera, renderer, controls,
+        scene, getSceneCamera, getSceneControls, renderer,
     } = InitializedScene;
+
 
     const {
         update,
@@ -13,7 +14,7 @@ const Listeners = (canvas, InitializedScene, SceneManager) => {
         'resize',
         controllers.resizeCanvas(
             canvas,
-            camera,
+            getSceneCamera,
             renderer,
         ),
         false,

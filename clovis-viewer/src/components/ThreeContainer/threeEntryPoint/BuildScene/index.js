@@ -4,6 +4,7 @@ import analyseInit from './analyseInit';
 import cameras from '../SceneManager/cameras';
 
 function BuildScene(canvas, buildingGltfPath) {
+    console.log('new build');
     // BUILD STUFF FUNCTIONS
 
     /**
@@ -39,6 +40,28 @@ function BuildScene(canvas, buildingGltfPath) {
         new_renderer.gammaOutput = true;
 
         return new_renderer;
+    }
+
+    // EXTERNALY USED FUNCTIONS
+
+    /**
+     * Return updated objects of camera and controls
+     */
+    function getSceneCamera() {
+        return camera;
+    }
+    function getSceneControls() {
+        return controls;
+    }
+
+    /**
+     * Functions to change camera, controls and renderer from other files
+     */
+    function modifySceneCamera(new_camera) {
+        camera = new_camera;
+    }
+    function modifySceneControls(new_controls) {
+        controls = new_controls;
     }
 
     // CAMERA
@@ -153,19 +176,20 @@ function BuildScene(canvas, buildingGltfPath) {
     }
 
     // BUILD STUFF
-
     const scene = buildScene();
     const renderer = buildRender(canvas);
-    const camera = buildCamera(canvas);
-    const controls = buildControls(camera, renderer);
+    let camera = buildCamera(canvas);
+    let controls = buildControls(camera, renderer);
 
     loadGltf(scene, buildingGltfPath, gltfLoadedCallback);
 
     return {
         scene,
         renderer,
-        camera,
-        controls,
+        getSceneCamera,
+        getSceneControls,
+        modifySceneCamera,
+        modifySceneControls,
         cameraTypes,
         starting_camera_number,
     };

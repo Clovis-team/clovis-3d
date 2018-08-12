@@ -28,7 +28,9 @@ export function onWindowResize(canvas, camera, renderer) {
 // of resizeCnavas
 let canvasHalfWidth;
 let canvasHalfHeight;
-function resizeCanvas(canvas, camera, renderer) {
+function resizeCanvas(canvas, getSceneCamera, renderer) {
+    const camera = getSceneCamera();
+
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.width = canvas.offsetWidth;

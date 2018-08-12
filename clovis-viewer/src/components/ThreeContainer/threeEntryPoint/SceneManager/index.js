@@ -6,8 +6,9 @@ import cameras from './cameras';
 
 const SceneManager = (canvas, InitializedScene) => {
     const {
-        scene, camera, renderer, controls,
+        scene, getSceneCamera, renderer, getSceneControls,
     } = InitializedScene;
+
 
     /**
      * creates the scene subjects. modular elements meant for plug and play
@@ -27,11 +28,14 @@ const SceneManager = (canvas, InitializedScene) => {
      * (This function is launched many times per second)
      */
     function update() {
+        const camera = getSceneCamera();
+        const controls = getSceneControls();
+
         // update sceneSubjects every cycle
         const elapsedTime = clock.getElapsedTime();
         for (let i = 0; i < sceneSubjects.length; i++) { sceneSubjects[i].update(elapsedTime); }
         // required if controls.enableDamping or controls.autoRotate are set to true
-	    // controls.update();
+        // controls.update();
         renderer.render(scene, camera);
     }
 

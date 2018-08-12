@@ -6,35 +6,54 @@ import { loadGui, loadStats } from './utils';
 
 function populate_gui_camera(
     gui,
-    camera,
-    controls,
+    getSceneCamera,
+    getSceneControls,
     cameraTypes,
     camera_number,
     renderer,
-    setup_camera,
+    change_camera_and_controls,
+    modifySceneCamera,
+    modifySceneControls,
 ) {
     const gui_camera = gui.addFolder('Camera options');
     const new_camera = { type: cameraTypes[camera_number] };
     const controller = gui_camera.add(new_camera, 'type', cameraTypes);
+
     controller.onChange((value) => {
-        setup_camera(cameraTypes, value, camera, controls, renderer);
+        change_camera_and_controls(
+            cameraTypes,
+            value,
+            getSceneCamera,
+            getSceneControls,
+            renderer,
+            modifySceneCamera,
+            modifySceneControls,
+        );
     });
 }
 
-function populate_height_gui(gui, camera) {
+function populate_height_gui(gui, getSceneCamera) {
+    const camera = getSceneCamera();
+
     const height = gui.add(camera, 'height').listen();
 }
 
 
 const DatGui = (canvas, InitializedScene, sceneManager) => {
     const {
-        scene, camera, renderer, controls, cameraTypes, starting_camera_number,
+        scene,
+        getSceneCamera,
+        renderer,
+        getSceneControls,
+        modifySceneCamera,
+        modifySceneControls,
+        cameraTypes,
+        starting_camera_number,
     } = InitializedScene;
     const { change_camera_and_controls } = sceneManager.cameras;
 
     // Initialize gui
     const gui = loadGui({ autoPlace: false });
-
 
     // Initialize the Three.js Stats panel on top left
     const stats = loadStats();
@@ -42,15 +61,17 @@ const DatGui = (canvas, InitializedScene, sceneManager) => {
     // Populate Gui cameras menu
     populate_gui_camera(
         gui,
-        camera,
-        controls,
+        getSceneCamera,
+        getSceneControls,
         cameraTypes,
         starting_camera_number,
         renderer,
         change_camera_and_controls,
+        modifySceneCamera,
+        modifySceneControls,
     );
     // TODO: explain this part
-    populate_height_gui(gui, camera);
+    populate_height_gui(gui, getSceneCamera);
 };
 
 
