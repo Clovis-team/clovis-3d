@@ -62,6 +62,14 @@
   right: 0;
 }
 
+.renderer-stats > div {
+  background-color: #060d2d !important;
+}
+.renderer-stats > div > div {
+  color: #22a7f0 !important;
+  background-color: #060d2d !important;
+}
+
 .three-progress-container {
   position: absolute;
   top: 0;

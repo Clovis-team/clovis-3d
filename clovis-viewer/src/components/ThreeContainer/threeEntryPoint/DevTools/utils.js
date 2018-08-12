@@ -19,11 +19,9 @@ export function loadStats() {
 
 export function loadRendererStats() {
     window.rendererStats = new RendererStats();
-    window.rendererStats.domElement.style = {
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-    };
+    window.rendererStats.domElement.className = 'renderer-stats';
+
+    console.log('window.rendererStats.domElement :', window.rendererStats.domElement);
 
     document.getElementById('stats-container').appendChild(window.rendererStats.domElement);
 
