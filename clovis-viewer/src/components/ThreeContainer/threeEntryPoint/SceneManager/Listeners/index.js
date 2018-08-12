@@ -1,13 +1,13 @@
-const Listeners = (canvas, InitializedScene, SceneManager) => {
+const Listeners = (
+    canvas,
+    InitializedScene,
+    Cameras,
+    Controllers,
+) => {
     const {
         scene, getSceneCamera, getSceneControls, renderer,
     } = InitializedScene;
 
-
-    const {
-        update,
-        controllers,
-    } = SceneManager;
 
     // window.onkeypress = keyPressed;
 
@@ -15,7 +15,7 @@ const Listeners = (canvas, InitializedScene, SceneManager) => {
     window.addEventListener(
         'resize', // this one is fo
         () => {
-            controllers.resizeCanvas(
+            Controllers.resizeCanvas(
                 canvas,
                 getSceneCamera,
                 renderer,
@@ -28,7 +28,7 @@ const Listeners = (canvas, InitializedScene, SceneManager) => {
     window.addEventListener(
         'mousemove',
         (e) => {
-            controllers.onMouseMove(e);
+            Controllers.onMouseMove(e);
         },
         false,
     );
@@ -37,7 +37,21 @@ const Listeners = (canvas, InitializedScene, SceneManager) => {
     window.addEventListener(
         'keypress',
         (e) => {
-            controllers.onKeyPressed(e);
+            Controllers.onKeyPressed(e);
+        },
+        false,
+    );
+
+    // We have to wait the end of Gltf treatment to display the Menus and Tools
+    // because they need the resulting datas
+    window.addEventListener(
+        'endOfLoaderCallback',
+        () => {
+            Controllers.onEndOfLoaderCallback(
+                canvas,
+                InitializedScene,
+                Cameras,
+            );
         },
         false,
     );

@@ -26,6 +26,10 @@ const loadBuilding = (scene, buildingPath, gltfLoadedCallback) => {
 
             const t2 = performance.now();
             console.log(`load and name all groups took ${Math.round(t2 - t1)} milliseconds.`);
+
+            // Dispatch a window event to build the Menu and Tools, cf "Listeners"
+            const endOfLoaderCallback = new Event('endOfLoaderCallback');
+            window.dispatchEvent(endOfLoaderCallback);
         },
         // Called while loading is progressing
         (xhr) => {

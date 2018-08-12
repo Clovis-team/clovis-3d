@@ -5,8 +5,7 @@
 
 import BuildScene from './BuildScene';
 import SceneManager from './SceneManager';
-import MenuAndTools from './MenuAndTools';
-import Listeners from './Listeners';
+import DevTools from './DevTools';
 
 
 function createCanvas(document, container) {
@@ -35,8 +34,8 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
         requestAnimationFrame(render);
         // renders the frame and updates the controls and sceneSubjects
         sceneManager.update(
-            menuAndTools.stats,
-            menuAndTools.rendererStats,
+            devTools.stats,
+            devTools.rendererStats,
             InitializedScene.getSceneCamera,
             InitializedScene.getSceneControls,
             InitializedScene.renderer,
@@ -46,25 +45,15 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
     // LAUNCH MAIN FUNCTIONS
 
     // Resize the canvas element to fit the screen
-    sceneManager.controllers.resizeCanvas(
+    sceneManager.Controllers.resizeCanvas(
         canvas,
         InitializedScene.getSceneCamera,
         InitializedScene.renderer,
     );
 
-    // Display the dat.gui menu
-    const menuAndTools = MenuAndTools(
-        canvas,
-        InitializedScene,
-        sceneManager,
-    );
-
-    // Initialize the Listeners
-    Listeners(
-        canvas,
-        InitializedScene,
-        sceneManager,
-    );
+    // Display the stats and renderer stats Dev Tools
+    // TODO: put condition with NODE_ENV
+    const devTools = DevTools(InitializedScene);
 
     // Launch render loop
     render();

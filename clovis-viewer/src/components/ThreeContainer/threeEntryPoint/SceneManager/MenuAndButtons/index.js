@@ -4,14 +4,13 @@
  */
 import {
     loadGui,
-    loadStats,
-    loadRendererStats,
     populate_gui_camera,
     populate_height_gui,
+    populate_gui_floors,
 } from './utils';
 
 
-const MenuAndTools = (canvas, InitializedScene, sceneManager) => {
+const MenuAndButtons = (canvas, InitializedScene, Cameras) => {
     const {
         scene,
         getSceneCamera,
@@ -21,16 +20,12 @@ const MenuAndTools = (canvas, InitializedScene, sceneManager) => {
         modifySceneControls,
         cameraTypes,
         starting_camera_type,
+        buildingDatas,
     } = InitializedScene;
-    const { change_camera_and_controls } = sceneManager.cameras;
+    const { change_camera_and_controls } = Cameras;
 
     // Initialize dat.gui menu
     const gui = loadGui({ autoPlace: false });
-
-    // Initialize the Three.js Stats panel on top left
-    const stats = loadStats();
-    // Initalize rendererStats, an other Three.js tool to monitor performances
-    const rendererStats = loadRendererStats(renderer);
 
     // Populate Gui cameras menu
     populate_gui_camera(
@@ -46,14 +41,13 @@ const MenuAndTools = (canvas, InitializedScene, sceneManager) => {
     );
     // TODO: explain this part
     populate_height_gui(gui, getSceneCamera);
-
+    // Gui floors selection
+    populate_gui_floors(gui, buildingDatas.floors);
 
     return {
         gui,
-        stats,
-        rendererStats,
     };
 };
 
 
-export default MenuAndTools;
+export default MenuAndButtons;

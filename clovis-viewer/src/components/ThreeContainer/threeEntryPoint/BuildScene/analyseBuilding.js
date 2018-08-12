@@ -1,10 +1,12 @@
-const analyseBuilding = (stuff) => {
+const analyseBuilding = (building) => {
+    const floors = building.children;
+
     // TODO : put init analysis here
 
-//     return {
-//         floors,
-//         ifc_tags,
-//     }
+    console.log('udpated floors  :', floors);
+    return {
+        floors,
+    };
 };
 
 export default analyseBuilding;

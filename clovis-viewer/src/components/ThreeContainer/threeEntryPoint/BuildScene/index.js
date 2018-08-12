@@ -1,9 +1,20 @@
 import loadBuilding from './loadBuilding';
 // TODO: split init anylisis here
 import analyseBuilding from './analyseBuilding';
-import cameras from '../SceneManager/cameras';
+import Cameras from '../SceneManager/Cameras';
 
 function BuildScene(canvas, buildingGltfPath) {
+    const cameraTypes = [
+        'Perspective',
+        'Ortographic',
+        'Flying drag Fps',
+        'Flying drag',
+        'walking drag fps',
+        'walking drag',
+    ];
+    const starting_camera_type = 'Perspective';
+    let buildingDatas = {};
+
     // BUILD STUFF FUNCTIONS
 
     /**
@@ -65,18 +76,8 @@ function BuildScene(canvas, buildingGltfPath) {
 
     // CAMERA AND CONTROLS
 
-    const cameraTypes = [
-        'Perspective',
-        'Ortographic',
-        'Flying drag Fps',
-        'Flying drag',
-        'walking drag fps',
-        'walking drag',
-    ];
-    const starting_camera_type = 'Perspective';
-
     function buildCameraAndControls() {
-        cameras.change_camera_and_controls(
+        Cameras.change_camera_and_controls(
             cameraTypes,
             starting_camera_type,
             getSceneCamera,
@@ -132,6 +133,7 @@ function BuildScene(canvas, buildingGltfPath) {
      */
     function gltfLoadedCallback(building) {
         positionCameraToBuilding();
+        buildingDatas = analyseBuilding(building);
     }
 
     // BUILD STUFF
@@ -144,6 +146,8 @@ function BuildScene(canvas, buildingGltfPath) {
 
     loadBuilding(scene, buildingGltfPath, gltfLoadedCallback);
 
+    console.log('buildingDatas :', buildingDatas);
+
     return {
         scene,
         renderer,
@@ -153,6 +157,7 @@ function BuildScene(canvas, buildingGltfPath) {
         modifySceneControls,
         cameraTypes,
         starting_camera_type,
+        buildingDatas,
     };
 }
 

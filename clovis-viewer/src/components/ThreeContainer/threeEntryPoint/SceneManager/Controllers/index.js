@@ -1,3 +1,5 @@
+import MenuAndButtons from '../MenuAndButtons';
+
 // TODO: put this variables in an other "stable" place
 let canvasHalfWidth;
 let canvasHalfHeight;
@@ -46,6 +48,14 @@ function resizeCanvas(canvas, getSceneCamera, renderer) {
     renderer.setSize(canvas.width, canvas.height);
 }
 
+function onEndOfLoaderCallback(canvas, InitializedScene, Cameras) {
+    MenuAndButtons(
+        canvas,
+        InitializedScene,
+        Cameras,
+    );
+}
+
 
 export default {
     canvasHalfWidth,
@@ -53,4 +63,5 @@ export default {
     onMouseMove,
     onKeyPressed,
     onClose,
+    onEndOfLoaderCallback,
 };

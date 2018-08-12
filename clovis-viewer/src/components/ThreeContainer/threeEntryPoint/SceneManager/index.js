@@ -1,8 +1,9 @@
 import 'three/examples/js/controls/OrbitControls';
 import 'three/examples/js/loaders/GLTFLoader';
 
-import controllers from './controllers';
-import cameras from './cameras';
+import Listeners from './Listeners';
+import Controllers from './Controllers';
+import Cameras from './Cameras';
 
 const SceneManager = (canvas, InitializedScene) => {
     const {
@@ -25,7 +26,6 @@ const SceneManager = (canvas, InitializedScene) => {
         ];
         return sceneSubjects;
     }
-
 
     /**
      * updates the stuff that has to be updated every frame cycle
@@ -57,10 +57,18 @@ const SceneManager = (canvas, InitializedScene) => {
 
     const sceneSubjects = createSceneSubjects(scene);
 
+    // Initialize the Window Event Listeners
+    Listeners(
+        canvas,
+        InitializedScene,
+        Cameras,
+        Controllers,
+    );
+
     return {
         update,
-        controllers,
-        cameras,
+        Controllers,
+        Cameras,
     };
 };
 
