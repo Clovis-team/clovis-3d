@@ -11,34 +11,24 @@ const Listeners = (canvas, InitializedScene, SceneManager) => {
 
     // window.onkeypress = keyPressed;
 
-    // Manage Window Resize. Both functions are needed
-    window.onresize = () => {
-        // this one is when window is actually loaded
-        controllers.resizeCanvas(
-            canvas,
-            getSceneCamera,
-            renderer,
-        );
-    };
+    // Manage Window Resize
     window.addEventListener(
-        // this one is for when the popup is opened
         'resize', // this one is fo
-        controllers.resizeCanvas(
-            canvas,
-            getSceneCamera,
-            renderer,
-        ),
+        () => {
+            controllers.resizeCanvas(
+                canvas,
+                getSceneCamera,
+                renderer,
+            );
+        },
         false,
     );
 
     // This listener is working
     window.addEventListener(
         'mousemove',
-        ({ screenX, screenY }) => {
-            controllers.onMouseMove(
-                screenX - controllers.canvasHalfWidth,
-                screenY - controllers.canvasHalfHeight,
-            );
+        (e) => {
+            controllers.onMouseMove(e);
         },
         false,
     );

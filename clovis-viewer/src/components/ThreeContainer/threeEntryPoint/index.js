@@ -15,6 +15,7 @@ function createCanvas(document, container) {
     return canvas;
 }
 
+
 const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReact) => {
     const canvas = createCanvas(document, domContainer);
     const InitializedScene = BuildScene(canvas, buildingGltfPath);
@@ -26,6 +27,8 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
         buildingGltfPath,
     );
 
+    // MAIN UTILS
+
     // its a function that loops 60 times per second
     function render() {
         // FrameRequestCallback. updates the frame when it is needed, allegedly
@@ -34,19 +37,30 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
         sceneManager.update();
     }
 
-
     // LAUNCH MAIN FUNCTIONS
+
+    // Resize the canvas element to fit the screen
+    sceneManager.controllers.resizeCanvas(
+        canvas,
+        InitializedScene.getSceneCamera,
+        InitializedScene.renderer,
+    );
+
+    // Display the dat.gui menu
     DatGui(
         canvas,
         InitializedScene,
         sceneManager,
     );
+
+    // Initialize the Listeners
     Listeners(
         canvas,
         InitializedScene,
         sceneManager,
     );
 
+    // Launch render loop
     render();
 };
 
