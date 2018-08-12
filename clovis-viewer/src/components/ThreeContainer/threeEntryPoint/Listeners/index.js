@@ -10,6 +10,9 @@ const Listeners = (canvas, InitializedScene, SceneManager) => {
     } = SceneManager;
 
     // window.onkeypress = keyPressed;
+
+    // TODO: this listener is working only on first load,
+    // not working on page resize, find why
     window.addEventListener(
         'resize',
         controllers.resizeCanvas(
@@ -20,14 +23,19 @@ const Listeners = (canvas, InitializedScene, SceneManager) => {
         false,
     );
 
+    // This listener is working
     window.addEventListener(
         'mousemove',
         ({ screenX, screenY }) => {
-            controllers.onMouseMove(screenX - controllers.canvasHalfWidth, screenY - controllers.canvasHalfHeight);
+            controllers.onMouseMove(
+                screenX - controllers.canvasHalfWidth,
+                screenY - controllers.canvasHalfHeight,
+            );
         },
         false,
     );
 
+    // This listener is working
     window.addEventListener(
         'keypress',
         (e) => {

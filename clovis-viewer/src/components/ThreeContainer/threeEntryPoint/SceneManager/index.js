@@ -29,7 +29,6 @@ const SceneManager = (canvas, InitializedScene) => {
      */
     function update() {
         const camera = getSceneCamera();
-        const controls = getSceneControls();
 
         // update sceneSubjects every cycle
         const elapsedTime = clock.getElapsedTime();

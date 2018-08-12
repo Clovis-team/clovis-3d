@@ -14,9 +14,10 @@ function onKeyPressed(event) {
 
 // function to be implemented
 function onClose() {
-    // gui.destroy();
-    // remove stats
-    // remove eventual listeners;
+    // gui and stats are removed inside OnViewerClose of App.jsx file
+    // why ? avoid to Trigger this function from REact
+
+    // TODO: remove eventual listeners;
 }
 
 export function onWindowResize(canvas, camera, renderer) {
@@ -29,6 +30,7 @@ export function onWindowResize(canvas, camera, renderer) {
 let canvasHalfWidth;
 let canvasHalfHeight;
 function resizeCanvas(canvas, getSceneCamera, renderer) {
+    console.log('>>>> Window resized ! <<<<<');
     const camera = getSceneCamera();
 
     canvas.style.width = '100%';

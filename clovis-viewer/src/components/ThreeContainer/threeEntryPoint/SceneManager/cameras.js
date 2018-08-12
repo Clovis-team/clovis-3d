@@ -7,6 +7,8 @@ function copy_camera_old_pos_rot(new_camera, old_camera) {
         new_camera.position.copy(old_camera.position);
         new_camera.rotation.copy(old_camera.rotation);
     }
+
+    return new_camera;
 }
 
 function copy_controls_old_phi_theta(new_controls, controls) {
@@ -26,9 +28,9 @@ function new_perspective_camera(old_camera) {
         0.1,
         1000,
     );
-    copy_camera_old_pos_rot(new_camera, old_camera);
+    const new_camera_same_position = copy_camera_old_pos_rot(new_camera, old_camera);
 
-    return new_camera;
+    return new_camera_same_position;
 }
 
 function new_ortographic_camera(old_camera) {
@@ -43,9 +45,9 @@ function new_ortographic_camera(old_camera) {
         -1000,
         1000,
     );
-    copy_camera_old_pos_rot(new_camera, old_camera);
+    const new_camera_same_position = copy_camera_old_pos_rot(new_camera, old_camera);
 
-    return new_camera;
+    return new_camera_same_position;
 }
 
 
@@ -66,8 +68,7 @@ function setup_orbit_control(new_camera, renderer, controls) {
     new_controls.enableDamping = true;
     new_controls.screenSpacePanning = true;
     new_controls.panSpeed = 0.3;
-    // TODO: change it back to 0.2, 0.3 is a test with base camera to check if controls changed
-    new_controls.rotateSpeed = 4;
+    new_controls.rotateSpeed = 0.2;
     new_controls.screenSpacePanning = true;
 
     return new_controls;
@@ -150,11 +151,12 @@ function change_camera_and_controls(
     let new_camera;
     let new_controls;
 
+    console.log('STARTING old_camera :', old_camera);
     console.log('STARTING old_controls :', old_controls);
-    // TODO: explain the role of this part, doesn't seem to really clean
-    // the controls
-    if (typeof controls !== 'undefined') {
-        controls.dispose();
+
+    // Necessary to fully clean old controls
+    if (typeof old_controls !== 'undefined') {
+        old_controls.dispose();
     }
 
     switch (selected_camera) {
@@ -204,7 +206,7 @@ function change_camera_and_controls(
 
     // TODO: explain why we re-set the height at each camera update
     new_camera.height = 'INIT';
-
+    console.log('FINAL new_camera :', new_camera);
     console.log('FINAL new_controls :', new_controls);
 
     if (typeof new_camera !== 'undefined') {
