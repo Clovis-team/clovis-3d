@@ -123,7 +123,6 @@ function BuildScene(canvas, buildingGltfPath) {
      * it centers the camera in the right position based on the center and size of the building
     */
     function positionCameraToBuilding() {
-        console.log('position Camera To Building');
         const cameraPosition = getObjectCenter(scene).add(getgetObjectSize(scene).divideScalar(2));
         camera.position.copy(cameraPosition);
         controls.target.copy(getObjectCenter(scene));

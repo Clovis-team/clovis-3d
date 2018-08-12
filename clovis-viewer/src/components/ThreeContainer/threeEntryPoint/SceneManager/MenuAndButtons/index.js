@@ -7,6 +7,7 @@ import {
     populate_gui_camera,
     populate_height_gui,
     populate_gui_floors,
+    populate_gui_ifc_tags,
 } from './utils';
 
 
@@ -29,8 +30,6 @@ const MenuAndButtons = (canvas, InitializedScene, Cameras) => {
     const { change_camera_and_controls } = Cameras;
     const buildingDatas = getBuildingDatas();
 
-    console.log('>>>>>> buildingDatas :', buildingDatas);
-
     // Initialize dat.gui menu
     const gui = loadGui({ autoPlace: false });
 
@@ -50,6 +49,8 @@ const MenuAndButtons = (canvas, InitializedScene, Cameras) => {
     populate_height_gui(gui, getSceneCamera);
     // Gui floors selection
     populate_gui_floors(gui, buildingDatas.floors);
+    // Gui ifc tags selection
+    populate_gui_ifc_tags(gui, buildingDatas.building_ifc_elements);
 
     return {
         gui,

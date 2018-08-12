@@ -29,7 +29,6 @@ function onClose() {
 }
 
 function resizeCanvas(canvas, getSceneCamera, renderer) {
-    console.log('Resize Window :');
     const camera = getSceneCamera();
 
     // Change canvas

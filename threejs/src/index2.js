@@ -3,8 +3,8 @@
  */
 
 // THREE IMPORTED BY WEBPACK
-import dat from 'dat.gui/build/dat.gui.module';
-import Stats from 'stats.js/src/Stats';
+import dat from '../../clovis-viewer/node_modules/dat.gui/build/dat.gui.module';
+import Stats from '../../clovis-viewer/node_modules/stats.js/src/Stats';
 import 'three/examples/js/controls/FirstPersonControls';
 import 'three/examples/js/controls/OrbitControls';
 import 'three/examples/js/controls/PointerLockControls';
@@ -241,32 +241,32 @@ function center_and_position_camera(object) {
     console.log('target', controls.target);
     console.log('camera postion', camera.position);
 }
-function populate_gui_floors() {
-    const gui_floor_folder = gui.addFolder('Floors');
-    for (let i = floors.length - 1; i >= 0; i -= 1) {
-        const floor_name = floors[i].name.split('_')[1];
-        gui_floor_folder.add(floors[i], 'visible').name(floor_name);
-    }
-}
+// function populate_gui_floors() {
+//     const gui_floor_folder = gui.addFolder('Floors');
+//     for (let i = floors.length - 1; i >= 0; i -= 1) {
+//         const floor_name = floors[i].name.split('_')[1];
+//         gui_floor_folder.add(floors[i], 'visible').name(floor_name);
+//     }
+// }
 
-function populate_gui_ifc_tags(elements) {
-    const gui_ifc_tags_folder = gui.addFolder('Ifc Tags');
-    elements.forEach((element_no) => {
-        const element = element_no;
-        const ifc_tag = element.name;
-        const controller = gui_ifc_tags_folder.add(element, 'visible_order').name(ifc_tag);
+// function populate_gui_ifc_tags(elements) {
+//     const gui_ifc_tags_folder = gui.addFolder('Ifc Tags');
+//     elements.forEach((element_no) => {
+//         const element = element_no;
+//         const ifc_tag = element.name;
+//         const controller = gui_ifc_tags_folder.add(element, 'visible_order').name(ifc_tag);
 
-        controller.onChange(() => {
-            if (element.visible_order !== element.visible) {
-                element.children.forEach((obj_no) => {
-                    const obj = obj_no;
-                    obj.visible = element.visible_order;
-                });
-                element.visible = element.visible_order;
-            }
-        });
-    });
-}
+//         controller.onChange(() => {
+//             if (element.visible_order !== element.visible) {
+//                 element.children.forEach((obj_no) => {
+//                     const obj = obj_no;
+//                     obj.visible = element.visible_order;
+//                 });
+//                 element.visible = element.visible_order;
+//             }
+//         });
+//     });
+// }
 
 function get_main_floor(floor_array) {
     let max_value = 0;
@@ -309,82 +309,84 @@ function populate_ifc_tag_gui() {
     gui.add(obj_selection, 'ifc_name').listen();
 }
 
-function get_building_elements(object) {
-    const elements = [];
-    object.traverse((node_no) => {
-        const node = node_no;
-        if ((node instanceof THREE.Mesh || node instanceof THREE.Object3D) && node.name !== '') {
-            mesh_all.push(node);
-            const ifc_tag = node.name.split('_')[0];
-            node.ifc_tag = ifc_tag;
-            const ifc_name = node.name.split('_')[1];
-            node.ifc_name = ifc_name;
-            if (ifc_tag !== '' && ifc_tag.charAt(0) !== '$'
-            && ifc_tag !== 'mesh' && ifc_tag !== 'IfcBuildingStorey') {
-                if (!elements.some(obj => obj.ifc_tag === ifc_tag)) {
-                    const ifc_building_element = new THREE.Object3D();
-                    ifc_building_element.ifc_tag = ifc_tag;
-                    ifc_building_element.name = ifc_tag;
-                    ifc_building_element.ifc_name = ifc_name;
-                    ifc_building_element.visible_order = true;
-                    ifc_building_element.children.push(node);
-                    elements.push(ifc_building_element);
-                } else {
-                    const ifc_building_element = elements.find(obj => obj.ifc_tag === ifc_tag);
-                    ifc_building_element.children.push(node);
-                }
-            }
-        }
-    });
-    return elements;
-}
-
-
-// function load_gltf_file(URL) {
-//     const t0 = performance.now();
-//     // Load a glTF resource
-//     loader.load(
-//     // resource URL
-//         URL,
-
-//         // called when the resource is loaded
-//         (gltf) => {
-//             // scene.add( gltf.scene );
-//             // gltf.animations; // Array<THREE.AnimationClip>
-//             // gltf.scene; // THREE.Scene
-//             // gltf.scenes; // Array<THREE.Scene>
-//             // gltf.cameras; // Array<THREE.Camera>
-//             // gltf.asset; // Object
-//             const t1 = performance.now();
-//             console.log(`load gltf took ${Math.round(t1 - t0)} milliseconds.`);
-
-//             scene.add(gltf.scene);
-//             // center_and_position_camera(scene);
-
-//             // building = gltf.scene.children[0].children[0].children[0].children[0];
-//             building = get_building(gltf.scene);
-//             floors = building.children;
-
-//             populate_gui_floors();
-//             ifc_building_elements = get_building_elements(building);
-//             populate_gui_ifc_tags(ifc_building_elements);
-//             populate_gui_explosion();
-//             populate_ifc_tag_gui();
-//             controls.collision_objects = mesh_all;
-//             controls.collision_floor = true;
-//             const t2 = performance.now();
-//             console.log(`load and name all groups ${Math.round(t2 - t1)} milliseconds.`);
-//         },
-//         // called while loading is progressing
-//         (xhr) => {
-//             console.log(`${xhr.loaded / xhr.total * 100}% loaded`);
-//         },
-//     // called when loading has errors
-//     // function ( error ) {
-//     //     console.log( 'An error happened' );
-//     // }
-//     );
+// function get_building_elements(object) {
+//     const elements = [];
+//     object.traverse((node_no) => {
+//         const node = node_no;
+//         if ((node instanceof THREE.Mesh || node instanceof THREE.Object3D) && node.name !== '') {
+//             mesh_all.push(node);
+//             const ifc_tag = node.name.split('_')[0];
+//             node.ifc_tag = ifc_tag;
+//             const ifc_name = node.name.split('_')[1];
+//             node.ifc_name = ifc_name;
+//             if (ifc_tag !== '' && ifc_tag.charAt(0) !== '$'
+//             && ifc_tag !== 'mesh' && ifc_tag !== 'IfcBuildingStorey') {
+//                 if (!elements.some(obj => obj.ifc_tag === ifc_tag)) {
+//                     const ifc_building_element = new THREE.Object3D();
+//                     ifc_building_element.ifc_tag = ifc_tag;
+//                     ifc_building_element.name = ifc_tag;
+//                     ifc_building_element.ifc_name = ifc_name;
+//                     ifc_building_element.visible_order = true;
+//                     ifc_building_element.children.push(node);
+//                     elements.push(ifc_building_element);
+//                 } else {
+//                     const ifc_building_element = elements.find(obj => obj.ifc_tag === ifc_tag);
+//                     ifc_building_element.children.push(node);
+//                 }
+//             }
+//         }
+//     });
+//     return elements;
 // }
+
+
+function load_gltf_file(URL) {
+    const t0 = performance.now();
+    // Load a glTF resource
+    loader.load(
+    // resource URL
+        URL,
+
+        // called when the resource is loaded
+        (gltf) => {
+            // scene.add( gltf.scene );
+            // gltf.animations; // Array<THREE.AnimationClip>
+            // gltf.scene; // THREE.Scene
+            // gltf.scenes; // Array<THREE.Scene>
+            // gltf.cameras; // Array<THREE.Camera>
+            // gltf.asset; // Object
+            const t1 = performance.now();
+            console.log(`load gltf took ${Math.round(t1 - t0)} milliseconds.`);
+
+            scene.add(gltf.scene);
+            // center_and_position_camera(scene);
+
+            // building = gltf.scene.children[0].children[0].children[0].children[0];
+            // building = get_building(gltf.scene);
+            // floors = building.children;
+
+            // populate_gui_floors();
+
+            // ifc_building_elements = get_building_elements(building);
+
+            populate_gui_ifc_tags(ifc_building_elements);
+            populate_gui_explosion();
+            populate_ifc_tag_gui();
+            controls.collision_objects = mesh_all;
+            controls.collision_floor = true;
+            const t2 = performance.now();
+            console.log(`load and name all groups ${Math.round(t2 - t1)} milliseconds.`);
+        },
+        // called while loading is progressing
+        (xhr) => {
+            console.log(`${xhr.loaded / xhr.total * 100}% loaded`);
+        },
+    // called when loading has errors
+    // function ( error ) {
+    //     console.log( 'An error happened' );
+    // }
+    );
+}
 
 // function onWindowResize() {
 //     camera.aspect = window.innerWidth / window.innerHeight;

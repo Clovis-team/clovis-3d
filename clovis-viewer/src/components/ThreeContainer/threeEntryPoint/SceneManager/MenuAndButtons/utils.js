@@ -63,3 +63,22 @@ export function populate_gui_floors(gui, floors) {
         gui_floor_folder.add({ state: 'No floors yet' }, 'state');
     }
 }
+
+export function populate_gui_ifc_tags(gui, elements) {
+    const gui_ifc_tags_folder = gui.addFolder('Ifc Tags');
+    elements.forEach((element_no) => {
+        const element = element_no;
+        const ifc_tag = element.name;
+        const controller = gui_ifc_tags_folder.add(element, 'visible_order').name(ifc_tag);
+
+        controller.onChange(() => {
+            if (element.visible_order !== element.visible) {
+                element.children.forEach((obj_no) => {
+                    const obj = obj_no;
+                    obj.visible = element.visible_order;
+                });
+                element.visible = element.visible_order;
+            }
+        });
+    });
+}
