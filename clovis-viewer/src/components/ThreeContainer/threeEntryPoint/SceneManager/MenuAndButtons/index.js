@@ -14,8 +14,6 @@ import {
 
 
 const MenuAndButtons = (canvas, InitializedScene, Cameras, object_selected) => {
-    console.log('##### object_selected :', object_selected);
-
     const {
         scene,
         getSceneCamera,
@@ -27,8 +25,6 @@ const MenuAndButtons = (canvas, InitializedScene, Cameras, object_selected) => {
         starting_camera_type,
         getBuildingDatas,
     } = InitializedScene;
-
-    console.log('>>> InitializedScene :', InitializedScene);
 
 
     const { change_camera_and_controls } = Cameras;

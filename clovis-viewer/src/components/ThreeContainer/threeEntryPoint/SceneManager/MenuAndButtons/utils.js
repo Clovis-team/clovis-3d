@@ -52,8 +52,6 @@ export function populate_height_gui(gui, getSceneCamera) {
 export function populate_gui_floors(gui, floors) {
     const gui_floor_folder = gui.addFolder('Floors');
 
-    console.log('>>> floors :', floors);
-
     if (typeof floors !== 'undefined') {
         for (let i = floors.length - 1; i >= 0; i -= 1) {
             const floor_name = floors[i].name.split('_')[1];

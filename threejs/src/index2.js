@@ -15,15 +15,15 @@ import 'three/examples/js/loaders/OBJLoader';
 import { get_building } from './utils/get_from_scene';
 import './utils/FirstPersonControlsClovis';
 
-console.log('### HEEEEEY :');
+// console.log('### HEEEEEY :');
 
-const scene = new THREE.Scene();
-let camera;
-let controls;
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-const gui = new dat.GUI();
-const stats = new Stats();
-const loader = new THREE.GLTFLoader();
+// const scene = new THREE.Scene();
+// let camera;
+// let controls;
+// const renderer = new THREE.WebGLRenderer({ antialias: true });
+// //const gui = new dat.GUI();
+//const stats = new Stats();
+//const loader = new THREE.GLTFLoader();
 // const raycaster = new THREE.Raycaster();
 const raycaster_cam = new THREE.Raycaster();
 // const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
@@ -374,13 +374,14 @@ function load_gltf_file(URL) {
             // populate_ifc_tag_gui();
             controls.collision_objects = mesh_all;
             controls.collision_floor = true;
-            const t2 = performance.now();
-            console.log(`load and name all groups ${Math.round(t2 - t1)} milliseconds.`);
-        },
-        // called while loading is progressing
-        (xhr) => {
-            console.log(`${xhr.loaded / xhr.total * 100}% loaded`);
-        },
+
+            // const t2 = performance.now();
+            // console.log(`load and name all groups ${Math.round(t2 - t1)} milliseconds.`);
+        // },
+        // // called while loading is progressing
+        // (xhr) => {
+        //     console.log(`${xhr.loaded / xhr.total * 100}% loaded`);
+        // },
     // called when loading has errors
     // function ( error ) {
     //     console.log( 'An error happened' );
@@ -434,18 +435,6 @@ function add_sphere_on_click(intersected) {
 //     }
 // }
 
-function update_height_of_camera(camera, objects) {
-    const direction = new THREE.Vector3(0, -1, 0);
-
-    raycaster_cam.set(camera.position, direction);
-    const objects_below = raycaster_cam.intersectObjects(objects);
-    // console.log(camera.position);
-    if (objects_below.length > 0) {
-        camera.height = objects_below[0].distance;
-    } else {
-        camera.height = 'No height';
-    }
-}
 
 function onDocumentTouchEnd(event) {
     event.preventDefault();
@@ -473,6 +462,19 @@ function onDocumentTouchEnd(event) {
         obj_selection.obj_old = intersected_obj;
         obj_selection.obj_old_material = intersected_obj.material;
         intersected_obj.material = event_material;
+    }
+}
+
+function update_height_of_camera(camera, objects) {
+    const direction = new THREE.Vector3(0, -1, 0);
+
+    raycaster_cam.set(camera.position, direction);
+    const objects_below = raycaster_cam.intersectObjects(objects);
+    // console.log(camera.position);
+    if (objects_below.length > 0) {
+        camera.height = objects_below[0].distance;
+    } else {
+        camera.height = 'No height';
     }
 }
 

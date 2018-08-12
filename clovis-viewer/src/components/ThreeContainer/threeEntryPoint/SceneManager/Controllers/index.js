@@ -56,25 +56,16 @@ function displayMenuAndButtons(canvas, InitializedScene, Cameras, object_selecte
     );
 }
 
-function onDocumentMouseClick(
-    event,
-    mouse,
+// TODO: rename it better to match the logic inside
+function selectionHandler(
+    new_mouse,
     object_selected,
     getSceneCamera,
     raycaster,
     getBuildingDatas,
 ) {
-    console.log('onDocumentMouseClick:', event);
-    event.preventDefault();
-
     const camera = getSceneCamera();
     const { mesh_all } = getBuildingDatas();
-
-    const new_mouse = mouse;
-
-    // Correct the mouse position
-    new_mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    new_mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
     // TODO: right now it works, but coorect later to avoid param reassign
     if (object_selected.obj_old && object_selected.obj_old_material) {
@@ -99,6 +90,54 @@ function onDocumentMouseClick(
         intersected_obj.material = event_material;
     }
 }
+function onDocumentMouseClick(
+    event,
+    mouse,
+    object_selected,
+    getSceneCamera,
+    raycaster,
+    getBuildingDatas,
+) {
+    event.preventDefault();
+
+    const new_mouse = mouse;
+
+    // Correct the mouse position
+    new_mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    new_mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    selectionHandler(
+        new_mouse,
+        object_selected,
+        getSceneCamera,
+        raycaster,
+        getBuildingDatas,
+    );
+}
+
+function onDocumentTouchEnd(
+    event,
+    mouse,
+    object_selected,
+    getSceneCamera,
+    raycaster,
+    getBuildingDatas,
+) {
+    event.preventDefault();
+
+    const new_mouse = mouse;
+
+    new_mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
+    new_mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+
+    selectionHandler(
+        new_mouse,
+        object_selected,
+        getSceneCamera,
+        raycaster,
+        getBuildingDatas,
+    );
+}
 
 
 export default {
@@ -109,4 +148,5 @@ export default {
     onClose,
     displayMenuAndButtons,
     onDocumentMouseClick,
+    onDocumentTouchEnd,
 };

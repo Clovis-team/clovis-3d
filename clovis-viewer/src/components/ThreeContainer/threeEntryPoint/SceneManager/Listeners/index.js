@@ -75,6 +75,21 @@ const Listeners = (
         },
         false,
     );
+
+    window.addEventListener(
+        'touchend',
+        (e) => {
+            Controllers.onDocumentTouchEnd(
+                e,
+                mouse,
+                object_selected,
+                getSceneCamera,
+                raycaster,
+                getBuildingDatas,
+            );
+        },
+        false,
+    );
 };
 
 export default Listeners;
