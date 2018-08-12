@@ -1,5 +1,6 @@
 import dat from 'dat.gui/build/dat.gui.module';
 import Stats from 'stats.js/src/Stats';
+import RendererStats from '@xailabs/three-renderer-stats';
 
 
 /** GUI is the black top left menu with many controls */
@@ -21,10 +22,23 @@ export function loadStats() {
     window.stats.dom.style = {
         position: 'absolute',
         bottom: 0,
-        left: 0,
+        right: 0,
     };
     document.getElementById('stats-container').appendChild(window.stats.dom);
     return window.stats;
+}
+
+export function loadRendererStats() {
+    window.rendererStats = new RendererStats();
+    window.rendererStats.domElement.style = {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+    };
+
+    document.getElementById('stats-container').appendChild(window.rendererStats.domElement);
+
+    return window.rendererStats;
 }
 
 export function populate_gui_camera(

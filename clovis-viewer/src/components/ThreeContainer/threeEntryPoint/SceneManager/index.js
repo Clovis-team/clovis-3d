@@ -31,12 +31,14 @@ const SceneManager = (canvas, InitializedScene) => {
      * updates the stuff that has to be updated every frame cycle
      * (This function is launched many times per second)
      */
-    function update(stats, getSceneCamera, getSceneControls) {
+    function update(stats, rendererStats, getSceneCamera, getSceneControls, renderer) {
         const camera = getSceneCamera();
         const controls = getSceneControls();
 
         // For the Stats Frame/s Tool
         stats.begin();
+        // For the RendereStats Frame/s tool
+        rendererStats.update(renderer);
 
         // required if controls.enableDamping or controls.autoRotate are set to true
         controls.update(clock.getDelta());

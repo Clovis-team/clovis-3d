@@ -36,8 +36,10 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
         // renders the frame and updates the controls and sceneSubjects
         sceneManager.update(
             menuAndTools.stats,
+            menuAndTools.rendererStats,
             InitializedScene.getSceneCamera,
             InitializedScene.getSceneControls,
+            InitializedScene.renderer,
         );
     }
 

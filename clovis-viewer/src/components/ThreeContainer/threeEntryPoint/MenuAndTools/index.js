@@ -5,6 +5,7 @@
 import {
     loadGui,
     loadStats,
+    loadRendererStats,
     populate_gui_camera,
     populate_height_gui,
 } from './utils';
@@ -28,7 +29,8 @@ const MenuAndTools = (canvas, InitializedScene, sceneManager) => {
 
     // Initialize the Three.js Stats panel on top left
     const stats = loadStats();
-
+    // Initalize rendererStats, an other Three.js tool to monitor performances
+    const rendererStats = loadRendererStats(renderer);
 
     // Populate Gui cameras menu
     populate_gui_camera(
@@ -49,6 +51,7 @@ const MenuAndTools = (canvas, InitializedScene, sceneManager) => {
     return {
         gui,
         stats,
+        rendererStats,
     };
 };
 
