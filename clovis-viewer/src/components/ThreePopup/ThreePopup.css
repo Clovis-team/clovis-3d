@@ -51,6 +51,11 @@
   height: 0;
 }
 
+.dg.main {
+  height: auto;
+  overflow-y: scroll;
+}
+
 .stats-container {
   position: absolute;
   bottom: 0;

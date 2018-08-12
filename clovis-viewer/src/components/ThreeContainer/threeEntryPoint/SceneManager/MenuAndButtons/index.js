@@ -9,10 +9,18 @@ import {
     populate_gui_floors,
     populate_gui_ifc_tags,
     populate_gui_explosion,
+    populate_gui_selected_object_ifc_tags,
 } from './utils';
 
 
 const MenuAndButtons = (canvas, InitializedScene, Cameras) => {
+    const object_selected = {
+        ifc_tag: 'none',
+        ifc_name: 'none',
+        obj_old: undefined,
+        obj_old_material: undefined,
+    };
+
     const {
         scene,
         getSceneCamera,
@@ -46,14 +54,16 @@ const MenuAndButtons = (canvas, InitializedScene, Cameras) => {
         modifySceneCamera,
         modifySceneControls,
     );
-    // TODO: explain this part
-    populate_height_gui(gui, getSceneCamera);
     // Gui floors selection
     populate_gui_floors(gui, buildingDatas.floors);
     // Gui ifc tags selection
     populate_gui_ifc_tags(gui, buildingDatas.building_ifc_elements);
+    // Show the ifc infos of the selected Element
+    populate_gui_selected_object_ifc_tags(gui, object_selected);
     // Little explosion interraction with gui
     populate_gui_explosion(gui, buildingDatas.floors);
+    // TODO: explain this part
+    populate_height_gui(gui, getSceneCamera);
 
     return {
         gui,

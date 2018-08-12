@@ -55,6 +55,14 @@ const Listeners = (
         },
         false,
     );
+
+    window.addEventListener(
+        'mouseup',
+        (e) => {
+            Controllers.onDocumentMouseClick(e);
+        },
+        false,
+    );
 };
 
 export default Listeners;

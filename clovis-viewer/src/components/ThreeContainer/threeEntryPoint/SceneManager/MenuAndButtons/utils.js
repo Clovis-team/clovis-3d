@@ -117,3 +117,10 @@ export function populate_gui_explosion(gui, floors) {
         explosion.z_delta = 0;
     });
 }
+
+export function populate_gui_selected_object_ifc_tags(gui, object_selected) {
+    const gui_object_selected_folder = gui.addFolder('Selected Object Infos');
+
+    gui_object_selected_folder.add(object_selected, 'ifc_tag').listen();
+    gui_object_selected_folder.add(object_selected, 'ifc_name').listen();
+}

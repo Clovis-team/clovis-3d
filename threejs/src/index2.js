@@ -47,24 +47,24 @@ const mouse = new THREE.Vector2();
 //     'gltfs/Munkerud_hus6_BE.gltf',
 // ];
 // object to support the clikinng, infos and objc color change
-const obj_selection = {
-    ifc_tag: 'none',
-    ifc_name: 'none',
-    obj_old: undefined,
-    obj_old_material: undefined,
-};
+// const obj_selection = {
+//     ifc_tag: 'none',
+//     ifc_name: 'none',
+//     obj_old: undefined,
+//     obj_old_material: undefined,
+// };
 
 // relink of the actual building object 3d
-let building;
+// let building;
 
-// relink of building.children
-let floors;
+// // relink of building.children
+// let floors;
 
-// list of objects
-const ifc_building_elements = [];
+// // list of objects
+// const ifc_building_elements = [];
 
-// list of all meshes for mouse cliking
-const mesh_all = [];
+// // list of all meshes for mouse cliking
+// const mesh_all = [];
 
 // function setup_flying_drag_fps() {
 //     const new_controls = new THREE.FirstPersonControlsClovis(camera, renderer.domElement);
@@ -304,10 +304,10 @@ function center_and_position_camera(object) {
 // }
 
 
-function populate_ifc_tag_gui() {
-    gui.add(obj_selection, 'ifc_tag').listen();
-    gui.add(obj_selection, 'ifc_name').listen();
-}
+// function populate_ifc_tag_gui() {
+//     gui.add(obj_selection, 'ifc_tag').listen();
+//     gui.add(obj_selection, 'ifc_name').listen();
+// }
 
 // function get_building_elements(object) {
 //     const elements = [];
@@ -371,7 +371,7 @@ function load_gltf_file(URL) {
 
             // populate_gui_ifc_tags(ifc_building_elements);
             // populate_gui_explosion();
-            populate_ifc_tag_gui();
+            // populate_ifc_tag_gui();
             controls.collision_objects = mesh_all;
             controls.collision_floor = true;
             const t2 = performance.now();
@@ -404,35 +404,35 @@ function add_sphere_on_click(intersected) {
     scene.add(sphere);
 }
 
-function onDocumentMouseClick(event) {
-    console.log('1111 CLICK 2:');
-    event.preventDefault();
+// function onDocumentMouseClick(event) {
+//     console.log('1111 CLICK 2:');
+//     event.preventDefault();
 
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+//     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+//     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-    if (obj_selection.obj_old && obj_selection.obj_old_material) {
-        obj_selection.obj_old.material = obj_selection.obj_old_material;
-    }
+//     if (obj_selection.obj_old && obj_selection.obj_old_material) {
+//         obj_selection.obj_old.material = obj_selection.obj_old_material;
+//     }
 
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(mesh_all);
+//     raycaster.setFromCamera(mouse, camera);
+//     const intersects = raycaster.intersectObjects(mesh_all);
 
-    if (intersects.length > 0) {
-        // add_sphere_on_click(intersects[0]);
-        const intersected_obj = intersects[0].object;
+//     if (intersects.length > 0) {
+//         // add_sphere_on_click(intersects[0]);
+//         const intersected_obj = intersects[0].object;
 
-        obj_selection.ifc_tag = intersected_obj.ifc_tag;
-        obj_selection.ifc_name = intersected_obj.ifc_name;
+//         obj_selection.ifc_tag = intersected_obj.ifc_tag;
+//         obj_selection.ifc_name = intersected_obj.ifc_name;
 
-        const event_color = new THREE.Color(0x51f787);
+//         const event_color = new THREE.Color(0x51f787);
 
-        const event_material = new THREE.MeshBasicMaterial({ color: event_color });
-        obj_selection.obj_old = intersected_obj;
-        obj_selection.obj_old_material = intersected_obj.material;
-        intersected_obj.material = event_material;
-    }
-}
+//         const event_material = new THREE.MeshBasicMaterial({ color: event_color });
+//         obj_selection.obj_old = intersected_obj;
+//         obj_selection.obj_old_material = intersected_obj.material;
+//         intersected_obj.material = event_material;
+//     }
+// }
 
 function update_height_of_camera(camera, objects) {
     const direction = new THREE.Vector3(0, -1, 0);
@@ -483,7 +483,7 @@ function init_scene() {
     document.body.appendChild(renderer.domElement);
     document.body.appendChild(stats.dom);
     load_gltf_file(gltfFiles[0]);
-    document.addEventListener('mouseup', onDocumentMouseClick, false);
+    // document.addEventListener('mouseup', onDocumentMouseClick, false);
     document.addEventListener('touchend', onDocumentTouchEnd, false);
     window.addEventListener('resize', onWindowResize, false);
     // scene.add(directionalLight);
