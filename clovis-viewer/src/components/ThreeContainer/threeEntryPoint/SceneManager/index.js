@@ -2,6 +2,7 @@ import Listeners from './Listeners';
 import Controllers from './Controllers';
 // import Cameras from './Cameras';
 import Walking from './Modules/Walking';
+import VirtualJoystick from './VirtualJoystick';
 import 'three/examples/js/loaders/GLTFLoader';
 import 'three/examples/js/controls/OrbitControls';
 
@@ -95,6 +96,9 @@ const SceneManager = (canvas, InitializedScene) => {
         object_selected,
         raycaster,
     );
+
+    // Virtual Joystick stuff
+    VirtualJoystick();
 
 
     return {

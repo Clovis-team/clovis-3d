@@ -223,3 +223,15 @@
     opacity: 0.2;
   }
 }
+
+.joystick1-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.joystick2-container {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
