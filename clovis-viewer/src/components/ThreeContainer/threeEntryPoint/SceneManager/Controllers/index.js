@@ -1,5 +1,6 @@
-import MenuAndButtons from '../MenuAndButtons';
+
 import { selectionHandler } from './utils';
+import { asynchronous_gltf_loader_gui_populate } from '../../DevTools/utils';
 
 // TODO: put this variables in an other "stable" place
 let canvasHalfWidth;
@@ -61,13 +62,10 @@ function resizeCanvas(canvas, getSceneCamera, renderer) {
     renderer.setSize(canvas.width, canvas.height);
 }
 
-function displayMenuAndButtons(canvas, InitializedScene, Cameras, object_selected) {
-    MenuAndButtons(
-        canvas,
-        InitializedScene,
-        Cameras,
-        object_selected,
-    );
+function LoaderEnded(canvas, InitializedScene, object_selected) {
+    const buildingDatas = InitializedScene.getBuildingDatas();
+
+    asynchronous_gltf_loader_gui_populate(buildingDatas);
 }
 
 function onDocumentMouseClick(
@@ -123,7 +121,7 @@ export default {
     onMouseMove,
     onKeyPressed,
     onClose,
-    displayMenuAndButtons,
+    LoaderEnded,
     onDocumentMouseClick,
     onDocumentTouchEnd,
     ToggleWalking,

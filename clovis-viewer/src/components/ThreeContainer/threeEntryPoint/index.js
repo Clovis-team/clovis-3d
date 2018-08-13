@@ -11,6 +11,10 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
     const canvas = createCanvas(document, domContainer);
     const InitializedScene = BuildScene(canvas, buildingGltfPath);
 
+    // Display the stats and renderer stats Dev Tools
+    // TODO: put condition with NODE_ENV
+    const devTools = DevTools(InitializedScene);
+
     const sceneManager = SceneManager(
         canvas,
         // Passing initialized objects like {scene}, {camera}, {renderer}, {controls}
@@ -47,10 +51,6 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
         InitializedScene.getSceneCamera,
         InitializedScene.renderer,
     );
-
-    // Display the stats and renderer stats Dev Tools
-    // TODO: put condition with NODE_ENV
-    const devTools = DevTools(InitializedScene);
 
     // Launch render loop
     render();

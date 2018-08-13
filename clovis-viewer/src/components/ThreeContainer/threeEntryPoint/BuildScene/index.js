@@ -1,8 +1,10 @@
+import 'three/examples/js/controls/OrbitControls';
 import loadBuilding from './loadBuilding';
 // TODO: split init anylisis here
-import analyseBuilding from './analyseBuilding';
-import Cameras from '../SceneManager/Cameras';
-import { controllers } from '../../../../../node_modules/dat.gui/build/dat.gui.module';
+// import Cameras from '../SceneManager/Cameras';
+
+import { analyseBuilding, positionCameraToBuilding } from './analyseBuilding';
+
 
 function BuildScene(canvas, buildingGltfPath) {
     const cameraTypes = [
@@ -34,13 +36,13 @@ function BuildScene(canvas, buildingGltfPath) {
     }
 
     /**
-         * create the frame where THREE will render into
-         * set sizes and ratio of pixels
-         * gamma setting for balancing the birghtness
-         * @param {*} { width, height } of the canvas that we render into
-         * @returns new renderer
-         */
-    function buildRender({ width, height }) {
+     * create the frame where THREE will render into
+     * set sizes and ratio of pixels
+     * gamma setting for balancing the birghtness
+     * @param {*} { width, height } of the canvas that we render into
+     * @returns new renderer
+     */
+    function buildRenderer({ width, height }) {
         const new_renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
         const DPR = window.devicePixelRatio ? window.devicePixelRatio : 1;
 
@@ -54,6 +56,45 @@ function BuildScene(canvas, buildingGltfPath) {
     }
 
     // EXTERNALY USED FUNCTIONS
+    /*
+    * creates a perspective camera in THREE
+    *
+    * @param {*} { width, height } to calculate its proportions
+    * @returns new camera
+    */
+    function buildCamera({ width, height }) {
+        const aspectRatio = width / height;
+        const fieldOfView = 75;
+        const nearPlane = 0.2;
+        const farPlane = 1000;
+        const new_camera = new THREE.PerspectiveCamera(
+            fieldOfView,
+            aspectRatio,
+            nearPlane,
+            farPlane,
+        );
+
+        new_camera.position.z = 40;
+
+        return new_camera;
+    }
+
+    /*
+    * loads Orbitcontrols and configure it for our visualizer
+    *
+    * @param {*} controls_camera the camera tha he is going to move
+    * @param {*} controls_renderer the renderer frame he has to lsiten too
+    * @returns the new controls
+    */
+    function buildControls(controls_camera, controls_renderer) {
+        const new_controls = new THREE.OrbitControls(controls_camera, controls_renderer.domElement);
+        new_controls.enableDamping = true;
+        new_controls.screenSpacePanning = true;
+        new_controls.panSpeed = 0.3;
+        new_controls.rotateSpeed = 0.2;
+        new_controls.update();
+        return new_controls;
+    }
 
     /**
      * Return updated objects of camera and controls
@@ -80,62 +121,25 @@ function BuildScene(canvas, buildingGltfPath) {
 
     // CAMERA AND CONTROLS
 
-    function buildCameraAndControls() {
-        Cameras.change_camera_and_controls(
-            cameraTypes,
-            starting_camera_type,
-            getSceneCamera,
-            getSceneControls,
-            renderer,
-            modifySceneCamera,
-            modifySceneControls,
-        );
-    }
+    // function buildCameraAndControls() {
+    //     Cameras.change_camera_and_controls(
+    //         cameraTypes,
+    //         starting_camera_type,
+    //         getSceneCamera,
+    //         getSceneControls,
+    //         renderer,
+    //         modifySceneCamera,
+    //         modifySceneControls,
+    //     );
+    // }
 
     // CALCULATE STUFF
-    // TODO: put this part inside './analyseInit.js'
-
-    /**
-     * given a object3d returns a vector from origin to the object's BOX center
-     *
-     * @param {*} object THREEJS object3d
-     * @returns THREE.Vector3
-     */
-    function getObjectCenter(object) {
-        const box = new THREE.Box3().setFromObject(object);
-        const centerVector = new THREE.Vector3();
-        box.getCenter(centerVector);
-        return centerVector;
-    }
-
-    /**
-     * given a object3d returns a vector of the object's BOX size
-     *
-     * @param {*} object THREEJS object3d
-     * @returns THREE.Vector3
-     */
-    function getgetObjectSize(object) {
-        const box = new THREE.Box3().setFromObject(object);
-        const sizeVector = new THREE.Vector3();
-        box.getSize(sizeVector);
-        return sizeVector;
-    }
-    /**
-     * it centers the camera in the right position based on the center and size of the building
-    */
-    function positionCameraToBuilding() {
-        const cameraPosition = getObjectCenter(scene).add(getgetObjectSize(scene).divideScalar(2));
-        camera.position.copy(cameraPosition);
-        controls.target.copy(getObjectCenter(scene));
-        // controls.update() must be called after any manual changes to the camera's transform
-        controls.update();
-    }
 
     /**
      * callback from when the gltf file is loaded
      */
     function gltfLoadedCallback(building, controls) {
-        positionCameraToBuilding();
+        positionCameraToBuilding(scene, controls, camera);
         buildingDatas = analyseBuilding(building);
 
         // TODO: describe why we do this
@@ -147,11 +151,11 @@ function BuildScene(canvas, buildingGltfPath) {
 
     // BUILD STUFF
     const scene = buildScene();
-    const renderer = buildRender(canvas);
-    let camera;
-    let controls;
+    const renderer = buildRenderer(canvas);
+    let camera = buildCamera(canvas);
+    let controls = buildControls(camera, renderer);
 
-    buildCameraAndControls();
+    // buildCameraAndControls();
 
     loadBuilding(
         scene,

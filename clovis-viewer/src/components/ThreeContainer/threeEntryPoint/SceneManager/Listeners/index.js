@@ -1,7 +1,7 @@
 const Listeners = (
     canvas,
     InitializedScene,
-    Cameras,
+    // Cameras,
     Controllers,
     mouse,
     object_selected,
@@ -52,11 +52,9 @@ const Listeners = (
     window.addEventListener(
         'endOfLoaderCallback',
         (e) => {
-            console.log('endOfLoaderCallback :', e);
-            Controllers.displayMenuAndButtons(
+            Controllers.LoaderEnded(
                 canvas,
                 InitializedScene,
-                Cameras,
                 object_selected,
             );
         },
