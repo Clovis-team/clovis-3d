@@ -37,11 +37,17 @@ class ThreeContainer extends Component {
     }
 
     componentDidMount() {
-        threeEntryPoint(
+        const threeControllers = threeEntryPoint(
             this.threeRootElement,
             this.buildingGltfPath,
             this.beautifullDatasFromReact,
         );
+        // console.log('>>>> threeControllers :', threeControllers);
+
+        // this.ToggleWalking = threeControllers.ToggleWalking;
+
+
+        // this.ToggleWalking();
     }
 
     render() {
@@ -51,6 +57,9 @@ class ThreeContainer extends Component {
               className="canvas-wrapper"
             />
 
+        //   <button
+        //     onClick={(e)=> this.ToggleWalking()}>
+        //   </button>
         );
     }
 }

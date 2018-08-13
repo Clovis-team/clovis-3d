@@ -112,6 +112,11 @@ function onDocumentTouchEnd(
 }
 
 
+function ToggleWalking() {
+    console.log('>>> Toggling walking >>>');
+}
+
+
 export default {
     canvasHalfWidth,
     resizeCanvas,
@@ -121,4 +126,5 @@ export default {
     displayMenuAndButtons,
     onDocumentMouseClick,
     onDocumentTouchEnd,
+    ToggleWalking,
 };

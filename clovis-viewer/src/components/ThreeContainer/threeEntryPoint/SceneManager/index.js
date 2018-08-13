@@ -88,6 +88,7 @@ const SceneManager = (canvas, InitializedScene) => {
         Cameras,
         mouse,
         raycaster_cam,
+        Listeners,
     };
 };
 
