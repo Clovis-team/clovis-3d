@@ -5,6 +5,7 @@
 
 import nipplejs from 'nipplejs';
 
+
 const VirtualJoystick = () => {
     const joystick1DomContainer = document.getElementById('joystick1-container');
     const joystick2DomContainer = document.getElementById('joystick2-container');
@@ -31,6 +32,15 @@ const VirtualJoystick = () => {
         threshold: 0.2,
     };
 
+    // function stopMoving(){
+    //     moveForward = false;
+    //     moveBackward = false;
+    //     moveLeft = false;
+    //     moveRight = false;
+    //     moveUp = false;
+    //     moveDown = false;
+    // }
+
     // Create the Virtual Joysticks inside their dom containers
     // Normal Joystick
     const joystick1 = nipplejs.create(joystick1_options);
@@ -46,33 +56,41 @@ const VirtualJoystick = () => {
 
             switch (evt.type) {
             case 'dir:up':
-                console.log('GOING FORWARD :');
+                // moveForward = true;
                 break;
             case 'dir:down':
-                // Put your stuff here
+                // moveBackward = true;
                 break;
             case 'dir:right':
-                // Put your stuff here
+                // moveRight = true;
                 break;
             case 'dir:left':
-                // Put your stuff here
+                // moveLeft = true;
                 break;
             default:
                 break;
             }
+        })
+        .on('end', (evt) => {
+            console.log('evt :', evt);
+            // stopMoving();
         });
+
     joystick2
         .on('dir:up dir:down', (evt) => {
             switch (evt.type) {
             case 'dir:up':
-                console.log('GOING UP :');
+                // moveUp = true;
                 break;
             case 'dir:down':
-                // Put your stuff here
+                // moveDown = true;
                 break;
             default:
                 break;
             }
+        })
+        .on('end', () => {
+            // stopMoving();
         });
 };
 

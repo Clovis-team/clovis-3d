@@ -21,8 +21,6 @@ export function loadRendererStats() {
     window.rendererStats = new RendererStats();
     window.rendererStats.domElement.className = 'renderer-stats';
 
-    console.log('window.rendererStats.domElement :', window.rendererStats.domElement);
-
     document.getElementById('stats-container').appendChild(window.rendererStats.domElement);
 
     return window.rendererStats;

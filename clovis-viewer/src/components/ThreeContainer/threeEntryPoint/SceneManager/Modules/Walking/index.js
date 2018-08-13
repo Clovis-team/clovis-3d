@@ -154,9 +154,6 @@ function walking(scene, camera, controls) {
 
     this.addListener(window);
     const walkingUI = populateGui(window.gui);
-
-
-    // loadGui();
 }
 
 export default walking;
