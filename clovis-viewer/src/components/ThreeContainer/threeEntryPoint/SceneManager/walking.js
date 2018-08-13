@@ -1,12 +1,13 @@
-function walking(camera, controls) {
+function walking(scene, camera, controls) {
+    // if not enabled doesnt move
     this.enabled = true;
 
     this.movementSpeed = 10; // units per second
-    this.xzMovements = true;
+    this.xzMovements = true; // can be removed, not necessary for now
     this.yMovements = true;
-
     this.up = new THREE.Vector3(0, 1, 0);
-
+    // rename
+    this.walkControls = false;
 
     let moveForward = false;
     let moveBackward = false;
@@ -19,7 +20,7 @@ function walking(camera, controls) {
     let delta = 0;
 
     const camVector = new THREE.Vector3();
-    const verticalVector = new THREE.Vector3();
+    const verticalSpeedVector = new THREE.Vector3();
     const leftRigthVector = new THREE.Vector3();
 
     const distanceToTarget = new THREE.Vector3();
@@ -34,7 +35,7 @@ function walking(camera, controls) {
         case 70: /* F */ moveDown = true; break;
         default: break;
         }
-        // this.update(0.1);
+        // move(1);
     }
 
     function keyUp(event) {
@@ -49,30 +50,21 @@ function walking(camera, controls) {
         }
     }
 
-    this.destroy = (Dom) => {
-        Dom.removeEventListener('keydown', keyDown, false);
-        Dom.addEventListener('keyup', keyUp, false);
-    };
-
-    this.bind = (Dom) => {
-        Dom.addEventListener('keydown', keyDown, false);
-        Dom.addEventListener('keyup', keyUp, false);
-    };
-
     const move = (actualMoveSpeed) => {
         camera.getWorldDirection(camVector);
+
         leftRigthVector.crossVectors(this.up, camVector).normalize();
         leftRigthVector.multiplyScalar(actualMoveSpeed);
 
         if (!this.yMovements) {
             camVector.y = 0;
         }
+
         camVector.normalize();
         camVector.multiplyScalar(actualMoveSpeed);
 
-        verticalVector.copy(this.up);
-
-        verticalVector.multiplyScalar(actualMoveSpeed);
+        verticalSpeedVector.copy(this.up);
+        verticalSpeedVector.multiplyScalar(actualMoveSpeed);
 
 
         if (moveForward) {
@@ -92,17 +84,18 @@ function walking(camera, controls) {
             controls.target.sub(leftRigthVector);
         }
         if (moveUp) {
-            camera.position.add(verticalVector);
-            controls.target.add(verticalVector);
+            camera.position.add(verticalSpeedVector);
+            controls.target.add(verticalSpeedVector);
         }
         if (moveDown) {
-            camera.position.sub(verticalVector);
-            controls.target.sub(verticalVector);
+            camera.position.sub(verticalSpeedVector);
+            controls.target.sub(verticalSpeedVector);
         }
     };
 
     this.update = (elapsed) => {
         if (this.enabled === false) {
+            console.log('movements not enabled');
             return;
         }
         delta = elapsed - t0;
@@ -115,7 +108,55 @@ function walking(camera, controls) {
         }
     };
 
-    this.bind(window);
+    const populateGui = (gui) => {
+        const walkingUI = gui.addFolder('walking UI');
+
+        walkingUI.add(this, 'movementSpeed', 0, 20);
+        walkingUI.add(this, 'enabled');
+        walkingUI.add(this, 'yMovements');
+        const walkControls = walkingUI.add(this, 'walkControls');
+
+        walkControls.onChange((bool) => {
+            walkSwitch(bool);
+        });
+        return walkingUI;
+    };
+
+    this.addListener = (Dom) => {
+        Dom.addEventListener('keydown', keyDown, false);
+        Dom.addEventListener('keyup', keyUp, false);
+    };
+
+    const removeGuiFolder = (gui, folder) => {
+        gui.removeFolder(folder);
+    };
+
+    this.destroy = (Dom) => {
+        Dom.removeEventListener('keydown', keyDown, false);
+        Dom.addEventListener('keyup', keyUp, false);
+        removeGuiFolder(window.gui, walkingUI);
+    };
+
+    const walkSwitch = (isWalk) => {
+        const newTargetPosition = new THREE.Vector3();
+        camera.getWorldDirection(newTargetPosition);
+        console.log(newTargetPosition);
+        newTargetPosition.normalize();
+        if (isWalk) {
+            newTargetPosition.multiplyScalar(0.1);
+        } else {
+            newTargetPosition.multiplyScalar(100);
+        }
+
+        controls.target.copy(newTargetPosition.add(camera.position));
+    };
+
+
+    this.addListener(window);
+    const walkingUI = populateGui(window.gui);
+
+
+    // loadGui();
 }
 
 export default walking;

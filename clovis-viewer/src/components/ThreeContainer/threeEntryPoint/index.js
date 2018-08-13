@@ -12,7 +12,11 @@ import Listeners from './Listeners';
 const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReact) => {
     const canvas = createCanvas(document, domContainer);
     const InitializedScene = InitScene(canvas, buildingGltfPath);
-
+    DatGui(
+        canvas,
+        InitializedScene,
+        sceneManager,
+    );
     const sceneManager = SceneManager(
         canvas,
         // Passing initialized objects like {scene}, {camera}, {renderer}, {controls}
@@ -30,11 +34,7 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
 
 
     // LAUNCH MAIN FUNCTIONS
-    DatGui(
-        canvas,
-        InitializedScene,
-        sceneManager,
-    );
+
     Listeners(
         canvas,
         InitializedScene,

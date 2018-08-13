@@ -9,6 +9,19 @@ const SceneManager = (canvas, InitializedScene) => {
         controls,
     } = InitializedScene;
 
+
+    // const allSceneSubjects = {
+    //     Walking: object,
+    //     Rainbow: object,
+    //     VR: object,
+    // };
+
+    // const sceneSubjectsEx = [
+    //     allSceneSubjects.allSceneSubjects,
+    //     allSceneSubjects.VR,
+    // ];
+
+
     /**
      * creates the scene subjects. modular elements meant for plug and play
      * @param {*} scene the main scene as an input for the SUbjects
@@ -17,7 +30,7 @@ const SceneManager = (canvas, InitializedScene) => {
     function createSceneSubjects(scene) {
         // not yet implemented
         const sceneSubjects = [
-            new Walking(camera, controls),
+            new Walking(scene, camera, controls),
             // new GeneralLights(scene),
         ];
         return sceneSubjects;
@@ -29,7 +42,9 @@ const SceneManager = (canvas, InitializedScene) => {
     function update() {
         // update sceneSubjects every cycle
         const elapsedTime = clock.getElapsedTime();
-        for (let i = 0; i < sceneSubjects.length; i++) { sceneSubjects[i].update(elapsedTime); }
+        for (let i = 0; i < sceneSubjects.length; i++) {
+            sceneSubjects[i].update(elapsedTime);
+        }
         // required if controls.enableDamping or controls.autoRotate are set to true
 	    controls.update();
         renderer.render(scene, camera);
