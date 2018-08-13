@@ -27,12 +27,12 @@ function walking(scene, camera, controls) {
 
     function keyDown(event) {
         switch (event.keyCode) {
-        case 87: /* W */ moveForward = true; break;
-        case 65: /* A */ moveLeft = true; break;
-        case 83: /* S */ moveBackward = true; break;
-        case 68: /* D */ moveRight = true; break;
-        case 82: /* R */ moveUp = true; break;
-        case 70: /* F */ moveDown = true; break;
+        case 69: /* E */ moveForward = true; break;
+        case 83: /* S */ moveLeft = true; break;
+        case 68: /* D */ moveBackward = true; break;
+        case 70: /* F */ moveRight = true; break;
+        case 84: /* T */ moveUp = true; break;
+        case 71: /* G */ moveDown = true; break;
         default: break;
         }
         // move(1);
@@ -40,12 +40,12 @@ function walking(scene, camera, controls) {
 
     function keyUp(event) {
         switch (event.keyCode) {
-        case 87: /* W */ moveForward = false; break;
-        case 65: /* A */ moveLeft = false; break;
-        case 83: /* S */ moveBackward = false; break;
-        case 68: /* D */ moveRight = false; break;
-        case 82: /* R */ moveUp = false; break;
-        case 70: /* F */ moveDown = false; break;
+        case 69: /* E */ moveForward = false; break;
+        case 83: /* S */ moveLeft = false; break;
+        case 68: /* D */ moveBackward = false; break;
+        case 70: /* F */ moveRight = false; break;
+        case 84: /* T */ moveUp = false; break;
+        case 71: /* G */ moveDown = false; break;
         default: break;
         }
     }
