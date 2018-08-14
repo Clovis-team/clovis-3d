@@ -37,8 +37,6 @@ function onKeyPressed(event) {
 
     // Utilitary to show hide the stats as gui does on H shortcut
     if (event.key === 'h' && typeof document.getElementById('stats-container') !== 'undefined') {
-        console.log('H PRESSED :');
-        console.log('document.getElementById(`stats-container`).style :', document.getElementById('stats-container').style);
         if (document.getElementById('stats-container').style.display === 'block'
             || document.getElementById('stats-container').style.display === ''
         ) {

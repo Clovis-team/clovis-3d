@@ -8,15 +8,13 @@
 const ViewerButtons = (ButtonsContainer) => {
     // Create the Menu button
     const MenuButton = document.createElement('div');
-    MenuButton.style = {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        color: 'red',
-        height: '2rem',
-        width: '2rem',
-        // WIP
-    };
+    MenuButton.style.position = 'absolute';
+    MenuButton.style.top = '0';
+    MenuButton.style.left = '0';
+    MenuButton.style.backgroundColor = 'red';
+    MenuButton.style.height = '10rem';
+    MenuButton.style.width = '10rem';
+    MenuButton.className = 'three-clovis-buttons-container';
 
     ButtonsContainer.appendChild(MenuButton);
 };
