@@ -13,6 +13,7 @@ const SceneManager = (canvas, InitializedScene) => {
         renderer,
         getSceneCamera,
         getSceneControls,
+        getBuildingDatas,
     } = InitializedScene;
 
     // used for getting time between frames for calculating updates
@@ -100,7 +101,7 @@ const SceneManager = (canvas, InitializedScene) => {
 
     // Virtual Joystick stuff
     VirtualJoystick();
-    MenuAndButtons();
+    MenuAndButtons(getBuildingDatas);
 
 
     return {

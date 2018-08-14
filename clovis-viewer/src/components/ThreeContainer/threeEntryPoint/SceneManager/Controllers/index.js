@@ -133,6 +133,47 @@ function ToggleWalking() {
 }
 
 
+function get_main_floor(floor_array) {
+    let max_value = 0;
+    let max_id = 0;
+    floor_array.forEach((floor, index) => {
+        if (floor.children.length > max_value) {
+            max_value = floor.children.length;
+            max_id = index;
+        }
+    });
+    return max_id;
+}
+function toggleBuildingExplosion(floorsExploded, getBuildingDatas) {
+    const buildingDatas = getBuildingDatas();
+    const { floors } = buildingDatas;
+    const z_delta = 20;
+
+    const main_floor = get_main_floor(floors);
+
+    switch (floorsExploded.exploded) {
+    case true: {
+        floors.forEach((floor_no, index) => {
+            const floor = floor_no;
+            floor.position.z -= (z_delta * (index - main_floor));
+        });
+        floorsExploded.exploded = false;
+        break;
+    }
+    case false: {
+        floors.forEach((floor_no, index) => {
+            const floor = floor_no;
+            floor.position.z += (z_delta * (index - main_floor));
+        });
+        floorsExploded.exploded = true;
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+
 export default {
     canvasHalfWidth,
     resizeCanvas,
@@ -143,4 +184,5 @@ export default {
     onDocumentMouseClick,
     onDocumentTouchEnd,
     ToggleWalking,
+    toggleBuildingExplosion,
 };

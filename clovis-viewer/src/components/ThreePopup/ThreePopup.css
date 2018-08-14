@@ -264,6 +264,7 @@
   cursor: pointer;
   position: relative;
   user-select: none;
+  opacity: 0.9;
 }
 
 .three-clovis-buttons-container > div > div {

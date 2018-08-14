@@ -1,4 +1,4 @@
-
+import Controllers from '../Controllers';
 
 export const MenuToggle = () => {
     console.log('MenuToggle');
@@ -31,7 +31,11 @@ export const createToggleMenuButton = (ButtonsContainer) => {
         .appendChild(InfoBar);
 };
 
-export const createToggleExplosionButton = (ButtonsContainer) => {
+export const createToggleExplosionButton = (ButtonsContainer, getBuildingDatas) => {
+    const floorsExploded = {
+        exploded: false,
+    };
+
     const InnerButton = document.createElement('div');
     InnerButton.innerHTML = '✧';
 
@@ -42,6 +46,9 @@ export const createToggleExplosionButton = (ButtonsContainer) => {
     const ToggleExplosionButton = document.createElement('div');
     ToggleExplosionButton.className = 'three-clovis-buttons_explosion';
     ToggleExplosionButton.appendChild(InnerButton);
+    ToggleExplosionButton.onclick = () => {
+        Controllers.toggleBuildingExplosion(floorsExploded, getBuildingDatas);
+    };
 
     ButtonsContainer
         .appendChild(ToggleExplosionButton)

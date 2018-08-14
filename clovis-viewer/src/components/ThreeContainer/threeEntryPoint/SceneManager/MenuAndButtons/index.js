@@ -10,11 +10,11 @@ import {
 } from './utils';
 
 
-const ViewerButtons = (ButtonsContainer) => {
+const ViewerButtons = (ButtonsContainer, getBuildingDatas) => {
     // Create the Menu button
     createToggleMenuButton(ButtonsContainer);
     // Create other action buttons
-    createToggleExplosionButton(ButtonsContainer);
+    createToggleExplosionButton(ButtonsContainer, getBuildingDatas);
     createHorizontalSectionButton(ButtonsContainer);
     createCrossSectionButton(ButtonsContainer);
 };
@@ -23,12 +23,12 @@ const ViewerButtons = (ButtonsContainer) => {
 
 // };
 
-const MenuAndButtons = () => {
+const MenuAndButtons = (getBuildingDatas) => {
     // const MenuContainer = document.getElementById('three-clovis-menu-container');
     const ButtonsContainer = document.getElementById('three-clovis-buttons-container');
 
     // Display viewer buttons
-    ViewerButtons(ButtonsContainer);
+    ViewerButtons(ButtonsContainer, getBuildingDatas);
 };
 
 export default MenuAndButtons;
