@@ -31,8 +31,23 @@ function onKeyPressed(event) {
         // Go down
         'g',
     ];
-    if (walking_keys.indexOf(event.key) > -1) {
-        console.log(event);
+    // if (walking_keys.indexOf(event.key) > -1) {
+    //     console.log(event);
+    // }
+
+    // Utilitary to show hide the stats as gui does on H shortcut
+    if (event.key === 'h' && typeof document.getElementById('stats-container') !== 'undefined') {
+        console.log('H PRESSED :');
+        console.log('document.getElementById(`stats-container`).style :', document.getElementById('stats-container').style);
+        if (document.getElementById('stats-container').style.display === 'block'
+            || document.getElementById('stats-container').style.display === ''
+        ) {
+            console.log('OK ITS VISIBLE:');
+            document.getElementById('stats-container').style.display = 'none';
+        } else {
+            console.log('OK ITS NOT VISIBLE:');
+            document.getElementById('stats-container').style.display = 'block';
+        }
     }
 }
 

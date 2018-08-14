@@ -38,13 +38,13 @@ const Listeners = (
     );
 
     // This listener is working
-    // window.addEventListener(
-    //     'keypress',
-    //     (e) => {
-    //         Controllers.onKeyPressed(e);
-    //     },
-    //     false,
-    // );
+    window.addEventListener(
+        'keypress',
+        (e) => {
+            Controllers.onKeyPressed(e);
+        },
+        false,
+    );
 
     // We have to wait the end of Gltf treatment to display the Menus and Tools
     // because they need the resulting datas
