@@ -60,11 +60,12 @@ class App extends Component {
           </p>
         </div>
 
-
-        <ThreePopup
-          isViewerOpened={this.state.isViewerOpened}
-          OnViewerClose={this.OnViewerClose}
-        />
+        { this.state.isViewerOpened &&
+          <ThreePopup
+            isViewerOpened={this.state.isViewerOpened}
+            OnViewerClose={this.OnViewerClose}
+          />
+        }
       </div>
     )
   }

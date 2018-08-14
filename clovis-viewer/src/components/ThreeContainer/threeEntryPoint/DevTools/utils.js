@@ -28,6 +28,8 @@ export function loadRendererStats() {
 
 /** GUI is the black top left menu with many controls */
 export function loadGui() {
+    if (typeof window.gui !== 'undefined') window.gui.destroy();
+
     window.gui = new dat.GUI();
 
     // Place the GUI inside the right html container
