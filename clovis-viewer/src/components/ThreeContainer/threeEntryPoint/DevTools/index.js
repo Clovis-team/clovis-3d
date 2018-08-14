@@ -21,7 +21,10 @@ const DevTools = (InitializedScene) => {
     // Initalize rendererStats, an other Three.js tool to monitor performances
     const rendererStats = loadRendererStats(renderer);
     // Initialize dat.gui menu
-    const gui = loadGui({ autoPlace: false });
+    const gui = loadGui({
+        autoPlace: false,
+        closed: true,
+    });
 
     // Usefull to use Three.js Chrome inspector
     window.scene = scene;

@@ -36,15 +36,20 @@ function onKeyPressed(event) {
     // }
 
     // Utilitary to show hide the stats as gui does on H shortcut
-    if (event.key === 'h' && typeof document.getElementById('stats-container') !== 'undefined') {
-        if (document.getElementById('stats-container').style.display === 'block'
-            || document.getElementById('stats-container').style.display === ''
-        ) {
-            console.log('OK ITS VISIBLE:');
+    if (event.key === 'i'
+        && typeof document.getElementById('stats-container') !== 'undefined'
+        && typeof document.getElementById('gui-container') !== 'undefined'
+    ) {
+        if (document.getElementById('stats-container').style.display === 'block') {
             document.getElementById('stats-container').style.display = 'none';
         } else {
-            console.log('OK ITS NOT VISIBLE:');
             document.getElementById('stats-container').style.display = 'block';
+        }
+
+        if (document.getElementById('gui-container').style.display === 'block') {
+            document.getElementById('gui-container').style.display = 'none';
+        } else {
+            document.getElementById('gui-container').style.display = 'block';
         }
     }
 }

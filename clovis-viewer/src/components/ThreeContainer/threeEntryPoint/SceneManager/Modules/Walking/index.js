@@ -119,6 +119,7 @@ function walking(scene, camera, controls) {
         walkControls.onChange((bool) => {
             walkSwitch(bool);
         });
+
         return walkingUI;
     };
 

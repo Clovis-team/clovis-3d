@@ -15,8 +15,8 @@ const ViewerButtons = (ButtonsContainer) => {
     createToggleMenuButton(ButtonsContainer);
     // Create other action buttons
     createToggleExplosionButton(ButtonsContainer);
-    createCrossSectionButton(ButtonsContainer);
     createHorizontalSectionButton(ButtonsContainer);
+    createCrossSectionButton(ButtonsContainer);
 };
 
 // const Menu = () => {

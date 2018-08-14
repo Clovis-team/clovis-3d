@@ -44,6 +44,7 @@
   position: absolute;
   top: 0;
   left: 0;
+  display: none;
 }
 
 .dg.a {
@@ -153,6 +154,7 @@
   position: absolute;
   bottom: 0;
   right: 0;
+  display: none;
 }
 
 .renderer-stats > div {
