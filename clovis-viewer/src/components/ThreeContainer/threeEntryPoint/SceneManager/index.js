@@ -3,6 +3,7 @@ import Controllers from './Controllers';
 // import Cameras from './Cameras';
 import Walking from './Modules/Walking';
 import VirtualJoystick from './VirtualJoystick';
+import MenuAndButtons from './MenuAndButtons';
 import 'three/examples/js/loaders/GLTFLoader';
 import 'three/examples/js/controls/OrbitControls';
 
@@ -99,6 +100,7 @@ const SceneManager = (canvas, InitializedScene) => {
 
     // Virtual Joystick stuff
     VirtualJoystick();
+    MenuAndButtons();
 
 
     return {
