@@ -2,21 +2,21 @@
  * Buttons and Controls directly on the viewer
  */
 
-// import { MenuToggle } from './utils';
+import {
+    createToggleMenuButton,
+    createToggleExplosionButton,
+    createCrossSectionButton,
+    createHorizontalSectionButton,
+} from './utils';
 
 
 const ViewerButtons = (ButtonsContainer) => {
     // Create the Menu button
-    const MenuButton = document.createElement('div');
-    MenuButton.style.position = 'absolute';
-    MenuButton.style.top = '0';
-    MenuButton.style.left = '0';
-    MenuButton.style.backgroundColor = 'red';
-    MenuButton.style.height = '10rem';
-    MenuButton.style.width = '10rem';
-    MenuButton.className = 'three-clovis-buttons-container';
-
-    ButtonsContainer.appendChild(MenuButton);
+    createToggleMenuButton(ButtonsContainer);
+    // Create other action buttons
+    createToggleExplosionButton(ButtonsContainer);
+    createCrossSectionButton(ButtonsContainer);
+    createHorizontalSectionButton(ButtonsContainer);
 };
 
 // const Menu = () => {
