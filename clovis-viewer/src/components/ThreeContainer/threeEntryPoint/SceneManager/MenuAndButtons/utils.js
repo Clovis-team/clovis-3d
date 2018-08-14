@@ -49,6 +49,9 @@ export const createToggleExplosionButton = (ButtonsContainer, getBuildingDatas) 
     ToggleExplosionButton.onclick = () => {
         Controllers.toggleBuildingExplosion(floorsExploded, getBuildingDatas);
     };
+    ToggleExplosionButton.addEventListener('touchstart', () => {
+        Controllers.toggleBuildingExplosion(floorsExploded, getBuildingDatas);
+    }, false);
 
     ButtonsContainer
         .appendChild(ToggleExplosionButton)
