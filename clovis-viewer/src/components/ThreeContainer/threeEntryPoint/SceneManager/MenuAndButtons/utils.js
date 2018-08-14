@@ -25,6 +25,12 @@ export const createToggleMenuButton = (ButtonsContainer) => {
     const ToggleMenuButton = document.createElement('div');
     ToggleMenuButton.className = 'three-clovis-buttons_menu';
     ToggleMenuButton.appendChild(InnerButton);
+    ToggleMenuButton.onclick = () => {
+        Controllers.toggleViewerMenu();
+    };
+    ToggleMenuButton.addEventListener('touchstart', () => {
+        Controllers.toggleViewerMenu();
+    }, false);
 
     ButtonsContainer
         .appendChild(ToggleMenuButton)
@@ -100,4 +106,22 @@ export const createCrossSectionButton = (ButtonsContainer) => {
     ButtonsContainer
         .appendChild(CrossSectionButton)
         .appendChild(InfoBar);
+};
+
+
+// MENU CONTENT STUFF
+
+export const createCloseButton = (MenuContainer) => {
+    const closeButton = document.createElement('div');
+    closeButton.className = 'three-menu_close-button';
+    closeButton.innerHTML = '↤';
+    closeButton.onclick = () => {
+        Controllers.toggleViewerMenu();
+    };
+    closeButton.addEventListener('touchstart', () => {
+        Controllers.toggleViewerMenu();
+    }, false);
+
+    MenuContainer
+        .appendChild(closeButton);
 };

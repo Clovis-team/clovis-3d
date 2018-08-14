@@ -156,8 +156,30 @@
 
 .three-clovis-menu-container {
   position: absolute;
+  z-index: 1000;
   top: 0;
   left: 0;
+  bottom: 0;
+  width: 12rem;
+  background-color: rgba(6, 13, 45, 0.6);
+  transform: translate3d(-16rem, 0, 0);
+  transition: all 0.3s ease-in-out;
+}
+.popup-viewer_menu-open .three-clovis-menu-container {
+  transform: translate3d(0, 0, 0);
+}
+.popup-viewer_menu-open .three-clovis-buttons-container {
+  display: none;
+}
+.popup-viewer_menu-open .joystick1-container {
+  display: none;
+}
+.popup-viewer_menu-open .joystick2-container {
+  display: none;
+}
+.popup-viewer_menu-open .three-menu_close-button {
+  visibility: visible;
+  opacity: 1;
 }
 
 .three-clovis-buttons-container {
@@ -234,4 +256,30 @@
 
 .three-clovis-buttons_menu {
   margin-bottom: 1rem !important;
+}
+
+.three-menu_close-button {
+  position: absolute;
+  right: -3rem;
+  top: 0;
+  bottom: 0;
+  width: 3rem;
+  font-size: 2rem;
+  color: white;
+  justify-content: center;
+  display: flex;
+  background-color: rgba(6, 13, 45, 0.7);
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s opacity;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.three-menu_close-button:hover {
+  background-color: rgba(6, 13, 45, 0.8);
+}
+
+.three-menu_close-button:hover:active {
+  opacity: 0.6;
 }

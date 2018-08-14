@@ -9,11 +9,14 @@ const ThreePopup = ({ isViewerOpened, OnViewerClose }) => {
     const popupClassName = `popup-viewer ${isViewerOpened ? 'popup-viewer-open' : ''}`;
 
     return (
-      <div className={popupClassName}>
+      <div
+          className={popupClassName}
+          id="popup-viewer"
+        >
 
           <div
               className="popup-close-button"
-                onClick={e => OnViewerClose()}
+              onClick={e => OnViewerClose()}
             >
             ✕
             </div>
@@ -22,26 +25,26 @@ const ThreePopup = ({ isViewerOpened, OnViewerClose }) => {
           id="joystick1-container"
           className="joystick1-container"
         />
-            <div
-                id="joystick2-container"
-          className="joystick2-container"
-        />
           <div
-          id="three-clovis-menu-container"
-          className="three-clovis-menu-container"
-        />
-            <div
+                id="joystick2-container"
+              className="joystick2-container"
+            />
+          <div
           id="three-clovis-buttons-container"
           className="three-clovis-buttons-container"
         />
+          <div
+                id="three-clovis-menu-container"
+                className="three-clovis-menu-container"
+            />
             <div
                 id="gui-container"
                 className="gui-container"
-          />
-          <div
-        id="stats-container"
+        />
+            <div
+          id="stats-container"
                 className="stats-container"
-      />
+        />
 
 
           <div
