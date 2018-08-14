@@ -14,8 +14,8 @@ const VirtualJoystick = () => {
         zone: joystick1DomContainer,
         mode: 'static',
         position: {
-            left: '8rem',
-            bottom: '8rem',
+            left: '6rem',
+            bottom: '6rem',
         },
         color: '#00b16a',
         threshold: 0.2,
@@ -24,8 +24,8 @@ const VirtualJoystick = () => {
         zone: joystick2DomContainer,
         mode: 'static',
         position: {
-            right: '8rem',
-            bottom: '8rem',
+            left: '14rem',
+            bottom: '6rem',
         },
         color: '#00b16a',
         lockY: true,

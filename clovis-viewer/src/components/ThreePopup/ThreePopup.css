@@ -151,7 +151,7 @@
 .joystick2-container {
   position: absolute;
   bottom: 0;
-  right: 0;
+  left: 0;
 }
 
 .three-clovis-menu-container {
