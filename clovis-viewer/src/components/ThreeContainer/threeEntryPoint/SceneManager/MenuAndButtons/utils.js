@@ -87,6 +87,16 @@ export const createCrossSectionButton = (ButtonsContainer) => {
     CrossSectionButton.className = 'three-clovis-buttons_cross-section';
     CrossSectionButton.appendChild(InnerButton);
 
+    // Easter Egg / Let the devtools appear holding the CrossSectionButton
+    let timeout_id = 0;
+    const hold_time = 2000;
+    CrossSectionButton.ontouchstart = () => {
+        timeout_id = setTimeout(Controllers.toggleDevTools, hold_time);
+    };
+    CrossSectionButton.ontouchend = () => {
+        clearTimeout(timeout_id);
+    };
+
     ButtonsContainer
         .appendChild(CrossSectionButton)
         .appendChild(InfoBar);

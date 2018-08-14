@@ -15,6 +15,26 @@ function onMouseMove({ screenX, screenY }) {
     // console.log('mouse moved');
 }
 
+function toggleDevTools() {
+    if (
+        typeof document.getElementById('stats-container') !== 'undefined'
+        && typeof document.getElementById('gui-container') !== 'undefined'
+    ) {
+        if (document.getElementById('stats-container').style.display === 'block') {
+            document.getElementById('stats-container').style.display = 'none';
+        } else {
+            document.getElementById('stats-container').style.display = 'block';
+        }
+
+        if (document.getElementById('gui-container').style.display === 'block') {
+            document.getElementById('gui-container').style.display = 'none';
+        } else {
+            document.getElementById('gui-container').style.display = 'block';
+        }
+    }
+}
+
+
 function onKeyPressed(event) {
     // TODO: implement a submodule of walking around;
     const walking_keys = [
@@ -36,21 +56,8 @@ function onKeyPressed(event) {
     // }
 
     // Utilitary to show hide the stats as gui does on H shortcut
-    if (event.key === 'i'
-        && typeof document.getElementById('stats-container') !== 'undefined'
-        && typeof document.getElementById('gui-container') !== 'undefined'
-    ) {
-        if (document.getElementById('stats-container').style.display === 'block') {
-            document.getElementById('stats-container').style.display = 'none';
-        } else {
-            document.getElementById('stats-container').style.display = 'block';
-        }
-
-        if (document.getElementById('gui-container').style.display === 'block') {
-            document.getElementById('gui-container').style.display = 'none';
-        } else {
-            document.getElementById('gui-container').style.display = 'block';
-        }
+    if (event.key === 'i') {
+        toggleDevTools();
     }
 }
 
@@ -185,4 +192,5 @@ export default {
     onDocumentTouchEnd,
     ToggleWalking,
     toggleBuildingExplosion,
+    toggleDevTools,
 };
