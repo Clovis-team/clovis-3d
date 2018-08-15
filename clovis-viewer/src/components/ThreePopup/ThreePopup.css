@@ -160,8 +160,8 @@
   top: 0;
   left: 0;
   bottom: 0;
-  width: 12rem;
-  background-color: rgba(6, 13, 45, 0.7);
+  width: 14rem;
+  background-color: rgba(6, 13, 45, 0.8);
   transform: translate3d(-16rem, 0, 0);
   transition: all 0.3s ease-in-out;
 }
@@ -269,7 +269,7 @@
   color: rgba(255, 255, 255, 0.6);
   justify-content: center;
   display: flex;
-  background-color: rgba(6, 13, 45, 0.75);
+  background-color: rgba(6, 13, 45, 0.85);
   align-items: center;
   cursor: pointer;
   transition: 0.3s opacity;
@@ -279,11 +279,11 @@
 }
 
 .three-menu_close-button:hover {
-  background-color: rgba(6, 13, 45, 0.8);
+  background-color: rgba(6, 13, 45, 0.9);
 }
 
 .three-menu_close-button:hover:active {
-  background-color: rgba(6, 13, 45, 0.9);
+  background-color: rgba(6, 13, 45, 0.95);
   cursor: default;
 }
 
@@ -295,16 +295,23 @@
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.three-menu_menu-content::-webkit-scrollbar {
+  display: none;
 }
 
 .three-menu_section-title {
-  color: rgba(255, 255, 255, 0.4);
+  color: #00b16a;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   text-transform: uppercase;
   font-size: 0.8rem;
   padding: 0.5rem 0.5rem;
+  opacity: 0.8;
+  font-weight: bold;
 }
 
 .three-menu_section-element {
@@ -324,13 +331,17 @@
   overflow: hidden;
 }
 
+.three-menu_section-content {
+  margin-bottom: 1rem;
+}
+
 .three-menu_section-element:hover {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .three-menu_section-element:active {
   cursor: default;
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.1);
   color: #f4b350;
 }
 
@@ -338,3 +349,78 @@
   color: #f4b350;
 }
 
+.three-menu_section-element.tag-element-selected {
+  color: #f4b350;
+}
+
+.three-menu_section-element.tag-element-selected:hover {
+  color: #f4b350 !important;
+}
+
+.three-menu_section-element.tag-element-selected .select-control {
+  background-color: #f4b350;
+}
+
+
+.three-menu_section-element .tag-controls {
+  width: 4.75rem;
+  min-width: 4.75rem;
+  max-width: 4.75rem;
+  height: 2.5rem;
+  display: flex;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.three-menu_section-element .tag-control {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.25rem;
+  margin: 0.5rem;
+  margin-right: 0;
+  cursor: default;
+}
+
+.three-menu_section-element .tag-name {
+  justify-content: flex-start;
+  width: 7.75rem;
+  min-width: 7.75rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.three-menu_section-element .tag-control:hover {
+  cursor: pointer;
+}
+
+.three-menu_section-element .tag-control.select-control:hover {
+  background-color: #f4b350 !important;
+  opacity: 0.4;
+}
+.three-menu_section-element .tag-control.remove-control:hover {
+  background-color: #f64747;
+  opacity: 0.4;
+}
+
+.three-menu_section-element .tag-control:active {
+  cursor: default;
+}
+
+.tags-section .three-menu_section-element {
+  padding: 0;
+}
+.tags-section .three-menu_section-element:hover {
+  color: rgba(255, 255, 255, 0.85);
+  cursor: default;
+}
+
+.three-menu_section-content.tags-section {
+  margin-bottom: 30vh;
+}
+
+.three-menu_section-content.tags-section .three-menu_section-element {
+  cursor: default;
+}

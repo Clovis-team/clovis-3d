@@ -1,3 +1,9 @@
+/**
+ * To find ASCII symbols
+ * https://azuliadesigns.com/html-character-codes-ascii-entity-unicode-symbols/
+ */
+
+import _ from 'lodash';
 import Controllers from '../Controllers';
 
 export const MenuToggle = () => {
@@ -16,12 +22,22 @@ export const MenuToggle = () => {
 
 export const createToggleMenuButton = (ButtonsContainer, getBuildingDatas) => {
     const InnerButton = document.createElement('div');
-    InnerButton.innerHTML = 'Ξ';
+    InnerButton.innerHTML = '☰';
     let selectedFloors = [];
+    let selectedTags = [];
+    let removedTags = [];
 
     const getSelectedFloors = () => selectedFloors;
     const changeSelectedFloors = (new_selectedFloors) => {
         selectedFloors = new_selectedFloors;
+    };
+    const getSelectedTags = () => selectedTags;
+    const changeSelectedTags = (new_selectedtags) => {
+        selectedTags = new_selectedtags;
+    };
+    const getRemovedTags = () => removedTags;
+    const changeRemovedTags = (new_removedTags) => {
+        removedTags = new_removedTags;
     };
 
     const InfoBar = document.createElement('div');
@@ -33,11 +49,27 @@ export const createToggleMenuButton = (ButtonsContainer, getBuildingDatas) => {
     ToggleMenuButton.appendChild(InnerButton);
     ToggleMenuButton.onclick = () => {
         Controllers.toggleViewerMenu();
-        createMenu(getBuildingDatas, getSelectedFloors, changeSelectedFloors);
+        createMenu(
+            getBuildingDatas,
+            getSelectedFloors,
+            changeSelectedFloors,
+            getSelectedTags,
+            changeSelectedTags,
+            getRemovedTags,
+            changeRemovedTags,
+        );
     };
     ToggleMenuButton.addEventListener('touchstart', () => {
         Controllers.toggleViewerMenu();
-        createMenu(getBuildingDatas, getSelectedFloors, changeSelectedFloors);
+        createMenu(
+            getBuildingDatas,
+            getSelectedFloors,
+            changeSelectedFloors,
+            getSelectedTags,
+            changeSelectedTags,
+            getRemovedTags,
+            changeRemovedTags,
+        );
     }, false);
 
     ButtonsContainer
@@ -55,7 +87,7 @@ export const createToggleExplosionButton = (ButtonsContainer, getBuildingDatas) 
 
     const InfoBar = document.createElement('div');
     InfoBar.className = 'three-clovis-buttons_info-bar';
-    InfoBar.innerHTML = 'Explosion';
+    InfoBar.innerHTML = 'Magic Gravity';
 
     const ToggleExplosionButton = document.createElement('div');
     ToggleExplosionButton.className = 'three-clovis-buttons_explosion';
@@ -119,11 +151,40 @@ export const createCrossSectionButton = (ButtonsContainer) => {
 
 // MENU CONTENT STUFF
 
-const createMenu = (getBuildingDatas, getSelectedFloors, changeSelectedFloors) => {
+const createMenu = (
+    getBuildingDatas,
+    getSelectedFloors,
+    changeSelectedFloors,
+    getSelectedTags,
+    changeSelectedTags,
+    getRemovedTags,
+    changeRemovedTags,
+) => {
     const MenuContainer = document.getElementById('three-clovis-menu-container');
 
     createCloseButton(MenuContainer);
-    createMenuContent(MenuContainer, getBuildingDatas, getSelectedFloors, changeSelectedFloors);
+
+    const MenuContent = document.createElement('div');
+    MenuContent.className = 'three-menu_menu-content';
+
+    createFloorsSelectionSection(
+        MenuContent,
+        getBuildingDatas,
+        getSelectedFloors,
+        changeSelectedFloors,
+    );
+
+    createTagsSelectionSection(
+        MenuContent,
+        getBuildingDatas,
+        getSelectedTags,
+        changeSelectedTags,
+        getRemovedTags,
+        changeRemovedTags,
+    );
+
+    MenuContainer
+        .appendChild(MenuContent);
 };
 
 export const createCloseButton = (MenuContainer) => {
@@ -142,7 +203,12 @@ export const createCloseButton = (MenuContainer) => {
 };
 
 
-const createFloorsSelectionSection = (MenuContent, getBuildingDatas, getSelectedFloors, changeSelectedFloors) => {
+const createFloorsSelectionSection = (
+    MenuContent,
+    getBuildingDatas,
+    getSelectedFloors,
+    changeSelectedFloors,
+) => {
     const buildingDatas = getBuildingDatas();
 
     const { floors } = buildingDatas;
@@ -179,17 +245,17 @@ const createFloorsSelectionSection = (MenuContent, getBuildingDatas, getSelected
         };
 
         if (FloorElement.classList.contains('floor-element-selected')) {
+            // Unselect
             const selectedFloors = getSelectedFloors();
             const new_selectedFloors = selectedFloors.filter(floor => floor !== floor_uuid);
             changeSelectedFloors(new_selectedFloors);
 
             updateFloors();
-            // Unselect
             FloorElement.classList.remove('floor-element-selected');
             FloorElement.innerHTML = floorElementText.replace('◉', '◎');
         } else {
-            const selectedFloors = getSelectedFloors();
             // Select
+            const selectedFloors = getSelectedFloors();
             const new_selectedFloors = selectedFloors;
             new_selectedFloors[new_selectedFloors.length] = floor_uuid;
             changeSelectedFloors(new_selectedFloors);
@@ -238,12 +304,141 @@ const createFloorsSelectionSection = (MenuContent, getBuildingDatas, getSelected
         .appendChild(SectionContent);
 };
 
-export const createMenuContent = (MenuContainer, getBuildingDatas, getSelectedFloors, changeSelectedFloors) => {
-    const MenuContent = document.createElement('div');
-    MenuContent.className = 'three-menu_menu-content';
 
-    createFloorsSelectionSection(MenuContent, getBuildingDatas, getSelectedFloors, changeSelectedFloors);
+const createTagsSelectionSection = (
+    MenuContent,
+    getBuildingDatas,
+    getSelectedTags,
+    changeSelectedTags,
+    getRemovedTags,
+    changeRemovedTags,
+) => {
+    const buildingDatas = getBuildingDatas();
 
-    MenuContainer
-        .appendChild(MenuContent);
+    const { building_ifc_elements } = buildingDatas;
+
+    const sortedIfcCategories = _.sortBy(building_ifc_elements, 'name');
+
+    const SectionContent = document.createElement('div');
+    SectionContent.className = 'three-menu_section-content tags-section';
+    SectionContent.id = 'tags-section';
+
+
+    const SectionTitle = document.createElement('div');
+    SectionTitle.className = 'three-menu_section-title';
+    SectionTitle.innerHTML = 'Catégories BIM';
+
+    const SectionElements = document.createElement('div');
+    SectionElements.className = 'three-menu_section-elements';
+
+    const toggleSelectTag = (TagElement, tag_uuid) => {
+        const updateTags = () => {
+            const selectedTags = getSelectedTags();
+
+            building_ifc_elements.forEach((floor) => {
+                if (selectedTags.length > 0) {
+                    if (selectedTags.includes(floor.uuid)) {
+                        building_ifc_elements.visible = true;
+                    } else {
+                        building_ifc_elements.visible = false;
+                    }
+                } else {
+                    building_ifc_elements.visible = true;
+                }
+            });
+        };
+
+        if (TagElement.classList.contains('tag-element-selected')) {
+            // Unselect
+            const selectedTags = getSelectedTags();
+            const new_selectedTags = selectedTags.filter(tag => tag !== tag_uuid);
+            changeSelectedTags(new_selectedTags);
+
+            updateTags();
+            TagElement.classList.remove('tag-element-selected');
+        } else {
+            // Select
+            const selectedTags = getSelectedTags();
+            const new_selectedTags = selectedTags;
+            new_selectedTags[new_selectedTags.length] = tag_uuid;
+            changeSelectedTags(new_selectedTags);
+
+            updateTags();
+
+            TagElement.classList.add('tag-element-selected');
+        }
+
+        console.log('Final selected tags :', getSelectedTags());
+    };
+
+
+    // controller.onChange(() => {
+    //     if (element.visible_order !== element.visible) {
+    //         element.children.forEach((obj_no) => {
+    //             const obj = obj_no;
+    //             obj.visible = element.visible_order;
+    //         });
+    //         element.visible = element.visible_order;
+    //     }
+    // });
+
+    // const toggleSelectTag = (TagElement) => {
+
+    //     if (TagElement.classList.contains('tag-element-selected')) {
+    //         // Unselect
+    //         TagElement.classList.remove('tag-element-selected');
+    //     } else {
+    //         TagElement.classList.add('tag-element-selected');
+    //     }
+    // };
+
+    console.log('building_ifc_elements :', building_ifc_elements);
+
+    sortedIfcCategories.forEach((category_no) => {
+        const category = category_no;
+        const ifc_tag = category.name;
+
+        const TagControls = document.createElement('div');
+        TagControls.className = 'tag-controls';
+
+        const TagControlSelect = document.createElement('div');
+        TagControlSelect.className = 'tag-control select-control';
+        const TagControlRemove = document.createElement('div');
+        TagControlRemove.className = 'tag-control remove-control';
+
+        TagControls.appendChild(TagControlSelect);
+        TagControls.appendChild(TagControlRemove);
+
+        const TagName = document.createElement('div');
+        TagName.className = 'tag-name';
+        TagName.innerHTML = ifc_tag.substring(3);
+
+        const TagElement = document.createElement('div');
+        TagElement.className = 'three-menu_section-element tag-element';
+
+
+        TagElement.appendChild(TagControls);
+        TagElement.appendChild(TagName);
+
+        TagElement.onclick = () => {
+            toggleSelectTag(TagElement, category.uuid, building_ifc_elements);
+        };
+
+
+        // if (getSelectedFloors().length > 0 && floors[i].visible === true) {
+        //     FloorElement.classList.add('floor-element-selected');
+        // }
+        // FloorElement.addEventListener('touchstart', () => {
+        //     toggleTagElement(FloorElement, floors[i].uuid, floors);
+        // }, false);
+
+        SectionElements.appendChild(TagElement);
+    });
+
+
+    SectionContent.appendChild(SectionTitle);
+    SectionContent.appendChild(SectionElements);
+
+    MenuContent
+        .appendChild(SectionContent);
 };
