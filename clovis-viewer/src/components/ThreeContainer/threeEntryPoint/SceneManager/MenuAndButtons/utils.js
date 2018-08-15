@@ -17,7 +17,12 @@ export const MenuToggle = () => {
 export const createToggleMenuButton = (ButtonsContainer, getBuildingDatas) => {
     const InnerButton = document.createElement('div');
     InnerButton.innerHTML = 'Ξ';
-    const selectedFloors = [];
+    let selectedFloors = [];
+
+    const getSelectedFloors = () => selectedFloors;
+    const changeSelectedFloors = (new_selectedFloors) => {
+        selectedFloors = new_selectedFloors;
+    };
 
     const InfoBar = document.createElement('div');
     InfoBar.className = 'three-clovis-buttons_info-bar';
@@ -28,11 +33,11 @@ export const createToggleMenuButton = (ButtonsContainer, getBuildingDatas) => {
     ToggleMenuButton.appendChild(InnerButton);
     ToggleMenuButton.onclick = () => {
         Controllers.toggleViewerMenu();
-        createMenu(getBuildingDatas, selectedFloors);
+        createMenu(getBuildingDatas, getSelectedFloors, changeSelectedFloors);
     };
     ToggleMenuButton.addEventListener('touchstart', () => {
         Controllers.toggleViewerMenu();
-        createMenu(getBuildingDatas, selectedFloors);
+        createMenu(getBuildingDatas, getSelectedFloors, changeSelectedFloors);
     }, false);
 
     ButtonsContainer
@@ -114,11 +119,11 @@ export const createCrossSectionButton = (ButtonsContainer) => {
 
 // MENU CONTENT STUFF
 
-const createMenu = (getBuildingDatas, selectedFloors) => {
+const createMenu = (getBuildingDatas, getSelectedFloors, changeSelectedFloors) => {
     const MenuContainer = document.getElementById('three-clovis-menu-container');
 
     createCloseButton(MenuContainer);
-    createMenuContent(MenuContainer, getBuildingDatas, selectedFloors);
+    createMenuContent(MenuContainer, getBuildingDatas, getSelectedFloors, changeSelectedFloors);
 };
 
 export const createCloseButton = (MenuContainer) => {
@@ -137,11 +142,10 @@ export const createCloseButton = (MenuContainer) => {
 };
 
 
-const createFloorsSelectionSection = (MenuContent, getBuildingDatas, selectedFloors) => {
+const createFloorsSelectionSection = (MenuContent, getBuildingDatas, getSelectedFloors, changeSelectedFloors) => {
     const buildingDatas = getBuildingDatas();
 
     const { floors } = buildingDatas;
-
 
     const SectionContent = document.createElement('div');
     SectionContent.className = 'three-menu_section-content floors-section';
@@ -159,6 +163,8 @@ const createFloorsSelectionSection = (MenuContent, getBuildingDatas, selectedFlo
         const floorElementText = FloorElement.innerHTML;
 
         const updateFloors = () => {
+            const selectedFloors = getSelectedFloors();
+
             floors.forEach((floor) => {
                 if (selectedFloors.length > 0) {
                     if (selectedFloors.includes(floor.uuid)) {
@@ -173,15 +179,20 @@ const createFloorsSelectionSection = (MenuContent, getBuildingDatas, selectedFlo
         };
 
         if (FloorElement.classList.contains('floor-element-selected')) {
-            selectedFloors = selectedFloors.filter(floor => floor !== floor_uuid);
+            const selectedFloors = getSelectedFloors();
+            const new_selectedFloors = selectedFloors.filter(floor => floor !== floor_uuid);
+            changeSelectedFloors(new_selectedFloors);
 
             updateFloors();
             // Unselect
             FloorElement.classList.remove('floor-element-selected');
             FloorElement.innerHTML = floorElementText.replace('◉', '◎');
         } else {
+            const selectedFloors = getSelectedFloors();
             // Select
-            selectedFloors.push(floor_uuid);
+            const new_selectedFloors = selectedFloors;
+            new_selectedFloors[new_selectedFloors.length] = floor_uuid;
+            changeSelectedFloors(new_selectedFloors);
 
             updateFloors();
 
@@ -198,7 +209,7 @@ const createFloorsSelectionSection = (MenuContent, getBuildingDatas, selectedFlo
             FloorElement.className = 'three-menu_section-element floor-element';
             FloorElement.innerHTML = `◎  ${floor_name}`;
 
-            if (selectedFloors.length > 0 && floors[i].visible === true) {
+            if (getSelectedFloors().length > 0 && floors[i].visible === true) {
                 FloorElement.classList.add('floor-element-selected');
             }
 
@@ -227,11 +238,11 @@ const createFloorsSelectionSection = (MenuContent, getBuildingDatas, selectedFlo
         .appendChild(SectionContent);
 };
 
-export const createMenuContent = (MenuContainer, getBuildingDatas, selectedFloors) => {
+export const createMenuContent = (MenuContainer, getBuildingDatas, getSelectedFloors, changeSelectedFloors) => {
     const MenuContent = document.createElement('div');
     MenuContent.className = 'three-menu_menu-content';
 
-    createFloorsSelectionSection(MenuContent, getBuildingDatas, selectedFloors);
+    createFloorsSelectionSection(MenuContent, getBuildingDatas, getSelectedFloors, changeSelectedFloors);
 
     MenuContainer
         .appendChild(MenuContent);
