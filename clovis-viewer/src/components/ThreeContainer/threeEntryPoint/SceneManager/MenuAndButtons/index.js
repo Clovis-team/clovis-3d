@@ -5,7 +5,7 @@
 import {
     createToggleMenuButton,
     createToggleExplosionButton,
-    createCrossSectionButton,
+    // createCrossSectionButton,
     createHorizontalSectionButton,
     createCloseButton,
 } from './utils';
@@ -17,7 +17,7 @@ const ViewerButtons = (ButtonsContainer, getBuildingDatas) => {
     // Create other action buttons
     createToggleExplosionButton(ButtonsContainer, getBuildingDatas);
     createHorizontalSectionButton(ButtonsContainer);
-    createCrossSectionButton(ButtonsContainer);
+    // createCrossSectionButton(ButtonsContainer);
 };
 
 const MenuContent = (MenuContainer) => {

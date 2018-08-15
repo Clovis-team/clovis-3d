@@ -240,6 +240,7 @@
 }
 .three-clovis-buttons-container > div:hover:active > div {
   opacity: 0.5;
+  cursor: default;
 }
 
 .three-clovis-buttons_explosion:hover > div,
@@ -268,18 +269,20 @@
   color: white;
   justify-content: center;
   display: flex;
-  background-color: rgba(6, 13, 45, 0.7);
+  background-color: rgba(6, 13, 45, 0.65);
   align-items: center;
   cursor: pointer;
   transition: 0.3s opacity;
   visibility: hidden;
   opacity: 0;
+  user-select: none;
 }
 
 .three-menu_close-button:hover {
-  background-color: rgba(6, 13, 45, 0.8);
+  background-color: rgba(6, 13, 45, 0.7);
 }
 
 .three-menu_close-button:hover:active {
-  opacity: 0.6;
+  background-color: rgba(6, 13, 45, 0.8);
+  cursor: default;
 }
