@@ -180,11 +180,12 @@ function toggleBuildingExplosion(floorsExploded, getBuildingDatas) {
     }
 }
 
-function toggleViewerMenu() {
+function toggleViewerMenu(MenuContainer) {
     const PopupViewer = document.getElementById('popup-viewer');
 
     if (PopupViewer.classList.contains('popup-viewer_menu-open')) {
         PopupViewer.classList.remove('popup-viewer_menu-open');
+        MenuContainer.innerHTML = '';
     } else {
         PopupViewer.classList.add('popup-viewer_menu-open');
     }

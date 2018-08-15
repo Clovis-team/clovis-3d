@@ -14,9 +14,10 @@ export const MenuToggle = () => {
     }
 };
 
-export const createToggleMenuButton = (ButtonsContainer) => {
+export const createToggleMenuButton = (ButtonsContainer, getBuildingDatas) => {
     const InnerButton = document.createElement('div');
     InnerButton.innerHTML = 'Ξ';
+    const selectedFloors = [];
 
     const InfoBar = document.createElement('div');
     InfoBar.className = 'three-clovis-buttons_info-bar';
@@ -27,9 +28,11 @@ export const createToggleMenuButton = (ButtonsContainer) => {
     ToggleMenuButton.appendChild(InnerButton);
     ToggleMenuButton.onclick = () => {
         Controllers.toggleViewerMenu();
+        createMenu(getBuildingDatas, selectedFloors);
     };
     ToggleMenuButton.addEventListener('touchstart', () => {
         Controllers.toggleViewerMenu();
+        createMenu(getBuildingDatas, selectedFloors);
     }, false);
 
     ButtonsContainer
@@ -111,17 +114,125 @@ export const createCrossSectionButton = (ButtonsContainer) => {
 
 // MENU CONTENT STUFF
 
+const createMenu = (getBuildingDatas, selectedFloors) => {
+    const MenuContainer = document.getElementById('three-clovis-menu-container');
+
+    createCloseButton(MenuContainer);
+    createMenuContent(MenuContainer, getBuildingDatas, selectedFloors);
+};
+
 export const createCloseButton = (MenuContainer) => {
     const closeButton = document.createElement('div');
     closeButton.className = 'three-menu_close-button';
     closeButton.innerHTML = '↤';
     closeButton.onclick = () => {
-        Controllers.toggleViewerMenu();
+        Controllers.toggleViewerMenu(MenuContainer);
     };
     closeButton.addEventListener('touchstart', () => {
-        Controllers.toggleViewerMenu();
+        Controllers.toggleViewerMenu(MenuContainer);
     }, false);
 
     MenuContainer
         .appendChild(closeButton);
+};
+
+
+const createFloorsSelectionSection = (MenuContent, getBuildingDatas, selectedFloors) => {
+    const buildingDatas = getBuildingDatas();
+
+    const { floors } = buildingDatas;
+
+
+    const SectionContent = document.createElement('div');
+    SectionContent.className = 'three-menu_section-content floors-section';
+    SectionContent.id = 'floors-section';
+
+
+    const SectionTitle = document.createElement('div');
+    SectionTitle.className = 'three-menu_section-title';
+    SectionTitle.innerHTML = 'Étages';
+
+    const SectionElements = document.createElement('div');
+    SectionElements.className = 'three-menu_section-elements';
+
+    const toggleFloorElement = (FloorElement, floor_uuid) => {
+        const floorElementText = FloorElement.innerHTML;
+
+        const updateFloors = () => {
+            floors.forEach((floor) => {
+                if (selectedFloors.length > 0) {
+                    if (selectedFloors.includes(floor.uuid)) {
+                        floor.visible = true;
+                    } else {
+                        floor.visible = false;
+                    }
+                } else {
+                    floor.visible = true;
+                }
+            });
+        };
+
+        if (FloorElement.classList.contains('floor-element-selected')) {
+            selectedFloors = selectedFloors.filter(floor => floor !== floor_uuid);
+
+            updateFloors();
+            // Unselect
+            FloorElement.classList.remove('floor-element-selected');
+            FloorElement.innerHTML = floorElementText.replace('◉', '◎');
+        } else {
+            // Select
+            selectedFloors.push(floor_uuid);
+
+            updateFloors();
+
+            FloorElement.classList.add('floor-element-selected');
+            FloorElement.innerHTML = floorElementText.replace('◎', '◉');
+        }
+    };
+
+    if (typeof floors !== 'undefined') {
+        for (let i = floors.length - 1; i >= 0; i -= 1) {
+            const floor_name = floors[i].name.split('_')[1];
+
+            const FloorElement = document.createElement('div');
+            FloorElement.className = 'three-menu_section-element floor-element';
+            FloorElement.innerHTML = `◎  ${floor_name}`;
+
+            if (selectedFloors.length > 0 && floors[i].visible === true) {
+                FloorElement.classList.add('floor-element-selected');
+            }
+
+            FloorElement.onclick = () => {
+                toggleFloorElement(FloorElement, floors[i].uuid, floors);
+            };
+            FloorElement.addEventListener('touchstart', () => {
+                toggleFloorElement(FloorElement, floors[i].uuid, floors);
+            }, false);
+
+            SectionElements.appendChild(FloorElement);
+
+            // gui_floor_folder.add(floors[i], 'visible').name(floor_name);
+        }
+    } else {
+        SectionElements.innerHTML = `
+            Nous ne pouvons pas récupérer les différents étages, vérifier que 
+            votre fichier ifc intègre bien ces données.
+        `;
+    }
+
+    SectionContent.appendChild(SectionTitle);
+    SectionContent.appendChild(SectionElements);
+
+    MenuContent
+        .appendChild(SectionContent);
+};
+
+export const createMenuContent = (MenuContainer, getBuildingDatas, selectedFloors) => {
+    const MenuContent = document.createElement('div');
+    MenuContent.className = 'three-menu_menu-content';
+
+    createFloorsSelectionSection(MenuContent, getBuildingDatas, selectedFloors);
+
+    MenuContainer
+        .appendChild(MenuContent);
 };
