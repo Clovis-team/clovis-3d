@@ -22,7 +22,7 @@ export const MenuToggle = () => {
 
 export const createToggleMenuButton = (ButtonsContainer, getBuildingDatas) => {
     const InnerButton = document.createElement('div');
-    InnerButton.innerHTML = '❒';
+    InnerButton.innerHTML = '☰';
     let selectedFloors = [];
     let selectedTags = [];
     let removedTags = [];
