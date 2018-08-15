@@ -22,7 +22,7 @@ export const MenuToggle = () => {
 
 export const createToggleMenuButton = (ButtonsContainer, getBuildingDatas) => {
     const InnerButton = document.createElement('div');
-    InnerButton.innerHTML = '☰';
+    InnerButton.innerHTML = '❒';
     let selectedFloors = [];
     let selectedTags = [];
     let removedTags = [];
@@ -42,7 +42,7 @@ export const createToggleMenuButton = (ButtonsContainer, getBuildingDatas) => {
 
     const InfoBar = document.createElement('div');
     InfoBar.className = 'three-clovis-buttons_info-bar';
-    InfoBar.innerHTML = 'Menu';
+    InfoBar.innerHTML = 'Menu BIM';
 
     const ToggleMenuButton = document.createElement('div');
     ToggleMenuButton.className = 'three-clovis-buttons_menu';
@@ -280,10 +280,10 @@ const createFloorsSelectionSection = (
             }
 
             FloorElement.onclick = () => {
-                toggleFloorElement(FloorElement, floors[i].uuid, floors);
+                toggleFloorElement(FloorElement, floors[i].uuid);
             };
             FloorElement.addEventListener('touchstart', () => {
-                toggleFloorElement(FloorElement, floors[i].uuid, floors);
+                toggleFloorElement(FloorElement, floors[i].uuid);
             }, false);
 
             SectionElements.appendChild(FloorElement);
@@ -315,9 +315,9 @@ const createTagsSelectionSection = (
 ) => {
     const buildingDatas = getBuildingDatas();
 
-    const { building_ifc_elements } = buildingDatas;
+    const building_ifc_categories = buildingDatas.building_ifc_elements;
 
-    const sortedIfcCategories = _.sortBy(building_ifc_elements, 'name');
+    const sortedIfcCategories = _.sortBy(building_ifc_categories, 'name').reverse();
 
     const SectionContent = document.createElement('div');
     SectionContent.className = 'three-menu_section-content tags-section';
@@ -332,18 +332,41 @@ const createTagsSelectionSection = (
     SectionElements.className = 'three-menu_section-elements';
 
     const toggleSelectTag = (TagElement, tag_uuid) => {
+        //
+
         const updateTags = () => {
             const selectedTags = getSelectedTags();
+            console.log('tag_uuid :', tag_uuid);
+            console.log('selectedTags :', selectedTags);
 
-            building_ifc_elements.forEach((floor) => {
+            // if (category.visible_order !== category.visible) {
+            //     category.children.forEach((obj_no) => {
+            //         const obj = obj_no;
+            //         obj.visible = category.visible_order;
+            //     });
+            //     category.visible = category.visible_order;
+            // }
+
+            building_ifc_categories.forEach((category) => {
+                console.log('category :', category);
+
                 if (selectedTags.length > 0) {
-                    if (selectedTags.includes(floor.uuid)) {
-                        building_ifc_elements.visible = true;
+                    if (selectedTags.includes(category.uuid)) {
+                        category.visible = true;
+                        category.children.forEach((obj) => {
+                            obj.visible = true;
+                        });
                     } else {
-                        building_ifc_elements.visible = false;
+                        category.visible = false;
+                        category.children.forEach((obj) => {
+                            obj.visible = false;
+                        });
                     }
                 } else {
-                    building_ifc_elements.visible = true;
+                    category.visible = true;
+                    category.children.forEach((obj) => {
+                        obj.visible = true;
+                    });
                 }
             });
         };
@@ -369,72 +392,57 @@ const createTagsSelectionSection = (
         }
 
         console.log('Final selected tags :', getSelectedTags());
+        console.log('Final building datas :', getBuildingDatas());
     };
 
 
-    // controller.onChange(() => {
-    //     if (element.visible_order !== element.visible) {
-    //         element.children.forEach((obj_no) => {
-    //             const obj = obj_no;
-    //             obj.visible = element.visible_order;
-    //         });
-    //         element.visible = element.visible_order;
-    //     }
-    // });
+    console.log('building_ifc_categories :', building_ifc_categories);
 
-    // const toggleSelectTag = (TagElement) => {
+    if (typeof building_ifc_categories !== 'undefined') {
+        for (let i = sortedIfcCategories.length - 1; i >= 0; i -= 1) {
+            const category = sortedIfcCategories[i];
+            const ifc_tag = category.name;
 
-    //     if (TagElement.classList.contains('tag-element-selected')) {
-    //         // Unselect
-    //         TagElement.classList.remove('tag-element-selected');
-    //     } else {
-    //         TagElement.classList.add('tag-element-selected');
-    //     }
-    // };
+            const TagControls = document.createElement('div');
+            TagControls.className = 'tag-controls';
 
-    console.log('building_ifc_elements :', building_ifc_elements);
+            const TagControlSelect = document.createElement('div');
+            TagControlSelect.className = 'tag-control select-control';
+            const TagControlRemove = document.createElement('div');
+            TagControlRemove.className = 'tag-control remove-control';
 
-    sortedIfcCategories.forEach((category_no) => {
-        const category = category_no;
-        const ifc_tag = category.name;
+            TagControls.appendChild(TagControlSelect);
+            TagControls.appendChild(TagControlRemove);
 
-        const TagControls = document.createElement('div');
-        TagControls.className = 'tag-controls';
+            const TagName = document.createElement('div');
+            TagName.className = 'tag-name';
+            TagName.innerHTML = ifc_tag.substring(3);
 
-        const TagControlSelect = document.createElement('div');
-        TagControlSelect.className = 'tag-control select-control';
-        const TagControlRemove = document.createElement('div');
-        TagControlRemove.className = 'tag-control remove-control';
-
-        TagControls.appendChild(TagControlSelect);
-        TagControls.appendChild(TagControlRemove);
-
-        const TagName = document.createElement('div');
-        TagName.className = 'tag-name';
-        TagName.innerHTML = ifc_tag.substring(3);
-
-        const TagElement = document.createElement('div');
-        TagElement.className = 'three-menu_section-element tag-element';
+            const TagElement = document.createElement('div');
+            TagElement.className = 'three-menu_section-element tag-element';
+            if (getSelectedTags().length > 0 && sortedIfcCategories[i].visible === true) {
+                TagElement.classList.add('floor-element-selected');
+            }
 
 
-        TagElement.appendChild(TagControls);
-        TagElement.appendChild(TagName);
+            TagElement.appendChild(TagControls);
+            TagElement.appendChild(TagName);
 
-        TagElement.onclick = () => {
-            toggleSelectTag(TagElement, category.uuid, building_ifc_elements);
-        };
+            TagElement.onclick = () => {
+                toggleSelectTag(TagElement, category.uuid);
+            };
+            TagElement.addEventListener('touchstart', () => {
+                toggleSelectTag(TagElement, category.uuid);
+            }, false);
 
-
-        // if (getSelectedFloors().length > 0 && floors[i].visible === true) {
-        //     FloorElement.classList.add('floor-element-selected');
-        // }
-        // FloorElement.addEventListener('touchstart', () => {
-        //     toggleTagElement(FloorElement, floors[i].uuid, floors);
-        // }, false);
-
-        SectionElements.appendChild(TagElement);
-    });
-
+            SectionElements.appendChild(TagElement);
+        }
+    } else {
+        SectionElements.innerHTML = `
+            Nous ne pouvons pas récupérer les différentes catégories IFC, 
+            vérifier que votre fichier ifc intègre bien ces données.
+        `;
+    }
 
     SectionContent.appendChild(SectionTitle);
     SectionContent.appendChild(SectionElements);
