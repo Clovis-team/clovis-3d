@@ -235,3 +235,15 @@
   bottom: 0;
   right: 0;
 }
+
+.three-clovis-menu-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.three-clovis-buttons-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

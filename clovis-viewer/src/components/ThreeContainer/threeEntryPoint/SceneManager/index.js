@@ -1,3 +1,4 @@
+import MenuAndButtons from './MenuAndButtons';
 
 
 import Modules from './Modules';
@@ -62,6 +63,7 @@ const SceneManager = (canvas, InitializedScene) => {
         return renderer;
     }
 
+    MenuAndButtons();
 
     return {
         update,
