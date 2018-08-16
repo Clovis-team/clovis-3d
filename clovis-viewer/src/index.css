@@ -1,0 +1,37 @@
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  font-size: 16px;
+  font-family: sans-serif;
+  height: 100%;
+  cursor: default;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-size: 1rem;
+  touch-action: none;
+  position: fixed;
+  width: 100%;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  background-color: #060d2d;
+  color: #060d2d;
+
+  /* The layout is broken if the screen width is really to small. */
+  min-width: 250px;
+  overflow: hidden;
+
+  /* Android's blue highlights */
+  -webkit-tap-highlight-color: transparent;
+}
+
+#root {
+  height: 100%;
+}
