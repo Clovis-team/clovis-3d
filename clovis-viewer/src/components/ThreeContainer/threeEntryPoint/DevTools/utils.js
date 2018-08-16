@@ -39,35 +39,6 @@ export function loadGui() {
     return window.gui;
 }
 
-// export function populate_gui_cameras(
-//     gui,
-//     getSceneCamera,
-//     getSceneControls,
-//     cameraTypes,
-//     camera_type,
-//     renderer,
-//     change_camera_and_controls,
-//     modifySceneCamera,
-//     modifySceneControls,
-// ) {
-//     const gui_camera = gui.addFolder('Camera options');
-//     const new_camera = { type: camera_type };
-//     const controller = gui_camera.add(new_camera, 'type', cameraTypes);
-
-//     controller.onChange((value) => {
-//         change_camera_and_controls(
-//             cameraTypes,
-//             value,
-//             getSceneCamera,
-//             getSceneControls,
-//             renderer,
-//             modifySceneCamera,
-//             modifySceneControls,
-//         );
-//     });
-// }
-
-
 export function populate_gui_floors(gui, floors) {
     const gui_floor_folder = gui.addFolder('Floors');
 
@@ -112,6 +83,7 @@ function get_main_floor(floor_array) {
     });
     return max_id;
 }
+
 export function populate_gui_explosion(gui, floors) {
     const explosion = {
         z_old: 0,

@@ -11,6 +11,10 @@ export const get_building = (scene) => {
 
 
 export const get_building_ifc_elements = (object) => {
+    // TODO: look into using recursive raytracing for click event and walking
+    // so we can maybe generate a shorter list of all objects.
+    // mesh all, or maybe not even generate it at all.
+
     const building_ifc_elements = [];
     const mesh_all = [];
 
