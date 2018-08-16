@@ -23,7 +23,7 @@ function Cut({
         const planeGeom = new THREE.PlaneGeometry(x, z, 32);
         planeGeom.rotateX(Math.PI / 2);
         const planeMaterial = new THREE.MeshBasicMaterial({
-            color: 0xffff00, side: THREE.DoubleSide, opacity: 0.1, transparent: true,
+            color: 0xf64747, side: THREE.DoubleSide, opacity: 0.2, transparent: true,
         });
         const planeMesh = new THREE.Mesh(planeGeom, planeMaterial);
         return (planeMesh);
@@ -48,7 +48,7 @@ function Cut({
             visiblePlane = makeVisiblePlane(buildingDatas.size);
 
             const edges = new THREE.EdgesGeometry(visiblePlane.geometry);
-            const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffff00 }));
+            const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xf64747 }));
 
             edgedPlane.add(line);
             edgedPlane.add(visiblePlane);
