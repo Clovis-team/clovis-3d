@@ -1,7 +1,7 @@
 import virtualJoystick from './VirtualJoystick';
 import populateGuiWalking from './gui';
 
-function walking(scene, camera, controls) {
+function walk(scene, camera, controls) {
     // if not enabled doesnt move
     this.enabled = true;
     this.movementSpeed = 10; // units per second
@@ -105,8 +105,8 @@ function walking(scene, camera, controls) {
 
         movementVector.applyQuaternion(quaternion);
 
-        console.log('camVector', camVector);
-        console.log('movementVector', movementVector);
+        // console.log('camVector', camVector);
+        // console.log('movementVector', movementVector);
 
         joystickMovementVector.copy(movementVector);
     };
@@ -150,14 +150,9 @@ function walking(scene, camera, controls) {
         moveByJoystickVector(actualMoveSpeed);
     };
 
-    console.log(window.gui);
-
-    // populateGui(window.gui);
-
-
     addListener(window);
     const guiFolder = populateGuiWalking(this, window.gui, camera, controls);
     virtualJoystick(joystickMovement);
 }
 
-export default walking;
+export default walk;

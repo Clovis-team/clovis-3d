@@ -1,9 +1,17 @@
-import Walking from './Walking';
-import Selecting from './Selecting';
+import Walk from './Walk';
+import Select from './Select';
+import Cut from './Cut';
 
-const Modules = (scene, camera, controls, buildingDatas) => {
-    const walkingModule = new Walking(scene, camera, controls);
-    const selectingModule = new Selecting(scene, camera, buildingDatas);
+const Modules = ({
+    scene,
+    renderer,
+    camera,
+    controls,
+    buildingDatas,
+}) => {
+    const walkModule = new Walk(scene, camera, controls);
+    const selectModule = new Select(scene, camera, buildingDatas);
+    const cutModule = new Cut(renderer);
 
     /**
      * creates the modulesArray. modular elements meant for plug and play
@@ -11,7 +19,7 @@ const Modules = (scene, camera, controls, buildingDatas) => {
      */
     function createModules() {
         const modulesArray = [
-            walkingModule,
+            walkModule,
             // selectingModule,
         ];
         return modulesArray;

@@ -7,6 +7,7 @@ const fillBuildingDatas = (building, buidlingDatas) => {
         building_ifc_elements,
         mesh_all,
     } = get_building_ifc_elements(building);
+    buidlingDatas.building = building;
 
     buidlingDatas.ifc_elements = building_ifc_elements;
     buidlingDatas.mesh_all = mesh_all;

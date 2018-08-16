@@ -1,4 +1,4 @@
-function Selecting(scene, camera, buildingDatas) {
+function Select(scene, camera, buildingDatas) {
     const mouse = {};
 
     const obj_selection = {
@@ -11,13 +11,8 @@ function Selecting(scene, camera, buildingDatas) {
     const raycaster = new THREE.Raycaster();
 
     function onDocumentMouseClick(event) {
-        console.log('1111 CLICK 2:');
-        // event.preventDefault();
-
-
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        console.log(mouse);
 
         if (obj_selection.obj_old && obj_selection.obj_old_material) {
             obj_selection.obj_old.material = obj_selection.obj_old_material;
@@ -56,4 +51,4 @@ function add_sphere_on_click(intersected, scene) {
     scene.add(sphere);
 }
 
-export default Selecting;
+export default Select;
