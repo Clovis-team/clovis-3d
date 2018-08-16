@@ -7,25 +7,20 @@ import {
     createToggleMenuButton,
     createToggleExplosionButton,
     // createCrossSectionButton,
+    createHelpButton,
     createHorizontalSectionButton,
 } from './utils';
 
+const MenuAndButtons = (getBuildingDatas) => {
+    const ButtonsContainer = document.getElementById('three-clovis-buttons-container');
 
-const ViewerButtons = (ButtonsContainer, getBuildingDatas) => {
     // Create the Menu button
     createToggleMenuButton(ButtonsContainer, getBuildingDatas);
     // Create other action buttons
     createToggleExplosionButton(ButtonsContainer, getBuildingDatas);
     createHorizontalSectionButton(ButtonsContainer);
+    createHelpButton(ButtonsContainer);
     // createCrossSectionButton(ButtonsContainer);
-};
-
-
-const MenuAndButtons = (getBuildingDatas) => {
-    const ButtonsContainer = document.getElementById('three-clovis-buttons-container');
-
-    // Display viewer buttons
-    ViewerButtons(ButtonsContainer, getBuildingDatas);
 };
 
 export default MenuAndButtons;

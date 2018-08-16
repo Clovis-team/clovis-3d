@@ -149,6 +149,24 @@ export const createCrossSectionButton = (ButtonsContainer) => {
 };
 
 
+export const createHelpButton = (ButtonsContainer) => {
+    const InnerButton = document.createElement('div');
+    InnerButton.innerHTML = '⚁';
+
+    const InfoBar = document.createElement('div');
+    InfoBar.className = 'three-clovis-buttons_info-bar';
+    InfoBar.innerHTML = 'Tips';
+
+    const HelpButton = document.createElement('div');
+    HelpButton.className = 'three-clovis-buttons_help';
+    HelpButton.appendChild(InnerButton);
+
+    ButtonsContainer
+        .appendChild(HelpButton)
+        .appendChild(InfoBar);
+};
+
+
 // MENU CONTENT STUFF
 
 const createMenu = (
