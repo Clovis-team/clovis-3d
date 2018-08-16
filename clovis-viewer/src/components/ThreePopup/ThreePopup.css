@@ -485,14 +485,14 @@
   align-items: center;
   border-radius: 50%;
   width: 3rem;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
   font-size: 1.25rem;
   color: white;
   user-select: none;
 }
 
 .three-clovis-help_close-button:hover {
-  background: rgba(255, 255, 255, 0.4) !important;
+  background: rgba(255, 255, 255, 0.3) !important;
   cursor: pointer;
 }
 

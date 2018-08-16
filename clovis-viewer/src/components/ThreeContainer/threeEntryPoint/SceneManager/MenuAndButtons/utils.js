@@ -185,7 +185,7 @@ const HelpPopupContent = (HelpPopupContentContainer) => {
 
     const Help2Element = document.createElement('div');
     Help2Element.className = 'three-clovis-buttons_help-element';
-    Help2Element.innerHTML = '<p>⚁<br/><br/>Utilisez E, S, D, T , G pour vous diriger</p>';
+    Help2Element.innerHTML = '<p>⚁<br/><br/>Utilisez E ⇧ - D ⇩ - S ⇦ - F ⇨ - T ⇑ - G ⇓ pour vous diriger</p>';
 
 
     HelpPopupContentContainer.appendChild(HelpTitle);
