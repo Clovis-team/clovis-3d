@@ -11,7 +11,8 @@ const fillBuildingDatas = (building, buidlingDatas) => {
 
     buidlingDatas.ifc_elements = building_ifc_elements;
     buidlingDatas.mesh_all = mesh_all;
-
+    buidlingDatas.size = getObjectSize(building);
+    buidlingDatas.center = getObjectCenter(building);
 
     return {
         floors,

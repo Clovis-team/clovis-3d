@@ -8,10 +8,12 @@ const Modules = ({
     camera,
     controls,
     buildingDatas,
-}) => {
+}, canvas) => {
     const walkModule = new Walk(scene, camera, controls);
     const selectModule = new Select(scene, camera, buildingDatas);
-    const cutModule = new Cut(renderer);
+    const cutModule = new Cut({
+        renderer, controls, canvas, buildingDatas,
+    });
 
     /**
      * creates the modulesArray. modular elements meant for plug and play

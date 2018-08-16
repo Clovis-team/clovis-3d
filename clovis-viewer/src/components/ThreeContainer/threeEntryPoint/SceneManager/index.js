@@ -1,11 +1,4 @@
-import MenuAndButtons from './MenuAndButtons';
-
-
 import Modules from './Modules';
-
-// import 'three/examples/js/loaders/GLTFLoader';
-// import 'three/examples/js/controls/OrbitControls';
-
 
 const SceneManager = (canvas, InitializedScene) => {
     const {
@@ -20,7 +13,7 @@ const SceneManager = (canvas, InitializedScene) => {
     const clock = new THREE.Clock();
 
     // sceneSubjects, now called modulesArray
-    const modulesArray = Modules(InitializedScene);
+    const modulesArray = Modules(InitializedScene, canvas);
 
     /**
      * updates the stuff that has to be updated every frame cycle
@@ -63,7 +56,7 @@ const SceneManager = (canvas, InitializedScene) => {
         return renderer;
     }
 
-    MenuAndButtons();
+    // MenuAndButtons();
 
     return {
         update,
