@@ -417,37 +417,37 @@ const createTagsSelectionSection = (
     const SectionElements = document.createElement('div');
     SectionElements.className = 'three-menu_section-elements';
 
-    const toggleSelectTag = (TagElement, tag_uuid) => {
-        //
+    // WIP, we will use this function later, when the data will be well
+    // prepared
+    const toggleSelectTag = (TagElement, the_category) => {
+        const tag_uuid = the_category.uuid;
 
-        const updateTags = () => {
+        const updateSelectedTags = () => {
             const selectedTags = getSelectedTags();
-            console.log('tag_uuid :', tag_uuid);
-            console.log('selectedTags :', selectedTags);
 
-            // if (category.visible_order !== category.visible) {
-            //     category.children.forEach((obj_no) => {
-            //         const obj = obj_no;
-            //         obj.visible = category.visible_order;
-            //     });
-            //     category.visible = category.visible_order;
-            // }
 
             building_ifc_categories.forEach((category) => {
-                console.log('category :', category);
-
+                // If at least one tag is selected, go to hide all the other ones
                 if (selectedTags.length > 0) {
+                    // If the current category tag is the same as one of selected
+                    // show all the elements inside it
                     if (selectedTags.includes(category.uuid)) {
-                        category.visible = true;
+                        category.visible = false;
                         category.children.forEach((obj) => {
                             obj.visible = true;
                         });
+                        // Else hide of the element inside (because it's not selected)
                     } else {
                         category.visible = false;
                         category.children.forEach((obj) => {
-                            obj.visible = false;
+                            // If the object categories don't match the selected ones, hide it
+                            if (_.intersection(selectedTags, obj.uuid).length === 0) {
+                                obj.visible = false;
+                            }
                         });
                     }
+                // Else if no tag is selected, show all the building so all
+                // the elements of this category
                 } else {
                     category.visible = true;
                     category.children.forEach((obj) => {
@@ -463,7 +463,7 @@ const createTagsSelectionSection = (
             const new_selectedTags = selectedTags.filter(tag => tag !== tag_uuid);
             changeSelectedTags(new_selectedTags);
 
-            updateTags();
+            updateSelectedTags();
             TagElement.classList.remove('tag-element-selected');
         } else {
             // Select
@@ -472,17 +472,58 @@ const createTagsSelectionSection = (
             new_selectedTags[new_selectedTags.length] = tag_uuid;
             changeSelectedTags(new_selectedTags);
 
-            updateTags();
+            updateSelectedTags();
 
             TagElement.classList.add('tag-element-selected');
         }
-
-        console.log('Final selected tags :', getSelectedTags());
-        console.log('Final building datas :', getBuildingDatas());
     };
 
 
-    console.log('building_ifc_categories :', building_ifc_categories);
+    // WIP, we will use this function later, when the data will be well
+    // prepared
+    const toggleRemovedTag = (TagElement, the_category) => {
+        const tag_uuid = the_category.uuid;
+
+        const updateRemovedTags = () => {
+            const removedTags = getRemovedTags();
+
+            building_ifc_categories.forEach((category) => {
+                // Remove all tags children
+                if (removedTags.includes(category.uuid)) {
+                    category.visible = false;
+                    category.children.forEach((obj) => {
+                        obj.visible = false;
+                    });
+                // Else hide of the element inside (because it's not selected)
+                } else {
+                    category.visible = true;
+                    category.children.forEach((obj) => {
+                        obj.visible = true;
+                    });
+                }
+            });
+        };
+
+        if (TagElement.classList.contains('tag-element-removed')) {
+            // Unselect
+            const removedTags = getRemovedTags();
+            const new_removedTags = removedTags.filter(tag => tag !== tag_uuid);
+            changeRemovedTags(new_removedTags);
+
+            updateRemovedTags();
+            TagElement.classList.remove('tag-element-removed');
+        } else {
+            // Select
+            const removedTags = getRemovedTags();
+            const new_removedTags = removedTags;
+            new_removedTags[new_removedTags.length] = tag_uuid;
+            changeRemovedTags(new_removedTags);
+
+            updateRemovedTags();
+
+            TagElement.classList.add('tag-element-removed');
+        }
+    };
 
     if (typeof building_ifc_categories !== 'undefined') {
         for (let i = sortedIfcCategories.length - 1; i >= 0; i -= 1) {
@@ -496,8 +537,10 @@ const createTagsSelectionSection = (
             TagControlSelect.className = 'tag-control select-control';
             const TagControlRemove = document.createElement('div');
             TagControlRemove.className = 'tag-control remove-control';
+            TagControlRemove.innerHTML = '-';
 
-            TagControls.appendChild(TagControlSelect);
+            // WIP : just wait for building data little change from Nicola
+            // TagControls.appendChild(TagControlSelect);
             TagControls.appendChild(TagControlRemove);
 
             const TagName = document.createElement('div');
@@ -506,8 +549,8 @@ const createTagsSelectionSection = (
 
             const TagElement = document.createElement('div');
             TagElement.className = 'three-menu_section-element tag-element';
-            if (getSelectedTags().length > 0 && sortedIfcCategories[i].visible === true) {
-                TagElement.classList.add('floor-element-selected');
+            if (getRemovedTags().length > 0 && sortedIfcCategories[i].visible === false) {
+                TagElement.classList.add('tag-element-removed');
             }
 
 
@@ -515,10 +558,10 @@ const createTagsSelectionSection = (
             TagElement.appendChild(TagName);
 
             TagElement.onclick = () => {
-                toggleSelectTag(TagElement, category.uuid);
+                toggleRemovedTag(TagElement, category);
             };
             TagElement.addEventListener('touchstart', () => {
-                toggleSelectTag(TagElement, category.uuid);
+                toggleRemovedTag(TagElement, category);
             }, false);
 
             SectionElements.appendChild(TagElement);

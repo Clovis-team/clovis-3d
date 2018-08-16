@@ -384,9 +384,9 @@
 
 
 .three-menu_section-element .tag-controls {
-  width: 4.75rem;
-  min-width: 4.75rem;
-  max-width: 4.75rem;
+  width: 2.75rem;
+  min-width: 2.75rem;
+  max-width: 2.75rem;
   height: 2.5rem;
   display: flex;
   border-radius: 0.25rem;
@@ -397,16 +397,20 @@
   width: 1.5rem;
   height: 1.5rem;
   background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.4);
   border-radius: 0.25rem;
   margin: 0.5rem;
   margin-right: 0;
   cursor: default;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .three-menu_section-element .tag-name {
   justify-content: flex-start;
-  width: 7.75rem;
-  min-width: 7.75rem;
+  width: 9.75rem;
+  min-width: 9.75rem;
   height: 2.5rem;
   display: flex;
   align-items: center;
@@ -444,6 +448,15 @@
 
 .three-menu_section-content.tags-section .three-menu_section-element {
   cursor: default;
+}
+
+.three-menu_section-element.tag-element-removed .remove-control {
+  background-color: #f64747;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.3rem;
+}
+.three-menu_section-element.tag-element-removed .tag-name {
+  color: #f64747;
 }
 
 /* HELP POPUP */
@@ -533,3 +546,4 @@
 .three-clovis-buttons_help-element:last-child {
   margin-bottom: 30vh;
 }
+
