@@ -160,10 +160,65 @@ export const createHelpButton = (ButtonsContainer) => {
     const HelpButton = document.createElement('div');
     HelpButton.className = 'three-clovis-buttons_help';
     HelpButton.appendChild(InnerButton);
+    HelpButton.onclick = () => {
+        createHelpPopup();
+    };
+    HelpButton.addEventListener('touchstart', () => {
+        createHelpPopup();
+    }, false);
 
     ButtonsContainer
         .appendChild(HelpButton)
         .appendChild(InfoBar);
+};
+
+const HelpPopupContent = (HelpPopupContentContainer) => {
+    const HelpTitle = document.createElement('div');
+    HelpTitle.className = 'three-clovis-buttons_help-title';
+    HelpTitle.innerHTML = '✰ Tips & Tricks ✰';
+
+    HelpPopupContentContainer.appendChild(HelpTitle);
+};
+
+const createHelpPopup = () => {
+    const HelpPopupContainer = document.getElementById('three-help-popup-container');
+
+    const closeHelpPopup = () => {
+        HelpPopupContainer.innerHTML = '';
+    };
+
+    const ClosePopupButton = document.createElement('div');
+    ClosePopupButton.className = 'three-clovis-help_close-button';
+    ClosePopupButton.innerHTML = '✕';
+    ClosePopupButton.onclick = () => {
+        closeHelpPopup();
+    };
+    ClosePopupButton.addEventListener('touchstart', () => {
+        closeHelpPopup();
+    }, false);
+
+    const HelpPopupContentContainer = document.createElement('div');
+    HelpPopupContentContainer.className = 'three-clovis-help_content-container';
+
+    HelpPopupContent(HelpPopupContentContainer);
+
+    const HelpPopup = document.createElement('div');
+    HelpPopup.className = 'three-clovis-help_popup';
+
+    const HelpOverlay = document.createElement('div');
+    HelpOverlay.className = 'three-clovis-help_overlay';
+    HelpOverlay.onclick = () => {
+        closeHelpPopup();
+    };
+    HelpOverlay.addEventListener('touchstart', () => {
+        closeHelpPopup();
+    }, false);
+
+    HelpPopup.appendChild(ClosePopupButton);
+    HelpPopup.appendChild(HelpPopupContentContainer);
+
+    HelpPopupContainer.appendChild(HelpOverlay);
+    HelpPopupContainer.appendChild(HelpPopup);
 };
 
 
