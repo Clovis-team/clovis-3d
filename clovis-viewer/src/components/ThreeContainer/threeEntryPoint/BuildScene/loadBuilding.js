@@ -34,8 +34,8 @@ const loadBuilding = (scene, buildingPath, gltfLoadedCallback) => {
             window.dispatchEvent(endOfLoaderCallback);
 
             const t2 = performance.now();
-            console.log(`post processing gtlf: ${Math.round(t2 - t1)} ms`);
             console.log(`gtlf loading: ${Math.round(t1 - t0)} ms`);
+            console.log(`post processing gtlf: ${Math.round(t2 - t1)} ms`);
             // Dispatch a window event to build the Menu and Tools, cf "Listeners"
         },
         // Called while loading is progressing

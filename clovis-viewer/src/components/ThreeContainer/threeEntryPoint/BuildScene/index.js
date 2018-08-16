@@ -9,7 +9,6 @@ function BuildScene(canvas, buildingGltfPath) {
     let buildingDatas = {};
 
     const getBuildingDatas = () => buildingDatas;
-
     /**
      * create a THREE scene, the database of all 3d objects and lights
      *
@@ -109,10 +108,10 @@ function BuildScene(canvas, buildingGltfPath) {
     return {
         scene,
         renderer,
+        getBuildingDatas,
         camera,
         controls,
         buildingDatas,
-        getBuildingDatas,
     };
 }
 

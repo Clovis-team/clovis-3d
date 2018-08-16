@@ -6,8 +6,8 @@
 import BuildScene from './BuildScene';
 import SceneManager from './SceneManager';
 import DevTools from './DevTools';
-import Listeners from './Listeners';
 import Controllers from './Controllers';
+import Listeners from './Listeners';
 import MenuAndButtons from './MenuAndButtons';
 
 const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReact) => {
@@ -33,10 +33,6 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
         devTools.stats.end();
     }
 
-    // setup listener outside of THREEJS, for GUI and external controls
-    Listeners(canvas, sceneManager, Controllers);
-    // resize the canvas to new size and in the scenemanager
-    Controllers.onResize(canvas, sceneManager);
     // Show the menu and buttons
     MenuAndButtons(InitializedScene.getBuildingDatas);
 
