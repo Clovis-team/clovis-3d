@@ -3,6 +3,8 @@
  * https://azuliadesigns.com/html-character-codes-ascii-entity-unicode-symbols/
  */
 
+// Dices : ⚀ ⚁ ⚂ ⚃ ⚄ ⚅
+
 import _ from 'lodash';
 import Controllers from '../Controllers';
 
@@ -177,7 +179,18 @@ const HelpPopupContent = (HelpPopupContentContainer) => {
     HelpTitle.className = 'three-clovis-buttons_help-title';
     HelpTitle.innerHTML = '✰ Tips & Tricks ✰';
 
+    const Help1Element = document.createElement('div');
+    Help1Element.className = 'three-clovis-buttons_help-element';
+    Help1Element.innerHTML = '<p>⚀<br/><br/>Zoomer sur le bâtiment pour activer le mode "première personne"</p>';
+
+    const Help2Element = document.createElement('div');
+    Help2Element.className = 'three-clovis-buttons_help-element';
+    Help2Element.innerHTML = '<p>⚁<br/><br/>Utilisez E, S, D, T , G pour vous diriger</p>';
+
+
     HelpPopupContentContainer.appendChild(HelpTitle);
+    HelpPopupContentContainer.appendChild(Help1Element);
+    HelpPopupContentContainer.appendChild(Help2Element);
 };
 
 const createHelpPopup = () => {
