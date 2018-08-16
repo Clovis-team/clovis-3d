@@ -120,11 +120,17 @@ export const createHorizontalSectionButton = (ButtonsContainer) => {
 
     // Easter Egg / Let the devtools appear holding the CrossSectionButton
     let timeout_id = 0;
-    const hold_time = 2000;
+    const hold_time = 1500;
     HorizontalSectionButton.ontouchstart = () => {
         timeout_id = setTimeout(Controllers.toggleDevTools, hold_time);
     };
     HorizontalSectionButton.ontouchend = () => {
+        clearTimeout(timeout_id);
+    };
+    HorizontalSectionButton.onmousedown = () => {
+        timeout_id = setTimeout(Controllers.toggleDevTools, hold_time);
+    };
+    HorizontalSectionButton.onmouseup = () => {
         clearTimeout(timeout_id);
     };
 
