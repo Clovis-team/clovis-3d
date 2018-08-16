@@ -1,9 +1,15 @@
 import 'three/examples/js/loaders/GLTFLoader';
 import { get_building } from './utils';
 
-
-const loadBuilding = (scene, buildingPath, gltfLoadedCallback, controls) => {
-    // Building is in Gltf format, so we use Three.js Gltf loader
+/**
+ * adds a gltf from buildingPath and add it to the scene
+ * after calls the callback and emit an unecessary event
+ *
+ * @param {*} scene THREE.Scene
+ * @param {*} buildingPath string
+ * @param {*} gltfLoadedCallback function that takes the building object3D
+ */
+const loadBuilding = (scene, buildingPath, gltfLoadedCallback) => {
     const loader = new THREE.GLTFLoader();
     const t0 = performance.now();
 
@@ -13,29 +19,24 @@ const loadBuilding = (scene, buildingPath, gltfLoadedCallback, controls) => {
 
         // Called when the resource is loaded
         (gltf) => {
-            // gltf.animations; // Array<THREE.AnimationClip>
-            // gltf.scene; // THREE.Scene
-            // gltf.scenes; // Array<THREE.Scene>
-            // gltf.cameras; // Array<THREE.Camera>
-            // gltf.asset; // Object
-
-            // Remove css class "loading to the loader"
-            document.getElementById('three-progress-container').classList.remove('loading');
             const t1 = performance.now();
 
+            // remove loader
+            document.getElementById('three-progress-container').classList.remove('loading');
+
+            // adding scene
             scene.add(gltf.scene);
-
-            // reaching the building from the gltf file. it is deep into the structure
             const gltfBuilding = get_building(gltf.scene);
+            gltfLoadedCallback(gltfBuilding);
 
-            gltfLoadedCallback(gltfBuilding, controls);
-
-
-            const t2 = performance.now();
-            console.log(`Load and name all building groups took ${Math.round(t2 - t1)} milliseconds.`);
-            // Dispatch a window event to build the Menu and Tools, cf "Listeners"
+            // event call
             const endOfLoaderCallback = new Event('endOfLoaderCallback');
             window.dispatchEvent(endOfLoaderCallback);
+
+            const t2 = performance.now();
+            console.log(`post processing gtlf: ${Math.round(t2 - t1)} ms`);
+            console.log(`gtlf loading: ${Math.round(t1 - t0)} ms`);
+            // Dispatch a window event to build the Menu and Tools, cf "Listeners"
         },
         // Called while loading is progressing
         (xhr) => {

@@ -1,12 +1,18 @@
 import { get_building_ifc_elements } from './utils';
 
-const analyseBuilding = (building) => {
+const fillBuildingDatas = (building, buidlingDatas) => {
+    buidlingDatas.floors = building.children;
     const floors = building.children;
     const {
         building_ifc_elements,
         mesh_all,
     } = get_building_ifc_elements(building);
+    buidlingDatas.building = building;
 
+    buidlingDatas.ifc_elements = building_ifc_elements;
+    buidlingDatas.mesh_all = mesh_all;
+    buidlingDatas.size = getObjectSize(building);
+    buidlingDatas.center = getObjectCenter(building);
 
     return {
         floors,
@@ -65,10 +71,9 @@ function positionCameraToBuilding(scene, controls, camera) {
 
 
 export {
-    analyseBuilding,
+    fillBuildingDatas,
     getObjectCenter,
     getCameraPositionBasedOnObject,
     getObjectSize,
     positionCameraToBuilding,
 };
-

@@ -1,31 +1,31 @@
-function walking(scene, camera, controls) {
+import virtualJoystick from './VirtualJoystick';
+import populateGuiWalking from './gui';
+
+function walk(scene, camera, controls) {
     // if not enabled doesnt move
     this.enabled = true;
-
     this.movementSpeed = 10; // units per second
-    this.xzMovements = true; // can be removed, not necessary for now
     this.yMovements = true;
     this.up = new THREE.Vector3(0, 1, 0);
-    // rename
-    this.walkControls = true;
-
+    this.walkingSwitch = false;
+    // key true or false movements
     let moveForward = false;
     let moveBackward = false;
     let moveLeft = false;
     let moveRight = false;
     let moveUp = false;
     let moveDown = false;
-
+    // time stuff
     let t0 = 0;
     let delta = 0;
 
+    // vector for
     const camVector = new THREE.Vector3();
-    const verticalSpeedVector = new THREE.Vector3();
     const leftRigthVector = new THREE.Vector3();
-
+    const joystickMovementVector = new THREE.Vector3();
     const distanceToTarget = new THREE.Vector3();
 
-    function keyDown(event) {
+    const keyDown = (event) => {
         switch (event.keyCode) {
         case 69: /* E */ moveForward = true; break;
         case 83: /* S */ moveLeft = true; break;
@@ -36,9 +36,9 @@ function walking(scene, camera, controls) {
         default: break;
         }
         // move(1);
-    }
+    };
 
-    function keyUp(event) {
+    const keyUp = (event) => {
         switch (event.keyCode) {
         case 69: /* E */ moveForward = false; break;
         case 83: /* S */ moveLeft = false; break;
@@ -48,7 +48,7 @@ function walking(scene, camera, controls) {
         case 71: /* G */ moveDown = false; break;
         default: break;
         }
-    }
+    };
 
     const move = (actualMoveSpeed) => {
         camera.getWorldDirection(camVector);
@@ -63,9 +63,9 @@ function walking(scene, camera, controls) {
         camVector.normalize();
         camVector.multiplyScalar(actualMoveSpeed);
 
+        const verticalSpeedVector = new THREE.Vector3();
         verticalSpeedVector.copy(this.up);
         verticalSpeedVector.multiplyScalar(actualMoveSpeed);
-
 
         if (moveForward) {
             camera.position.add(camVector);
@@ -93,6 +93,49 @@ function walking(scene, camera, controls) {
         }
     };
 
+    const joystickMovement = (movementVector) => {
+        const quaternion = new THREE.Quaternion(); // create one and reuse it
+
+        camera.getWorldDirection(camVector);
+        camVector.y = 0;
+        camVector.normalize();
+        const normalizedVector = new THREE.Vector3(0, 0, 1);
+
+        quaternion.setFromUnitVectors(normalizedVector, camVector);
+
+        movementVector.applyQuaternion(quaternion);
+
+        // console.log('camVector', camVector);
+        // console.log('movementVector', movementVector);
+
+        joystickMovementVector.copy(movementVector);
+    };
+
+    const moveByJoystickVector = (actualMoveSpeed) => {
+        const SpeedVector = new THREE.Vector3();
+        SpeedVector.copy(joystickMovementVector);
+        SpeedVector.multiplyScalar(actualMoveSpeed);
+        camera.position.add(SpeedVector);
+        controls.target.add(SpeedVector);
+    };
+
+    const addListener = (Dom) => {
+        Dom.addEventListener('keydown', keyDown, false);
+        Dom.addEventListener('keyup', keyUp, false);
+    };
+
+    const removeGuiFolder = (gui, folder) => {
+        gui.removeFolder(folder);
+    };
+
+    // EXTERNAL METHODS
+
+    this.destroy = (Dom) => {
+        Dom.removeEventListener('keydown', keyDown, false);
+        Dom.addEventListener('keyup', keyUp, false);
+        removeGuiFolder(window.gui, walkingUI);
+    };
+
     this.update = (elapsed) => {
         if (this.enabled === false) {
             console.log('movements not enabled');
@@ -103,58 +146,13 @@ function walking(scene, camera, controls) {
 
         const actualMoveSpeed = delta * this.movementSpeed;
 
-        if (this.xzMovements) {
-            move(actualMoveSpeed);
-        }
+        move(actualMoveSpeed);
+        moveByJoystickVector(actualMoveSpeed);
     };
 
-    const populateGui = (gui) => {
-        const walkingUI = gui.addFolder('walking UI');
-
-        walkingUI.add(this, 'movementSpeed', 0, 20);
-        walkingUI.add(this, 'enabled');
-        walkingUI.add(this, 'yMovements');
-        const walkControls = walkingUI.add(this, 'walkControls');
-
-        walkControls.onChange((bool) => {
-            walkSwitch(bool);
-        });
-
-        return walkingUI;
-    };
-
-    this.addListener = (Dom) => {
-        Dom.addEventListener('keydown', keyDown, false);
-        Dom.addEventListener('keyup', keyUp, false);
-    };
-
-    const removeGuiFolder = (gui, folder) => {
-        gui.removeFolder(folder);
-    };
-
-    this.destroy = (Dom) => {
-        Dom.removeEventListener('keydown', keyDown, false);
-        Dom.addEventListener('keyup', keyUp, false);
-        removeGuiFolder(window.gui, walkingUI);
-    };
-
-    const walkSwitch = (isWalk) => {
-        const newTargetPosition = new THREE.Vector3();
-        camera.getWorldDirection(newTargetPosition);
-        console.log(newTargetPosition);
-        newTargetPosition.normalize();
-        if (isWalk) {
-            newTargetPosition.multiplyScalar(0.1);
-        } else {
-            newTargetPosition.multiplyScalar(100);
-        }
-
-        controls.target.copy(newTargetPosition.add(camera.position));
-    };
-
-
-    this.addListener(window);
-    const walkingUI = populateGui(window.gui);
+    addListener(window);
+    const guiFolder = populateGuiWalking(this, window.gui, camera, controls);
+    virtualJoystick(joystickMovement);
 }
 
-export default walking;
+export default walk;

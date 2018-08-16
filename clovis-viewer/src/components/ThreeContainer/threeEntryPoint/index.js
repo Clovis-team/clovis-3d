@@ -6,6 +6,9 @@
 import BuildScene from './BuildScene';
 import SceneManager from './SceneManager';
 import DevTools from './DevTools';
+import Listeners from './Listeners';
+import Controllers from './Controllers';
+import MenuAndButtons from './MenuAndButtons';
 
 const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReact) => {
     const canvas = createCanvas(document, domContainer);
@@ -15,69 +18,36 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
     // TODO: put condition with NODE_ENV
     const devTools = DevTools(InitializedScene);
 
-    const sceneManager = SceneManager(
-        canvas,
-        // Passing initialized objects like {scene}, {camera}, {renderer}, {controls}
-        InitializedScene,
-        buildingGltfPath,
-    );
+    const sceneManager = SceneManager(canvas, InitializedScene);
 
-    // MAIN UTILS
 
-    // its a function that loops 60 times per second
+    // its a function that loops 60 times per second ideally
     function render() {
-        // update_height_of_camera(
-        //     InitializedScene.getSceneCamera,
-        //     InitializedScene.getBuildingDatas,
-        //     sceneManager.raycaster_cam,
-        // );
-        // FrameRequestCallback. updates the frame when it is needed, allegedly
+        // FrameRequestCallback. calls the render when window is active
         requestAnimationFrame(render);
+        devTools.stats.begin();
         // renders the frame and updates the controls and sceneSubjects
         sceneManager.update(
-            devTools.stats,
             devTools.rendererStats,
-            InitializedScene.getSceneCamera,
-            InitializedScene.getSceneControls,
-            InitializedScene.renderer,
         );
+        devTools.stats.end();
     }
 
-    // LAUNCH MAIN FUNCTIONS
+    // setup listener outside of THREEJS, for GUI and external controls
+    Listeners(canvas, sceneManager, Controllers);
+    // resize the canvas to new size and in the scenemanager
+    Controllers.onResize(canvas, sceneManager);
+    // Show the menu and buttons
+    MenuAndButtons(InitializedScene.getBuildingDatas);
 
-    // Resize the canvas element to fit the screen
-    sceneManager.Controllers.resizeCanvas(
-        canvas,
-        InitializedScene.getSceneCamera,
-        InitializedScene.renderer,
-    );
-
-    // Launch render loop
+    // starts the rendering loop
     render();
 };
 
-// UTILITARY FUNCTIONS
 function createCanvas(document, container) {
     const canvas = document.createElement('canvas');
     container.appendChild(canvas);
     return canvas;
-}
-// TODO: is this function really working ?
-function update_height_of_camera(getSceneCamera, getBuildingDatas, raycaster_cam) {
-    const direction = new THREE.Vector3(0, -1, 0);
-    const camera = getSceneCamera();
-    const { mesh_all } = getBuildingDatas;
-
-    raycaster_cam.set(camera.position, direction);
-
-    const objects_below = raycaster_cam.intersectObjects(mesh_all);
-    // console.log(camera.position);
-
-    if (objects_below.length > 0) {
-        camera.height = objects_below[0].distance;
-    } else {
-        camera.height = 'No height';
-    }
 }
 
 

@@ -1,24 +1,14 @@
 import 'three/examples/js/controls/OrbitControls';
 import loadBuilding from './loadBuilding';
-// TODO: split init anylisis here
-// import Cameras from '../SceneManager/Cameras';
 
-import { analyseBuilding, positionCameraToBuilding } from './analyseBuilding';
 
+import { fillBuildingDatas, positionCameraToBuilding } from './analyseBuilding';
+import { asynchronous_gltf_loader_gui_populate } from '../DevTools/utils';
 
 function BuildScene(canvas, buildingGltfPath) {
-    const cameraTypes = [
-        'Perspective',
-        'Ortographic',
-        'Flying drag Fps',
-        'Flying drag',
-        'walking drag fps',
-        'walking drag',
-    ];
-    const starting_camera_type = 'Perspective';
     let buildingDatas = {};
 
-    // BUILD STUFF FUNCTIONS
+    const getBuildingDatas = () => buildingDatas;
 
     /**
      * create a THREE scene, the database of all 3d objects and lights
@@ -55,7 +45,6 @@ function BuildScene(canvas, buildingGltfPath) {
         return new_renderer;
     }
 
-    // EXTERNALY USED FUNCTIONS
     /*
     * creates a perspective camera in THREE
     *
@@ -73,9 +62,7 @@ function BuildScene(canvas, buildingGltfPath) {
             nearPlane,
             farPlane,
         );
-
         new_camera.position.z = 40;
-
         return new_camera;
     }
 
@@ -97,56 +84,12 @@ function BuildScene(canvas, buildingGltfPath) {
     }
 
     /**
-     * Return updated objects of camera and controls
-     */
-    function getSceneCamera() {
-        return camera;
-    }
-    function getSceneControls() {
-        return controls;
-    }
-    function getBuildingDatas() {
-        return buildingDatas;
-    }
-
-    /**
-     * Functions to change camera, controls and renderer from other files
-     */
-    function modifySceneCamera(new_camera) {
-        camera = new_camera;
-    }
-    function modifySceneControls(new_controls) {
-        controls = new_controls;
-    }
-
-    // CAMERA AND CONTROLS
-
-    // function buildCameraAndControls() {
-    //     Cameras.change_camera_and_controls(
-    //         cameraTypes,
-    //         starting_camera_type,
-    //         getSceneCamera,
-    //         getSceneControls,
-    //         renderer,
-    //         modifySceneCamera,
-    //         modifySceneControls,
-    //     );
-    // }
-
-    // CALCULATE STUFF
-
-    /**
      * callback from when the gltf file is loaded
      */
-    function gltfLoadedCallback(building, controls) {
+    function gltfLoadedCallback(building) {
         positionCameraToBuilding(scene, controls, camera);
-        buildingDatas = analyseBuilding(building);
-
-        // TODO: describe why we do this
-        const new_controls = controls;
-        new_controls.collision_objects = buildingDatas.mesh_all;
-        new_controls.collision_floor = true;
-        modifySceneControls(new_controls);
+        buildingDatas = fillBuildingDatas(building, buildingDatas);
+        asynchronous_gltf_loader_gui_populate(buildingDatas);
     }
 
     // BUILD STUFF
@@ -161,18 +104,14 @@ function BuildScene(canvas, buildingGltfPath) {
         scene,
         buildingGltfPath,
         gltfLoadedCallback,
-        controls,
     );
 
     return {
         scene,
         renderer,
-        getSceneCamera,
-        getSceneControls,
-        modifySceneCamera,
-        modifySceneControls,
-        cameraTypes,
-        starting_camera_type,
+        camera,
+        controls,
+        buildingDatas,
         getBuildingDatas,
     };
 }
