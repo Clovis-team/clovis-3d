@@ -33,6 +33,10 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReac
         devTools.stats.end();
     }
 
+    // setup listener outside of THREEJS, for GUI and external controls
+    Listeners(canvas, sceneManager, Controllers);
+    // resize the canvas to new size and in the scenemanager
+    Controllers.onResize(canvas, sceneManager);
     // Show the menu and buttons
     MenuAndButtons(InitializedScene.getBuildingDatas);
 
