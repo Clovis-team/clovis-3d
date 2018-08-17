@@ -10,8 +10,13 @@ import Controllers from './Controllers';
 import Listeners from './Listeners';
 import MenuAndButtons from './MenuAndButtons';
 
-const ThreeEntryPoint = (domContainer, buildingGltfPath, beautifullDatasFromReact) => {
+const ThreeEntryPoint = (domContainer, buildingGltfPath, DatasFromReact) => {
     const canvas = createCanvas(document, domContainer);
+    // TODO: use it to display tasks
+    const { selectedTask, allTasks } = DatasFromReact;
+    console.log('selectedTask :', selectedTask);
+    console.log('allTasks :', allTasks);
+
     const InitializedScene = BuildScene(canvas, buildingGltfPath);
 
     // Display the stats and renderer stats Dev Tools
