@@ -38,11 +38,11 @@ function Select(scene, camera, buildingDatas) {
         }
     }
 
-    document.addEventListener('mouseup', onDocumentMouseClick, false);
+    document.addEventListener('mousedown', onDocumentMouseClick, false);
 }
 
 function add_sphere_on_click(intersected, scene) {
-    const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+    const geometry = new THREE.SphereGeometry(0.25, 32, 32);
     const material = new THREE.MeshBasicMaterial({ color: 0x00b16a });
     const sphere = new THREE.Mesh(geometry, material);
     const position = intersected.point;
