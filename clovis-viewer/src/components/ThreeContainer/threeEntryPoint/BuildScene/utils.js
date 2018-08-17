@@ -10,7 +10,7 @@ export const get_building = (scene) => {
 };
 
 
-export const get_building_ifc_elements = (object) => {
+export const get_building_ifc_elements = (building) => {
     // TODO: look into using recursive raytracing for click event and walking
     // so we can maybe generate a shorter list of all objects.
     // mesh all, or maybe not even generate it at all.
@@ -19,7 +19,7 @@ export const get_building_ifc_elements = (object) => {
     const mesh_all = [];
 
 
-    object.traverse((node_no) => {
+    building.traverse((node_no) => {
         const node = node_no;
 
         if ((node instanceof THREE.Mesh || node instanceof THREE.Object3D) && node.name !== '') {
