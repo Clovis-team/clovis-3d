@@ -1,3 +1,67 @@
+
+function Cut({
+    renderer, controls, canvas, buildingDatas, scene,
+}) {
+    const plane = {
+        clipping: new THREE.Plane(new THREE.Vector3(0, -1, 0), 2),
+        edged: new THREE.Group(),
+    };
+
+    const mouse = { y: 0, y_prev: 0 };
+
+    this.planeExist = false;
+
+    this.start = () => {
+        if (controls) { controls.enabled = false; }
+        if (!this.planeExist) {
+            console.log('initing');
+            initSectionPlane(plane, buildingDatas, scene);
+            this.planeExist = true;
+        }
+        plane.edged.visible = true;
+
+        renderer.clippingPlanes = [plane.clipping];
+        canvas.addEventListener('mousedown', onCanvasMouseDown, false);
+    };
+
+    const onCanvasMouseDown = (event) => {
+        mouse.prev_y = getMouseY(event);
+        canvas.removeEventListener('mousedown', onCanvasMouseDown, false);
+        canvas.addEventListener('mousemove', onCanvasMouseMove, false);
+    };
+
+    const onCanvasMouseMove = (event) => {
+        mouse.y = getMouseY(event);
+        const delta = mouse.y - mouse.prev_y;
+        mouse.prev_y = mouse.y;
+        plane.clipping.constant += delta * buildingDatas.size.y;
+        plane.edged.position.y = plane.clipping.constant - 0.001;
+        canvas.addEventListener('mouseup', onCanvasMouseUp, false);
+    };
+
+    const onCanvasMouseUp = () => {
+        canvas.removeEventListener('mousemove', onCanvasMouseMove, false);
+        canvas.removeEventListener('mouseup', onCanvasMouseUp, false);
+
+        window.setTimeout(() => { plane.edged.visible = false; }, 500);
+        // TODO: amke the section plane fade away using material.opacity
+        // then set to visible = false
+        // end set the opacity back to normal
+
+        // TODO: if plane is higher than building destroy everything
+
+        if (controls) { controls.enabled = true; }
+    };
+
+    this.destroy = () => {
+        buildingDatas.building.traverse(convertToSingleSided);
+        renderer.clippingPlanes.pop();
+    };
+
+    window.gui.add(this, 'start');
+    window.gui.add(this, 'destroy');
+}
+
 function convertToDoubleSided(object) {
     if (object.material) {
         object.material.side = THREE.DoubleSide;
@@ -10,94 +74,36 @@ function convertToSingleSided(object) {
     }
 }
 
-function Cut({
-    renderer, controls, canvas, buildingDatas,
-}) {
-    const cutMethods = {};
+const makeVisiblePlane = ({ x, z }, color) => {
+    const planeGeom = new THREE.PlaneGeometry(x, z, 32);
+    planeGeom.rotateX(Math.PI / 2);
+    const planeMaterial = new THREE.MeshBasicMaterial({
+        color, side: THREE.DoubleSide, opacity: 0.2, transparent: true,
+    });
+    const planeMesh = new THREE.Mesh(planeGeom, planeMaterial);
 
-    const mouse = new THREE.Vector2();
+    const edges = new THREE.EdgesGeometry(planeMesh.geometry);
+    const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xf64747 }));
 
-    const clippingPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 5);
+    const group = new THREE.Group();
 
-    const makeVisiblePlane = ({ x, z }) => {
-        const planeGeom = new THREE.PlaneGeometry(x, z, 32);
-        planeGeom.rotateX(Math.PI / 2);
-        const planeMaterial = new THREE.MeshBasicMaterial({
-            color: 0xf64747, side: THREE.DoubleSide, opacity: 0.2, transparent: true,
-        });
-        const planeMesh = new THREE.Mesh(planeGeom, planeMaterial);
-        return (planeMesh);
-    };
+    group.add(planeMesh);
+    group.add(line);
 
-    let visiblePlane = makeVisiblePlane(1, 1);
+    return (group);
+};
 
-    let planeExist = false;
-
-    const edgedPlane = new THREE.Group();
-
-
-    cutMethods.start = () => {
-        if (controls) {
-            controls.enabled = false;
-        }
-
-        if (!planeExist) {
-            console.log(buildingDatas.building);
-            buildingDatas.building.traverse(convertToDoubleSided);
-
-            visiblePlane = makeVisiblePlane(buildingDatas.size);
-
-            const edges = new THREE.EdgesGeometry(visiblePlane.geometry);
-            const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xf64747 }));
-
-            edgedPlane.add(line);
-            edgedPlane.add(visiblePlane);
-            scene.add(edgedPlane);
-
-            edgedPlane.position.copy(buildingDatas.center);
-            edgedPlane.position.y = clippingPlane.constant - 0.001;
-
-            planeExist = true;
-        }
-        edgedPlane.visible = true;
-
-        renderer.clippingPlanes = [clippingPlane];
-        canvas.addEventListener('mousedown', onCanvasMouseDown, false);
-    };
-
-    const onCanvasMouseDown = (event) => {
-        console.log(event);
-        mouse.prev_y = -(event.clientY / window.innerHeight) * 2 + 1;
-        canvas.removeEventListener('mousedown', onCanvasMouseDown, false);
-        canvas.addEventListener('mousemove', onCanvasMouseMove, false);
-    };
-
-    const onCanvasMouseMove = (event) => {
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        const delta = mouse.y - mouse.prev_y;
-        mouse.prev_y = mouse.y;
-        clippingPlane.constant += delta * buildingDatas.size.y;
-        edgedPlane.position.y = clippingPlane.constant - 0.001;
-        canvas.addEventListener('mouseup', onCanvasMouseUp, false);
-    };
-
-    const onCanvasMouseUp = (event) => {
-        canvas.removeEventListener('mousemove', onCanvasMouseMove, false);
-        canvas.removeEventListener('mouseup', onCanvasMouseUp, false);
-        edgedPlane.visible = false;
-        console.log('done');
-        if (controls) {
-            controls.enabled = true;
-        }
-    };
-
-    const destroy = () => {
-        buildingDatas.building.traverse(convertToSingleSided);
-    };
+const initSectionPlane = (plane, { building, size, center }, scene) => {
+    building.traverse(convertToDoubleSided);
+    plane.edged = makeVisiblePlane(size, 0xf64747);
+    scene.add(plane.edged);
+    plane.edged.position.copy(center);
+    plane.clipping.constant = center.y;
+    plane.edged.position.y -= 0.001;
+};
 
 
-    window.gui.add(cutMethods, 'start');
-}
+const getMouseY = event => -(event.clientY / window.innerHeight) * 2 + 1;
 
 
 export default Cut;

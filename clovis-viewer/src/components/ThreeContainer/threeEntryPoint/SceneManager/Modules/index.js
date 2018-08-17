@@ -12,7 +12,7 @@ const Modules = ({
     const walkModule = new Walk(scene, camera, controls);
     const selectModule = new Select(scene, camera, buildingDatas);
     const cutModule = new Cut({
-        renderer, controls, canvas, buildingDatas,
+        renderer, controls, canvas, buildingDatas, scene,
     });
 
     /**
