@@ -38,8 +38,21 @@ function Select(scene, camera, buildingDatas) {
         }
     }
 
-    document.addEventListener('mousedown', onDocumentMouseClick, false);
+    // Manage rotation of camera with mouse events.
+    let mouseMoved = false;
+    document.addEventListener('mousedown', () => {
+        mouseMoved = false;
+    }, false);
+    document.addEventListener('mousemove', () => {
+        mouseMoved = true;
+    }, false);
+    document.addEventListener('mouseup', (event) => {
+        if (mouseMoved === false) {
+            onDocumentMouseClick(event);
+        }
+    }, false);
 }
+
 
 function add_sphere_on_click(intersected, scene) {
     const geometry = new THREE.SphereGeometry(0.25, 32, 32);
