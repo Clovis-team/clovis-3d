@@ -106,7 +106,7 @@ export const createToggleExplosionButton = (ButtonsContainer, getBuildingDatas) 
         .appendChild(InfoBar);
 };
 
-export const createHorizontalSectionButton = (ButtonsContainer) => {
+export const createHorizontalSectionButton = (ButtonsContainer, { cut }) => {
     const InnerButton = document.createElement('div');
     InnerButton.innerHTML = '⇔';
 
@@ -122,12 +122,16 @@ export const createHorizontalSectionButton = (ButtonsContainer) => {
     let timeout_id = 0;
     const hold_time = 1500;
     HorizontalSectionButton.ontouchstart = () => {
+        cut.start();
         timeout_id = setTimeout(Controllers.toggleDevTools, hold_time);
     };
     HorizontalSectionButton.ontouchend = () => {
         clearTimeout(timeout_id);
     };
     HorizontalSectionButton.onmousedown = () => {
+        // console.log('sectioning start');
+        // console.log(cut);
+        cut.start();
         timeout_id = setTimeout(Controllers.toggleDevTools, hold_time);
     };
     HorizontalSectionButton.onmouseup = () => {

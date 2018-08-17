@@ -43,7 +43,7 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, DatasFromReact) => {
     // resize the canvas to new size and in the scenemanager
     Controllers.onResize(canvas, sceneManager);
     // Show the menu and buttons
-    MenuAndButtons(InitializedScene.getBuildingDatas);
+    MenuAndButtons(InitializedScene.getBuildingDatas, sceneManager);
 
     // starts the rendering loop
     render();

@@ -15,6 +15,12 @@ const Modules = ({
         renderer, controls, canvas, buildingDatas, scene,
     });
 
+    const modules = {
+        walk: walkModule,
+        select: selectModule,
+        cut: cutModule,
+    };
+
     /**
      * creates the modulesArray. modular elements meant for plug and play
      * @returns an array of scenes
@@ -26,8 +32,9 @@ const Modules = ({
         ];
         return modulesArray;
     }
+    const modulesArray = createModules();
 
-    return createModules();
+    return { modules, modulesArray };
 };
 
 export default Modules;

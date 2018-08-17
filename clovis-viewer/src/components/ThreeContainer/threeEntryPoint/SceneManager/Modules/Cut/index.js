@@ -58,6 +58,10 @@ function Cut({
         renderer.clippingPlanes.pop();
     };
 
+    this.update = () => {
+
+    };
+
     window.gui.add(this, 'start');
     window.gui.add(this, 'destroy');
 }

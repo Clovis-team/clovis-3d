@@ -12,7 +12,7 @@ const SceneManager = (canvas, InitializedScene) => {
     const clock = new THREE.Clock();
 
     // sceneSubjects, now called modulesArray
-    const modulesArray = Modules(InitializedScene, canvas);
+    const { modules, modulesArray } = Modules(InitializedScene, canvas);
 
     /**
      * updates the stuff that has to be updated every frame cycle
@@ -58,6 +58,7 @@ const SceneManager = (canvas, InitializedScene) => {
     return {
         update,
         modulesArray,
+        modules,
         resizeCanvas,
         getCamera,
         getScene,
