@@ -5,8 +5,13 @@
 
 // Dices : ⚀ ⚁ ⚂ ⚃ ⚄ ⚅
 
+
 import _ from 'lodash';
 import Controllers from '../Controllers';
+
+const addEventListeners = (targetElement, eventsString, triggeredFunction) => {
+    eventsString.split(' ').forEach(event => targetElement.addEventListener(event, triggeredFunction, false));
+};
 
 export const MenuToggle = () => {
     console.log('MenuToggle');
@@ -21,6 +26,7 @@ export const MenuToggle = () => {
         }
     }
 };
+
 
 export const createToggleMenuButton = (ButtonsContainer, getBuildingDatas) => {
     const InnerButton = document.createElement('div');
@@ -49,37 +55,29 @@ export const createToggleMenuButton = (ButtonsContainer, getBuildingDatas) => {
     const ToggleMenuButton = document.createElement('div');
     ToggleMenuButton.className = 'three-clovis-buttons_menu';
     ToggleMenuButton.appendChild(InnerButton);
-    ToggleMenuButton.onclick = () => {
-        Controllers.toggleViewerMenu();
-        createMenu(
-            getBuildingDatas,
-            getSelectedFloors,
-            changeSelectedFloors,
-            getSelectedTags,
-            changeSelectedTags,
-            getRemovedTags,
-            changeRemovedTags,
-        );
-    };
-    ToggleMenuButton.addEventListener('touchstart', () => {
-        Controllers.toggleViewerMenu();
-        createMenu(
-            getBuildingDatas,
-            getSelectedFloors,
-            changeSelectedFloors,
-            getSelectedTags,
-            changeSelectedTags,
-            getRemovedTags,
-            changeRemovedTags,
-        );
-    }, false);
+    addEventListeners(
+        ToggleMenuButton,
+        'click touchend',
+        () => {
+            Controllers.toggleViewerMenu();
+            createMenu(
+                getBuildingDatas,
+                getSelectedFloors,
+                changeSelectedFloors,
+                getSelectedTags,
+                changeSelectedTags,
+                getRemovedTags,
+                changeRemovedTags,
+            );
+        },
+    );
 
     ButtonsContainer
         .appendChild(ToggleMenuButton)
         .appendChild(InfoBar);
 };
 
-export const createToggleExplosionButton = (ButtonsContainer, getBuildingDatas) => {
+export const createToggleExplosionButton = (ButtonsContainer, getBuildingDatas, { cut }) => {
     const floorsExploded = {
         exploded: false,
     };
@@ -94,12 +92,11 @@ export const createToggleExplosionButton = (ButtonsContainer, getBuildingDatas) 
     const ToggleExplosionButton = document.createElement('div');
     ToggleExplosionButton.className = 'three-clovis-buttons_explosion';
     ToggleExplosionButton.appendChild(InnerButton);
-    ToggleExplosionButton.onclick = () => {
+
+    ToggleExplosionButton.addEventListener('click', () => {
+        cut.destroy();
         Controllers.toggleBuildingExplosion(floorsExploded, getBuildingDatas);
-    };
-    ToggleExplosionButton.addEventListener('touchstart', () => {
-        Controllers.toggleBuildingExplosion(floorsExploded, getBuildingDatas);
-    }, false);
+    });
 
     ButtonsContainer
         .appendChild(ToggleExplosionButton)
@@ -118,25 +115,24 @@ export const createHorizontalSectionButton = (ButtonsContainer, { cut }) => {
     HorizontalSectionButton.className = 'three-clovis-buttons_horizontal-section';
     HorizontalSectionButton.appendChild(InnerButton);
 
-    // Easter Egg / Let the devtools appear holding the CrossSectionButton
+    // This includes and Easter Egg / Let the devtools appear holding the CrossSectionButton
     let timeout_id = 0;
     const hold_time = 1500;
-    HorizontalSectionButton.ontouchstart = () => {
-        cut.start();
-        timeout_id = setTimeout(Controllers.toggleDevTools, hold_time);
-    };
-    HorizontalSectionButton.ontouchend = () => {
-        clearTimeout(timeout_id);
-    };
-    HorizontalSectionButton.onmousedown = () => {
-        // console.log('sectioning start');
-        // console.log(cut);
-        cut.start();
-        timeout_id = setTimeout(Controllers.toggleDevTools, hold_time);
-    };
-    HorizontalSectionButton.onmouseup = () => {
-        clearTimeout(timeout_id);
-    };
+    addEventListeners(
+        HorizontalSectionButton,
+        'touchstart mousedown',
+        () => {
+            timeout_id = setTimeout(Controllers.toggleDevTools, hold_time);
+        },
+    );
+    addEventListeners(
+        HorizontalSectionButton,
+        'mouseup touchend',
+        () => {
+            cut.start();
+            clearTimeout(timeout_id);
+        },
+    );
 
     ButtonsContainer
         .appendChild(HorizontalSectionButton)
@@ -172,12 +168,13 @@ export const createHelpButton = (ButtonsContainer) => {
     const HelpButton = document.createElement('div');
     HelpButton.className = 'three-clovis-buttons_help';
     HelpButton.appendChild(InnerButton);
-    HelpButton.onclick = () => {
-        createHelpPopup();
-    };
-    HelpButton.addEventListener('touchstart', () => {
-        createHelpPopup();
-    }, false);
+    addEventListeners(
+        HelpButton,
+        'click touchend',
+        () => {
+            createHelpPopup();
+        },
+    );
 
     ButtonsContainer
         .appendChild(HelpButton)
@@ -213,12 +210,13 @@ const createHelpPopup = () => {
     const ClosePopupButton = document.createElement('div');
     ClosePopupButton.className = 'three-clovis-help_close-button';
     ClosePopupButton.innerHTML = '✕';
-    ClosePopupButton.onclick = () => {
-        closeHelpPopup();
-    };
-    ClosePopupButton.addEventListener('touchstart', () => {
-        closeHelpPopup();
-    }, false);
+    addEventListeners(
+        ClosePopupButton,
+        'click touchend',
+        () => {
+            closeHelpPopup();
+        },
+    );
 
     const HelpPopupContentContainer = document.createElement('div');
     HelpPopupContentContainer.className = 'three-clovis-help_content-container';
@@ -230,12 +228,13 @@ const createHelpPopup = () => {
 
     const HelpOverlay = document.createElement('div');
     HelpOverlay.className = 'three-clovis-help_overlay';
-    HelpOverlay.onclick = () => {
-        closeHelpPopup();
-    };
-    HelpOverlay.addEventListener('touchstart', () => {
-        closeHelpPopup();
-    }, false);
+    addEventListeners(
+        HelpOverlay,
+        'mousedown touchend',
+        () => {
+            closeHelpPopup();
+        },
+    );
 
     HelpPopup.appendChild(ClosePopupButton);
     HelpPopup.appendChild(HelpPopupContentContainer);
@@ -287,12 +286,21 @@ export const createCloseButton = (MenuContainer) => {
     const closeButton = document.createElement('div');
     closeButton.className = 'three-menu_close-button';
     closeButton.innerHTML = '↤';
-    closeButton.onclick = () => {
-        Controllers.toggleViewerMenu(MenuContainer);
-    };
-    closeButton.addEventListener('touchstart', () => {
-        Controllers.toggleViewerMenu(MenuContainer);
-    }, false);
+    closeButton.addEventListener('mousedown', (event) => {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        event.stopPropagation();
+    });
+    addEventListeners(
+        closeButton,
+        'mouseup touchend',
+        (event) => {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            event.stopPropagation();
+            Controllers.toggleViewerMenu(MenuContainer);
+        },
+    );
 
     MenuContainer
         .appendChild(closeButton);
@@ -375,12 +383,23 @@ const createFloorsSelectionSection = (
                 FloorElement.classList.add('floor-element-selected');
             }
 
-            FloorElement.onclick = () => {
-                toggleFloorElement(FloorElement, floors[i].uuid);
-            };
-            FloorElement.addEventListener('touchstart', () => {
-                toggleFloorElement(FloorElement, floors[i].uuid);
-            }, false);
+
+            // Don't trigger the action if the user is scrolling with touch
+            let mouseMoved = false;
+            addEventListeners(document, 'mousedown touchstart', () => { mouseMoved = false; });
+            addEventListeners(document, 'mousemove touchmove', () => { mouseMoved = true; });
+            addEventListeners(
+                FloorElement,
+                'mouseup touchend',
+                (event) => {
+                    event.stopImmediatePropagation();
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if (mouseMoved === false) {
+                        toggleFloorElement(FloorElement, floors[i].uuid);
+                    }
+                },
+            );
 
             SectionElements.appendChild(FloorElement);
 
@@ -567,12 +586,23 @@ const createTagsSelectionSection = (
             TagElement.appendChild(TagControls);
             TagElement.appendChild(TagName);
 
-            TagElement.onclick = () => {
-                toggleRemovedTag(TagElement, category);
-            };
-            TagElement.addEventListener('touchstart', () => {
-                toggleRemovedTag(TagElement, category);
-            }, false);
+            // Don't trigger the action if the user is scrolling with touch
+            let mouseMoved = false;
+            addEventListeners(document, 'mousedown touchstart', () => { mouseMoved = false; });
+            addEventListeners(document, 'mousemove touchmove', () => { mouseMoved = true; });
+            addEventListeners(
+                TagElement,
+                'mouseup touchend',
+                (event) => {
+                    event.stopImmediatePropagation();
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if (mouseMoved === false) {
+                        toggleRemovedTag(TagElement, category);
+                    }
+                },
+            );
+
 
             SectionElements.appendChild(TagElement);
         }

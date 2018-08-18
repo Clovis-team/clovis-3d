@@ -320,9 +320,9 @@
   padding-right: 0.5rem;
 }
 
-.three-menu_menu-content::-webkit-scrollbar {
-  display: none;
-}
+/* .three-menu_menu-content::-webkit-scrollbar {
+  display: inline: 4px;
+} */
 
 .three-menu_section-title {
   color: #00b16a;

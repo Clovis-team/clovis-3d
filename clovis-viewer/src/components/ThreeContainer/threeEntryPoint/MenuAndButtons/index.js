@@ -17,7 +17,7 @@ const MenuAndButtons = (getBuildingDatas, { modules }) => {
     // Create the Menu button
     createToggleMenuButton(ButtonsContainer, getBuildingDatas);
     // Create other action buttons
-    createToggleExplosionButton(ButtonsContainer, getBuildingDatas);
+    createToggleExplosionButton(ButtonsContainer, getBuildingDatas, modules);
     createHorizontalSectionButton(ButtonsContainer, modules);
     createHelpButton(ButtonsContainer);
     // createCrossSectionButton(ButtonsContainer);
