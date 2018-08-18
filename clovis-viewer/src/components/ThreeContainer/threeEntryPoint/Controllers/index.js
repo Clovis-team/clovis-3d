@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 function onKeyPress(event) {
     if (event.key === 'i' && typeof document.getElementById('stats-container') !== 'undefined') {
         toggleDevTools();
@@ -44,15 +46,28 @@ function get_main_floor(floor_array) {
     });
     return max_id;
 }
-function toggleBuildingExplosion(floorsExploded, getBuildingDatas) {
+
+function toggleBuildingExplosion(floorsExploded, getBuildingDatas, getRemovedTags, changeRemovedTags) {
     const buildingDatas = getBuildingDatas();
-    const { floors } = buildingDatas;
+    const { floors, building_ifc_elements } = buildingDatas;
     const z_delta = 20;
+
+    // Manage the removing of the coverings
+    // const CoveringCategory = _.find(building_ifc_elements, { name: 'IfcCovering' });
+    // const new_removedTags = getRemovedTags();
+
+    // console.log('CoveringCategory :', CoveringCategory);
 
     const main_floor = get_main_floor(floors);
 
     switch (floorsExploded.exploded) {
     case true: {
+        // new_removedTags.push(CoveringCategory.uuid);
+        // changeRemovedTags(new_removedTags);
+        // building_ifc_elements.forEach(category => {
+        //     if(category.uuid)
+
+        // })
         floors.forEach((floor_no, index) => {
             const floor = floor_no;
             floor.position.z -= (z_delta * (index - main_floor));
@@ -61,6 +76,8 @@ function toggleBuildingExplosion(floorsExploded, getBuildingDatas) {
         break;
     }
     case false: {
+        // new_removedTags.filter(category => (category.uuid !== CoveringCategory.uuid));
+        // changeRemovedTags(new_removedTags);
         floors.forEach((floor_no, index) => {
             const floor = floor_no;
             floor.position.z += (z_delta * (index - main_floor));

@@ -95,15 +95,16 @@ export const createToggleExplosionButton = (ButtonsContainer, getBuildingDatas, 
     ToggleExplosionButton.appendChild(InnerButton);
 
     const toggleExplosionButton = () => {
-        document.getElementById('three-clovis-buttons_explosion');
+        const HorizontalSectionButton = document.getElementById('three-clovis-buttons_horizontal-section');
         if (ToggleExplosionButton.classList.contains('three-button-on')) {
             ToggleExplosionButton.classList.remove('three-button-on');
         } else {
             ToggleExplosionButton.classList.add('three-button-on');
+            HorizontalSectionButton.classList.remove('three-button-on');
+            cut.destroy();
         }
     };
     ToggleExplosionButton.addEventListener('click', () => {
-        cut.destroy();
         toggleExplosionButton();
         Controllers.toggleBuildingExplosion(floorsExploded, getBuildingDatas);
     });
