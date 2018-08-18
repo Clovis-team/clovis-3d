@@ -91,10 +91,20 @@ export const createToggleExplosionButton = (ButtonsContainer, getBuildingDatas, 
 
     const ToggleExplosionButton = document.createElement('div');
     ToggleExplosionButton.className = 'three-clovis-buttons_explosion';
+    ToggleExplosionButton.id = 'three-clovis-buttons_explosion';
     ToggleExplosionButton.appendChild(InnerButton);
 
+    const toggleExplosionButton = () => {
+        document.getElementById('three-clovis-buttons_explosion');
+        if (ToggleExplosionButton.classList.contains('three-button-on')) {
+            ToggleExplosionButton.classList.remove('three-button-on');
+        } else {
+            ToggleExplosionButton.classList.add('three-button-on');
+        }
+    };
     ToggleExplosionButton.addEventListener('click', () => {
         cut.destroy();
+        toggleExplosionButton();
         Controllers.toggleBuildingExplosion(floorsExploded, getBuildingDatas);
     });
 
@@ -113,7 +123,19 @@ export const createHorizontalSectionButton = (ButtonsContainer, { cut }) => {
 
     const HorizontalSectionButton = document.createElement('div');
     HorizontalSectionButton.className = 'three-clovis-buttons_horizontal-section';
+    HorizontalSectionButton.id = 'three-clovis-buttons_horizontal-section';
     HorizontalSectionButton.appendChild(InnerButton);
+
+    const toggleHorizontalCutButton = () => {
+        document.getElementById('three-clovis-buttons_horizontal-section');
+        if (HorizontalSectionButton.classList.contains('three-button-on')) {
+            HorizontalSectionButton.classList.remove('three-button-on');
+            cut.destroy();
+        } else {
+            HorizontalSectionButton.classList.add('three-button-on');
+            cut.start();
+        }
+    };
 
     // This includes and Easter Egg / Let the devtools appear holding the CrossSectionButton
     let timeout_id = 0;
@@ -129,7 +151,7 @@ export const createHorizontalSectionButton = (ButtonsContainer, { cut }) => {
         HorizontalSectionButton,
         'mouseup touchend',
         () => {
-            cut.start();
+            toggleHorizontalCutButton();
             clearTimeout(timeout_id);
         },
     );
@@ -324,7 +346,7 @@ const createFloorsSelectionSection = (
 
     const SectionTitle = document.createElement('div');
     SectionTitle.className = 'three-menu_section-title';
-    SectionTitle.innerHTML = 'Étages';
+    SectionTitle.innerHTML = 'Sélectionner des étages';
 
     const SectionElements = document.createElement('div');
     SectionElements.className = 'three-menu_section-elements';
@@ -441,7 +463,7 @@ const createTagsSelectionSection = (
 
     const SectionTitle = document.createElement('div');
     SectionTitle.className = 'three-menu_section-title';
-    SectionTitle.innerHTML = 'Catégories BIM';
+    SectionTitle.innerHTML = 'Gérer les catégories BIM';
 
     const SectionElements = document.createElement('div');
     SectionElements.className = 'three-menu_section-elements';

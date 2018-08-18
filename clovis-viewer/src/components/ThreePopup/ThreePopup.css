@@ -256,6 +256,32 @@
   color: #f4b350 !important;
 }
 
+.three-button-on > div:not(.three-clovis-buttons_info-bar) {
+  border: 2px solid #f4b350;
+}
+.three-button-on > div:not(.three-clovis-buttons_info-bar)::after {
+  content: 'ON';
+  position: absolute;
+  background-color: white;
+  color: #f4b350 !important;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+  top: 8px;
+  right: 4px;
+  width: auto;
+  height: 10px;
+  font-size: 0.7rem;
+  transition: all 0.2s;
+}
+
+.three-button-on:hover > div:not(.three-clovis-buttons_info-bar)::after {
+  background-color: #f4b350;
+  color: white !important;
+}
+
 .three-clovis-buttons_help {
   position: fixed !important;
   bottom: 0;
