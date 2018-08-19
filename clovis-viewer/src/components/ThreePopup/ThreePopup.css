@@ -293,27 +293,52 @@
   border: 2px solid #f4b350;
 }
 
-.three-clovis-buttons-container.explosion-is-on .three-clovis-buttons_explosion > div:not(.three-clovis-buttons_info-bar)::after {
-  content: 'ON';
+.three-clovis-buttons-container .three-clovis-buttons_explosion > div:not(.three-clovis-buttons_info-bar)::after {
+  content: 'OFF';
+  transition: all 0.3s;
+  visibility: hidden;
+  opacity: 0;
   position: absolute;
-  background-color: white;
-  color: #f4b350 !important;
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2px;
   top: 8px;
   right: 4px;
   width: auto;
   height: 10px;
   font-size: 0.7rem;
-  transition: all 0.2s;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+}
+.three-clovis-buttons-container.explosion-is-on .three-clovis-buttons_explosion > div:not(.three-clovis-buttons_info-bar)::after {
+  content: 'ON';
+  background-color: white;
+  color: #f4b350 !important;
+  visibility: visible;
+  opacity: 1;
 }
 
 .three-clovis-buttons-container.explosion-is-on .three-clovis-buttons_explosion:hover > div:not(.three-clovis-buttons_info-bar)::after {
   background-color: #f4b350;
   color: white !important;
+}
+
+.three-clovis-buttons-container .three-clovis-buttons_horizontal-section > div:not(.three-clovis-buttons_info-bar)::after {
+  content: 'OFF';
+  transition: all 0.3s;
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 8px;
+  right: 4px;
+  width: auto;
+  height: 10px;
+  font-size: 0.7rem;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
 }
 
 .three-clovis-buttons-container.horizontal-section-is-on .three-clovis-buttons_horizontal-section > div:not(.three-clovis-buttons_info-bar) {
@@ -322,20 +347,10 @@
 
 .three-clovis-buttons-container.horizontal-section-is-on .three-clovis-buttons_horizontal-section > div:not(.three-clovis-buttons_info-bar)::after {
   content: 'ON';
-  position: absolute;
   background-color: white;
   color: #f4b350 !important;
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2px;
-  top: 8px;
-  right: 4px;
-  width: auto;
-  height: 10px;
-  font-size: 0.7rem;
-  transition: all 0.2s;
+  visibility: visible;
+  opacity: 1;
 }
 
 .three-clovis-buttons-container.horizontal-section-is-on .three-clovis-buttons_horizontal-section:hover > div:not(.three-clovis-buttons_info-bar)::after {
