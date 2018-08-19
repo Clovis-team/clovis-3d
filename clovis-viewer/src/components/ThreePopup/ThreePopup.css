@@ -247,13 +247,13 @@
 
 .horizontal-section-message {
   visibility: hidden;
-  opacity: 0;
+  opacity: 0 !important;
   transition: all 0.3s ease-in-out;
   width: auto !important;
   height: 3rem !important;
   background-color: #22a7f0;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate3d(-50%, -4rem, 0);
   position: fixed !important;
   top: 0.5rem;
   border-radius: 1.5rem;
@@ -266,14 +266,21 @@
   cursor: default;
 }
 
+.three-clovis-buttons-container > div:not(.horizontal-section-message) {
+  transform: translate3d(0, 0, 0);
+  transition: all 0.3s ease-in-out;
+}
+
 .three-clovis-buttons-container.hide-buttons > div:not(.horizontal-section-message) {
-  visibility: hidden;
   opacity: 0;
+  visibility: hidden;
+  transform: translate3d(-4rem, 0, 0);
 }
 
 .three-clovis-buttons-container.hide-buttons.show-horizontal-section-message .horizontal-section-message {
   visibility: visible;
-  opacity: 0.8;
+  opacity: 0.8 !important;
+  transform: translate3d(-50%, 0, 0);
 }
 
 
