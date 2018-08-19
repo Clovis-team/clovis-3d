@@ -11,7 +11,10 @@ function Cut({
 
     this.planeExist = false;
 
+    const ButtonsContainer = document.getElementById('three-clovis-buttons-container');
+
     this.start = () => {
+        ButtonsContainer.classList.add('horizontal-section-is-on');
         if (controls) { controls.enabled = false; }
         if (!this.planeExist) {
             console.log('initing');
@@ -54,6 +57,7 @@ function Cut({
     };
 
     this.destroy = () => {
+        ButtonsContainer.classList.remove('horizontal-section-is-on');
         buildingDatas.building.traverse(convertToSingleSided);
         renderer.clippingPlanes.pop();
     };

@@ -77,11 +77,7 @@ export const createToggleMenuButton = (ButtonsContainer, getBuildingDatas) => {
         .appendChild(InfoBar);
 };
 
-export const createToggleExplosionButton = (ButtonsContainer, getBuildingDatas, { cut }) => {
-    const floorsExploded = {
-        exploded: false,
-    };
-
+export const createToggleExplosionButton = (ButtonsContainer, { cut, explosion }) => {
     const InnerButton = document.createElement('div');
     InnerButton.innerHTML = '✧';
 
@@ -95,18 +91,18 @@ export const createToggleExplosionButton = (ButtonsContainer, getBuildingDatas, 
     ToggleExplosionButton.appendChild(InnerButton);
 
     const toggleExplosionButton = () => {
-        const HorizontalSectionButton = document.getElementById('three-clovis-buttons_horizontal-section');
-        if (ToggleExplosionButton.classList.contains('three-button-on')) {
-            ToggleExplosionButton.classList.remove('three-button-on');
+        if (ButtonsContainer.classList.contains('explosion-is-on')) {
+            explosion.destroy();
         } else {
-            ToggleExplosionButton.classList.add('three-button-on');
-            HorizontalSectionButton.classList.remove('three-button-on');
-            cut.destroy();
+            explosion.start();
+            if (ButtonsContainer.classList.contains('horizontal-section-is-on')) {
+                cut.destroy();
+            }
         }
     };
+
     ToggleExplosionButton.addEventListener('click', () => {
         toggleExplosionButton();
-        Controllers.toggleBuildingExplosion(floorsExploded, getBuildingDatas);
     });
 
     ButtonsContainer
@@ -114,7 +110,7 @@ export const createToggleExplosionButton = (ButtonsContainer, getBuildingDatas, 
         .appendChild(InfoBar);
 };
 
-export const createHorizontalSectionButton = (ButtonsContainer, { cut }) => {
+export const createHorizontalSectionButton = (ButtonsContainer, { cut, explosion }) => {
     const InnerButton = document.createElement('div');
     InnerButton.innerHTML = '⇔';
 
@@ -127,14 +123,15 @@ export const createHorizontalSectionButton = (ButtonsContainer, { cut }) => {
     HorizontalSectionButton.id = 'three-clovis-buttons_horizontal-section';
     HorizontalSectionButton.appendChild(InnerButton);
 
+
     const toggleHorizontalCutButton = () => {
-        document.getElementById('three-clovis-buttons_horizontal-section');
-        if (HorizontalSectionButton.classList.contains('three-button-on')) {
-            HorizontalSectionButton.classList.remove('three-button-on');
+        if (ButtonsContainer.classList.contains('horizontal-section-is-on')) {
             cut.destroy();
         } else {
-            HorizontalSectionButton.classList.add('three-button-on');
             cut.start();
+            if (ButtonsContainer.classList.contains('explosion-is-on')) {
+                explosion.destroy();
+            }
         }
     };
 

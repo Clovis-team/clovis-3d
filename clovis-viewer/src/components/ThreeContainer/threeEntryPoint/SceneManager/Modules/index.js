@@ -1,6 +1,7 @@
 import Walk from './Walk';
 import Select from './Select';
 import Cut from './Cut';
+import Explosion from './Explosion';
 
 const Modules = ({
     scene,
@@ -14,11 +15,13 @@ const Modules = ({
     const cutModule = new Cut({
         renderer, controls, canvas, buildingDatas, scene,
     });
+    const explosionModule = new Explosion({ buildingDatas });
 
     const modules = {
         walk: walkModule,
         select: selectModule,
         cut: cutModule,
+        explosion: explosionModule,
     };
 
     /**
