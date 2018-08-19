@@ -250,13 +250,13 @@
   opacity: 0 !important;
   transition: all 0.3s ease-in-out;
   width: auto !important;
-  height: 3rem !important;
+  height: 2rem !important;
   background-color: #22a7f0;
   left: 50%;
   transform: translate3d(-50%, -4rem, 0);
   position: fixed !important;
-  top: 0.5rem;
-  border-radius: 1.5rem;
+  top: 0.75rem;
+  border-radius: 1rem;
   color: white;
   display: flex;
   justify-content: center;
