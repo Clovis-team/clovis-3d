@@ -192,6 +192,7 @@
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
+  transition: all 0.3s ease-in-out;
 }
 
 .three-clovis-buttons-container > div {
@@ -243,6 +244,38 @@
   cursor: default;
   font-size: 0.98rem;
 }
+
+.horizontal-section-message {
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  width: auto !important;
+  height: 3rem !important;
+  background-color: #22a7f0;
+  left: 50%;
+  transform: translateX(-50%);
+  position: fixed !important;
+  top: 0.5rem;
+  border-radius: 1.5rem;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem !important;
+  user-select: none;
+  cursor: default;
+}
+
+.three-clovis-buttons-container.hide-buttons > div:not(.horizontal-section-message) {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.three-clovis-buttons-container.hide-buttons.show-horizontal-section-message .horizontal-section-message {
+  visibility: visible;
+  opacity: 0.8;
+}
+
 
 .three-clovis-buttons_explosion:hover > div,
 .three-clovis-buttons_horizontal-section:hover > div,

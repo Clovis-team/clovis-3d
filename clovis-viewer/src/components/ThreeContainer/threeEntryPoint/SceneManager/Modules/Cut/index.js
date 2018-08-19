@@ -15,6 +15,8 @@ function Cut({
 
     this.start = () => {
         ButtonsContainer.classList.add('horizontal-section-is-on');
+        ButtonsContainer.classList.add('hide-buttons');
+        ButtonsContainer.classList.add('show-horizontal-section-message');
         if (controls) { controls.enabled = false; }
         if (!this.planeExist) {
             console.log('initing');
@@ -43,13 +45,17 @@ function Cut({
     };
 
     const onCanvasMouseUp = () => {
+        ButtonsContainer.classList.remove('hide-buttons');
+        ButtonsContainer.classList.remove('show-horizontal-selection-message');
         canvas.removeEventListener('mousemove', onCanvasMouseMove, false);
         canvas.removeEventListener('mouseup', onCanvasMouseUp, false);
 
-        window.setTimeout(() => { plane.edged.visible = false; }, 500);
+        window.setTimeout(() => { plane.edged.visible = false; }, 300);
         // TODO: amke the section plane fade away using material.opacity
         // then set to visible = false
         // end set the opacity back to normal
+
+        // TODO: if the cut is not destroyed, show section intersection as RED (like in BimX)
 
         // TODO: if plane is higher than building destroy everything
 
@@ -59,11 +65,15 @@ function Cut({
     this.destroy = () => {
         ButtonsContainer.classList.remove('horizontal-section-is-on');
         buildingDatas.building.traverse(convertToSingleSided);
+        plane.edged.visible = false;
+        if (controls) { controls.enabled = true; }
         renderer.clippingPlanes.pop();
     };
 
     this.update = () => {
-
+        // TODO:  idea : on destroy :
+        // 1- fade in previous cutted areas with red color on them 150 ms
+        // 2- fade from red to natural color those areas - 150ms
     };
 
     window.gui.add(this, 'start');
@@ -83,7 +93,7 @@ function convertToSingleSided(object) {
 }
 
 const makeVisiblePlane = ({ x, z }, color) => {
-    const planeGeom = new THREE.PlaneGeometry(x, z, 32);
+    const planeGeom = new THREE.PlaneGeometry(x + 10, z + 10, 32);
     planeGeom.rotateX(Math.PI / 2);
     const planeMaterial = new THREE.MeshBasicMaterial({
         color, side: THREE.DoubleSide, opacity: 0.2, transparent: true,

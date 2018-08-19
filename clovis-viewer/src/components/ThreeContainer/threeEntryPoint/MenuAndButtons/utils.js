@@ -90,6 +90,10 @@ export const createToggleExplosionButton = (ButtonsContainer, { cut, explosion }
     ToggleExplosionButton.id = 'three-clovis-buttons_explosion';
     ToggleExplosionButton.appendChild(InnerButton);
 
+    const horizontalSectionMessage = document.createElement('div');
+    horizontalSectionMessage.className = 'horizontal-section-message';
+    horizontalSectionMessage.innerHTML = 'Déplacer le plan pour positionner la coupe';
+
     const toggleExplosionButton = () => {
         if (ButtonsContainer.classList.contains('explosion-is-on')) {
             explosion.destroy();
@@ -108,6 +112,9 @@ export const createToggleExplosionButton = (ButtonsContainer, { cut, explosion }
     ButtonsContainer
         .appendChild(ToggleExplosionButton)
         .appendChild(InfoBar);
+
+    ButtonsContainer
+        .appendChild(horizontalSectionMessage);
 };
 
 export const createHorizontalSectionButton = (ButtonsContainer, { cut, explosion }) => {

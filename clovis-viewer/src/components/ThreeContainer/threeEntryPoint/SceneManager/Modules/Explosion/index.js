@@ -46,7 +46,8 @@ function Explosion({ buildingDatas }) {
     };
 
     this.update = () => {
-
+        // TODO: make explosion smoother, with "ease-in-out" animation.
+        // see : https://gist.github.com/gre/1650294
     };
 }
 
