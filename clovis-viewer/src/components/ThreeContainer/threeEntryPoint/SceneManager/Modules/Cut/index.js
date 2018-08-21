@@ -17,13 +17,17 @@ function Cut({
         ButtonsContainer.classList.add('horizontal-section-is-on');
         ButtonsContainer.classList.add('hide-buttons');
         ButtonsContainer.classList.add('show-horizontal-section-message');
+
+        buildingDatas.building.traverse(convertToDoubleSided);
         if (controls) { controls.enabled = false; }
         if (!this.planeExist) {
-            console.log('initing');
             initSectionPlane(plane, buildingDatas, scene);
             this.planeExist = true;
         }
         plane.edged.visible = true;
+
+        // tries to section everything
+        // buildingDatas.building.traverse(drawIntersectionPoints);
 
         renderer.clippingPlanes = [plane.clipping];
         canvas.addEventListener('mousedown', onCanvasMouseDown, false);
@@ -45,10 +49,14 @@ function Cut({
     };
 
     const onCanvasMouseUp = () => {
+        // draws a cube and its attempted intersection
+        // drawIntersectionPoints(cube);
+
         ButtonsContainer.classList.remove('hide-buttons');
         ButtonsContainer.classList.remove('show-horizontal-selection-message');
         canvas.removeEventListener('mousemove', onCanvasMouseMove, false);
         canvas.removeEventListener('mouseup', onCanvasMouseUp, false);
+
 
         window.setTimeout(() => { plane.edged.visible = false; }, 300);
         // TODO: amke the section plane fade away using material.opacity
@@ -76,8 +84,93 @@ function Cut({
         // 2- fade from red to natural color those areas - 150ms
     };
 
+    function drawIntersectionPoints(obj) {
+        if (obj.type === 'Mesh') {
+            console.log(obj);
+        }
+
+        const c_geometry = new THREE.BoxGeometry(10, 10, 10);
+        const c_material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        const cube = new THREE.Mesh(c_geometry, c_material);
+        cube.position.x = 10;
+        scene.add(cube);
+
+        const a = new THREE.Vector3();
+        const b = new THREE.Vector3();
+        const c = new THREE.Vector3();
+        const planePointA = new THREE.Vector3();
+        const planePointB = new THREE.Vector3();
+        const planePointC = new THREE.Vector3();
+        let lineAB = new THREE.Line3();
+        let lineBC = new THREE.Line3();
+        let lineCA = new THREE.Line3();
+        const pointsOfIntersection = new THREE.Geometry();
+        const pointOfIntersection = new THREE.Vector3();
+
+        function setPointOfIntersection(line, this_plane) {
+            this_plane.intersectLine(line, pointOfIntersection);
+            if (pointOfIntersection) {
+                pointsOfIntersection.vertices.push(pointOfIntersection.clone());
+            }
+        }
+
+        if (obj.type === 'Mesh' && obj.geometry.faces !== undefined) {
+            obj.geometry.faces.forEach((face) => {
+                obj.localToWorld(a.copy(obj.geometry.vertices[face.a]));
+                obj.localToWorld(b.copy(obj.geometry.vertices[face.b]));
+                obj.localToWorld(c.copy(obj.geometry.vertices[face.c]));
+                lineAB = new THREE.Line3(a, b);
+                lineBC = new THREE.Line3(b, c);
+                lineCA = new THREE.Line3(c, a);
+                setPointOfIntersection(lineAB, plane.clipping);
+                setPointOfIntersection(lineBC, plane.clipping);
+                setPointOfIntersection(lineCA, plane.clipping);
+            });
+
+            const pointsMaterial = new THREE.PointsMaterial({
+                size: 0.5,
+                color: 'yellow',
+            });
+            const points = new THREE.Points(pointsOfIntersection, pointsMaterial);
+            scene.add(points);
+
+            const array = [];
+
+            for (let i = 0; i < pointsOfIntersection.vertices.length; i += 1) {
+                array.push(new THREE.Vector2(
+                    pointsOfIntersection.vertices[i].x,
+                    pointsOfIntersection.vertices[i].z,
+                ));
+            }
+
+            const shape = new THREE.Shape(array);
+
+
+            const geometry = new THREE.ShapeGeometry(shape);
+            const material = new THREE.MeshBasicMaterial({ color: 0x00ffff });
+            const mesh = new THREE.Mesh(geometry, material);
+
+            mesh.rotateX(-Math.PI / 2);
+            mesh.position.y = plane.clipping.constant;
+
+            scene.add(mesh);
+
+            const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 });
+            const line = new THREE.LineSegments(pointsOfIntersection, lineMaterial);
+            scene.add(line);
+        }
+    }
+
+
     window.gui.add(this, 'start');
     window.gui.add(this, 'destroy');
+}
+
+
+function convertToSingleSided(object) {
+    if (object.material) {
+        object.material.side = 0;
+    }
 }
 
 function convertToDoubleSided(object) {
@@ -86,11 +179,6 @@ function convertToDoubleSided(object) {
     }
 }
 
-function convertToSingleSided(object) {
-    if (object.material) {
-        object.material.side = 0;
-    }
-}
 
 const makeVisiblePlane = ({ x, z }, color) => {
     const planeGeom = new THREE.PlaneGeometry(x + 10, z + 10, 32);
@@ -112,7 +200,6 @@ const makeVisiblePlane = ({ x, z }, color) => {
 };
 
 const initSectionPlane = (plane, { building, size, center }, scene) => {
-    building.traverse(convertToDoubleSided);
     plane.edged = makeVisiblePlane(size, 0xf64747);
     scene.add(plane.edged);
     plane.edged.position.copy(center);
