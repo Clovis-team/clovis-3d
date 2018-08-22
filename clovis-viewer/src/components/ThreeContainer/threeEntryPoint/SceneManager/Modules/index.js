@@ -11,7 +11,7 @@ const Modules = ({
     buildingDatas,
 }, canvas) => {
     const walkModule = new Walk(scene, camera, controls);
-    const selectModule = new Select(scene, camera, buildingDatas);
+    const selectModule = new Select(scene, camera, buildingDatas, canvas);
     const cutModule = new Cut({
         renderer, controls, canvas, buildingDatas, scene,
     });
@@ -31,7 +31,7 @@ const Modules = ({
     function createModules() {
         const modulesArray = [
             walkModule,
-            // selectingModule,
+            selectModule,
         ];
         return modulesArray;
     }

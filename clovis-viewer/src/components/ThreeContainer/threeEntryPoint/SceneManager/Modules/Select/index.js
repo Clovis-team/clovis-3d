@@ -1,4 +1,6 @@
-function Select(scene, camera, buildingDatas) {
+
+
+function Select(scene, camera, buildingDatas, canvas) {
     const mouse = {};
 
     const objSel = {
@@ -25,8 +27,10 @@ function Select(scene, camera, buildingDatas) {
             if (objSel.sphere) {
                 scene.remove(objSel.sphere);
             }
+            objSel.sphere = addSphereOnHitPoint(hitPoint, scene);
+            const pos = getScreenTranslation(objSel.sphere, camera, canvas);
+            console.log(pos);
         }
-        objSel.sphere = addSphereOnHitPoint(hitPoint, scene);
     }
 
     function onDocumentTouchEnd(event) {
@@ -41,8 +45,8 @@ function Select(scene, camera, buildingDatas) {
             if (objSel.sphere) {
                 scene.remove(objSel.sphere);
             }
+            objSel.sphere = addSphereOnHitPoint(hitPoint, scene);
         }
-        objSel.sphere = addSphereOnHitPoint(hitPoint, scene);
     }
 
     // Don't trigger the Select if the user rotates the camera with mouse
@@ -77,6 +81,49 @@ function Select(scene, camera, buildingDatas) {
             onDocumentTouchEnd(event);
         }
     }, false);
+    // ///////////////////////////////////////////////
+
+    const div = createDiv();
+
+    this.update = () => {
+        if (objSel.sphere) {
+            const pos = getScreenTranslation(objSel.sphere, camera, canvas);
+            div.style.left = `${pos.x + 10}px`;
+            div.style.top = `${pos.y - 40}px`;
+            console.log();
+        }
+    };
+}
+
+function createDiv() {
+    const element = document.createTextNode('Hi there and greetings!');
+    document.body.appendChild(element);
+
+    const div = document.createElement('div');
+    div.style.width = '30px';
+    div.style.height = '30px';
+    div.style.background = 'red';
+    div.style.color = 'white';
+    div.style.position = 'absolute';
+    div.style.textAlign = 'center';
+    div.style.verticalAlign = 'middle';
+
+    div.innerHTML = '.';
+    document.getElementById('popup-viewer').appendChild(div);
+    return div;
+}
+
+function getScreenTranslation(object, camera, canvas) {
+    const { width, height } = canvas;
+    const widthHalf = width / 2;
+    const heightHalf = height / 2;
+
+    const pos = object.position.clone();
+    pos.project(camera);
+    pos.x = (pos.x * widthHalf) + widthHalf;
+    pos.y = -(pos.y * heightHalf) + heightHalf;
+
+    return pos;
 }
 
 function colorElement({ object }, objSel) {
