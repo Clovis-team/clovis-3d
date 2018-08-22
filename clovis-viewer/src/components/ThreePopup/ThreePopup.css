@@ -658,3 +658,40 @@
   margin-bottom: 30vh;
 }
 
+#three-selection-menu {
+  background-color: rgba(255, 255, 255, 0.6);
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 1);
+  color: #89cbee;
+  font-weight: bold;
+  user-select: none;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 12px 1px;
+  cursor: pointer;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#three-selection-menu:after {
+  content: '';
+  background-color: #00b16a;
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 50%;
+}
+
+#three-selection-menu:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+#three-selection-menu:active {
+  background-color: rgba(255, 255, 255, 1);
+  height: 3rem;
+  width: 3rem;
+  transform: translate3d(-0.25rem, -0.25rem, 0);
+}
+

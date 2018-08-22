@@ -100,15 +100,19 @@ function Select(scene, camera, buildingDatas, canvas) {
 
 function createDiv() {
     const div = document.createElement('div');
-    div.style.width = '30px';
-    div.style.height = '30px';
-    div.style.background = 'red';
-    div.style.color = 'white';
+    div.id = 'three-selection-menu';
     div.style.position = 'absolute';
-    div.style.textAlign = 'center';
-    div.style.verticalAlign = 'middle';
+    div.addEventListener('mousedown', (event) => {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        event.stopPropagation();
+    }, false);
+    div.addEventListener('touchstart', (event) => {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        event.stopPropagation();
+    }, false);
 
-    div.innerHTML = '.';
     document.getElementById('popup-viewer').appendChild(div);
     return div;
 }
@@ -133,7 +137,7 @@ function colorElement({ object }, objSel) {
     objSel.ifc_tag = object.ifc_tag;
     objSel.ifc_name = object.ifc_name;
 
-    const event_color = new THREE.Color(0x51f787);
+    const event_color = new THREE.Color(0x9ed0eb);
 
     const event_material = new THREE.MeshBasicMaterial({ color: event_color });
     objSel.obj = object;
@@ -151,7 +155,7 @@ function getHitPoint(raycaster, buildingDatas) {
 
 function addSphereOnHitPoint(intersected, scene) {
     const geometry = new THREE.SphereGeometry(0.25, 32, 32);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00b16a });
+    const material = new THREE.MeshBasicMaterial({ color: 0x22a7f0 });
     const sphere = new THREE.Mesh(geometry, material);
     const position = intersected.point;
 
