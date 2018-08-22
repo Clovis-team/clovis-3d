@@ -9,6 +9,7 @@ function Select(scene, camera, buildingDatas, canvas) {
         obj: null,
         old_material: null,
         sphere: null,
+        div: null,
     };
 
 
@@ -23,6 +24,9 @@ function Select(scene, camera, buildingDatas, canvas) {
         const hitPoint = getHitPoint(raycaster, buildingDatas);
 
         if (hitPoint) {
+            if (!objSel.div) {
+                objSel.div = createDiv();
+            }
             colorElement(hitPoint, objSel);
             if (objSel.sphere) {
                 scene.remove(objSel.sphere);
@@ -83,22 +87,18 @@ function Select(scene, camera, buildingDatas, canvas) {
     }, false);
     // ///////////////////////////////////////////////
 
-    const div = createDiv();
 
     this.update = () => {
-        if (objSel.sphere) {
+        if (objSel.sphere && objSel.div) {
             const pos = getScreenTranslation(objSel.sphere, camera, canvas);
-            div.style.left = `${pos.x + 10}px`;
-            div.style.top = `${pos.y - 40}px`;
+            objSel.div.style.left = `${pos.x + 10}px`;
+            objSel.div.style.top = `${pos.y - 40}px`;
             console.log();
         }
     };
 }
 
 function createDiv() {
-    const element = document.createTextNode('Hi there and greetings!');
-    document.body.appendChild(element);
-
     const div = document.createElement('div');
     div.style.width = '30px';
     div.style.height = '30px';
