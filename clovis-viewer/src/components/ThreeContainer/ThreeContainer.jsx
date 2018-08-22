@@ -14,7 +14,7 @@ class ThreeContainer extends Component {
     constructor(props) {
         super(props);
         // this.buildingGltfPath = '/gltfs/Project1-assimp.gltf';
-        this.buildingGltfPath = '../../gltfs/15-assimp.gltf';
+        this.buildingGltfPath = 'gltfs/15-assimp.gltf';
 
         const getRandomArbitrary = (min, max) => Math.round(Math.random() * (max - min) + min);
 

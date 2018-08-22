@@ -1,69 +1,48 @@
 function Select(scene, camera, buildingDatas) {
     const mouse = {};
 
-    const obj_selection = {
+    const objSel = {
         ifc_tag: 'none',
         ifc_name: 'none',
-        obj_old: undefined,
-        obj_old_material: undefined,
+        obj: null,
+        old_material: null,
+        sphere: null,
     };
 
+
     const raycaster = new THREE.Raycaster();
+
 
     function onDocumentMouseClick(event) {
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-        if (obj_selection.obj_old && obj_selection.obj_old_material) {
-            obj_selection.obj_old.material = obj_selection.obj_old_material;
-        }
-
         raycaster.setFromCamera(mouse, camera);
-        const intersects = raycaster.intersectObjects(buildingDatas.mesh_all);
+        const hitPoint = getHitPoint(raycaster, buildingDatas);
 
-        if (intersects.length > 0) {
-            add_sphere_on_click(intersects[0], scene);
-            const intersected_obj = intersects[0].object;
-
-
-            obj_selection.ifc_tag = intersected_obj.ifc_tag;
-            obj_selection.ifc_name = intersected_obj.ifc_name;
-
-            const event_color = new THREE.Color(0x51f787);
-
-            const event_material = new THREE.MeshBasicMaterial({ color: event_color });
-            obj_selection.obj_old = intersected_obj;
-            obj_selection.obj_old_material = intersected_obj.material;
-            intersected_obj.material = event_material;
+        if (hitPoint) {
+            colorElement(hitPoint, objSel);
+            if (objSel.sphere) {
+                scene.remove(objSel.sphere);
+            }
         }
+        objSel.sphere = addSphereOnHitPoint(hitPoint, scene);
     }
 
     function onDocumentTouchEnd(event) {
         mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
 
-        if (obj_selection.obj_old && obj_selection.obj_old_material) {
-            obj_selection.obj_old.material = obj_selection.obj_old_material;
-        }
-
         raycaster.setFromCamera(mouse, camera);
-        const intersects = raycaster.intersectObjects(buildingDatas.mesh_all);
+        const hitPoint = getHitPoint(raycaster, buildingDatas);
 
-        if (intersects.length > 0) {
-            add_sphere_on_click(intersects[0], scene);
-            const intersected_obj = intersects[0].object;
-
-
-            obj_selection.ifc_tag = intersected_obj.ifc_tag;
-            obj_selection.ifc_name = intersected_obj.ifc_name;
-
-            const event_color = new THREE.Color(0x51f787);
-
-            const event_material = new THREE.MeshBasicMaterial({ color: event_color });
-            obj_selection.obj_old = intersected_obj;
-            obj_selection.obj_old_material = intersected_obj.material;
-            intersected_obj.material = event_material;
+        if (hitPoint) {
+            colorElement(hitPoint, objSel);
+            if (objSel.sphere) {
+                scene.remove(objSel.sphere);
+            }
         }
+        objSel.sphere = addSphereOnHitPoint(hitPoint, scene);
     }
 
     // Don't trigger the Select if the user rotates the camera with mouse
@@ -100,8 +79,30 @@ function Select(scene, camera, buildingDatas) {
     }, false);
 }
 
+function colorElement({ object }, objSel) {
+    if (objSel.obj && objSel.old_material) {
+        objSel.obj.material = objSel.old_material;
+    }
+    objSel.ifc_tag = object.ifc_tag;
+    objSel.ifc_name = object.ifc_name;
 
-function add_sphere_on_click(intersected, scene) {
+    const event_color = new THREE.Color(0x51f787);
+
+    const event_material = new THREE.MeshBasicMaterial({ color: event_color });
+    objSel.obj = object;
+    objSel.old_material = object.material;
+    object.material = event_material;
+}
+
+function getHitPoint(raycaster, buildingDatas) {
+    const intersects = raycaster.intersectObjects(buildingDatas.mesh_all);
+    if (intersects.length > 0) {
+        return intersects[0];
+    }
+    return null;
+}
+
+function addSphereOnHitPoint(intersected, scene) {
     const geometry = new THREE.SphereGeometry(0.25, 32, 32);
     const material = new THREE.MeshBasicMaterial({ color: 0x00b16a });
     const sphere = new THREE.Mesh(geometry, material);
@@ -109,6 +110,7 @@ function add_sphere_on_click(intersected, scene) {
 
     sphere.position.copy(position);
     scene.add(sphere);
+    return sphere;
 }
 
 export default Select;
