@@ -124,10 +124,7 @@ function createSelectionMenu() {
     const SelectionMenuButton = document.createElement('div');
     SelectionMenuButton.classList.add('three-selection-menu-button');
     SelectionMenuButton.innerHTML = '···';
-    SelectionMenuButton.addEventListener('mousedown', () => {
-        toggleSelectionMenuButton();
-    }, false);
-    SelectionMenuButton.addEventListener('touchstart', () => {
+    SelectionMenuButton.addEventListener('click', () => {
         toggleSelectionMenuButton();
     }, false);
 
@@ -153,8 +150,8 @@ function createSelectionMenu() {
 
     SelectionMenu.appendChild(SelectionMenuButton);
     SelectionMenu.appendChild(SelectionMenuElement0);
-    SelectionMenu.appendChild(SelectionMenuElement1);
     SelectionMenu.appendChild(SelectionMenuElement2);
+    SelectionMenu.appendChild(SelectionMenuElement1);
     SelectionMenu.appendChild(CloseSelectionMenu);
 
 
