@@ -23,6 +23,8 @@ function Select(scene, camera, buildingDatas, canvas) {
         raycaster.setFromCamera(mouse, camera);
         const hitPoint = getHitPoint(raycaster, buildingDatas);
 
+        closeSelectionMenuButton();
+
         if (hitPoint) {
             if (!objSel.div) {
                 objSel.div = createSelectionMenu();
@@ -91,12 +93,34 @@ function Select(scene, camera, buildingDatas, canvas) {
     this.update = () => {
         if (objSel.sphere && objSel.div) {
             const pos = getScreenTranslation(objSel.sphere, camera, canvas);
-            objSel.div.style.left = `${pos.x + 10}px`;
-            objSel.div.style.top = `${pos.y - 40}px`;
+            objSel.div.style.left = `${pos.x + 16}px`;
+            objSel.div.style.top = `${pos.y - 48}px`;
             console.log();
         }
     };
 }
+
+const toggleSelectionMenuButton = () => {
+    const SelectionMenu = document.getElementById('three-selection-menu');
+
+    if (SelectionMenu) {
+        if (SelectionMenu.classList.contains('selection-menu-open')) {
+            SelectionMenu.classList.remove('selection-menu-open');
+        } else {
+            SelectionMenu.classList.add('selection-menu-open');
+        }
+    }
+};
+
+const closeSelectionMenuButton = () => {
+    const SelectionMenu = document.getElementById('three-selection-menu');
+
+    if (SelectionMenu) {
+        if (SelectionMenu.classList.contains('selection-menu-open')) {
+            SelectionMenu.classList.remove('selection-menu-open');
+        }
+    }
+};
 
 function createSelectionMenu() {
     const SelectionMenu = document.createElement('div');
@@ -112,14 +136,6 @@ function createSelectionMenu() {
         event.preventDefault();
         event.stopPropagation();
     }, false);
-
-    const toggleSelectionMenuButton = () => {
-        if (SelectionMenu.classList.contains('selection-menu-open')) {
-            SelectionMenu.classList.remove('selection-menu-open');
-        } else {
-            SelectionMenu.classList.add('selection-menu-open');
-        }
-    };
 
     const SelectionMenuButton = document.createElement('div');
     SelectionMenuButton.classList.add('three-selection-menu-button');

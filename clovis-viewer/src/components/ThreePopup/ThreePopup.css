@@ -664,14 +664,14 @@
   max-height: 2.5rem;
   width: 2.5rem;
   border-radius: 1.25rem  ;
-  border: 2px solid rgba(255, 255, 255, 1);
+  border: 2px solid #00b16a;
   user-select: none;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 12px 1px;
   cursor: pointer;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  transition: width 0.2s ease-in-out, max-height 0.2s ease-in-out;
+  transition: width 0.2s ease-in-out, max-height 0.2s ease-in-out, border 0.2s ease-out;
   flex-direction: column;
   overflow: hidden;
 }
@@ -681,6 +681,7 @@
   height: auto;
   max-height: 15rem;
   width: auto;
+  border: 2px solid white;
 }
 
 #three-selection-menu.selection-menu-open .three-selection-menu-button {
