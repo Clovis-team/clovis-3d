@@ -28,6 +28,7 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, DatasFromReact) => {
 
     // its a function that loops 60 times per second ideally
     function render() {
+        // TODO: look into stop running when tab on foreground but browser is not https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
         // FrameRequestCallback. calls the render when window is active
         requestAnimationFrame(render);
         devTools.stats.begin();
