@@ -27,7 +27,7 @@ const loadBuilding = (scene, buildingPath, gltfLoadedCallback) => {
             // adding scene
             scene.add(gltf.scene);
             const gltfBuilding = get_building(gltf.scene);
-            gltfLoadedCallback(gltfBuilding);
+            gltfLoadedCallback(gltfBuilding, gltf.scene.children[0]);
 
             // event call
             const endOfLoaderCallback = new Event('endOfLoaderCallback');

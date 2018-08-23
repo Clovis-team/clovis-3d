@@ -181,7 +181,7 @@ function convertToDoubleSided(object) {
 
 
 const makeVisiblePlane = ({ x, z }, color) => {
-    const planeGeom = new THREE.PlaneGeometry(x + 10, z + 10, 32);
+    const planeGeom = new THREE.PlaneGeometry(x * 1.1, z * 1.1, 32);
     planeGeom.rotateX(Math.PI / 2);
     const planeMaterial = new THREE.MeshBasicMaterial({
         color, side: THREE.DoubleSide, opacity: 0.2, transparent: true,
