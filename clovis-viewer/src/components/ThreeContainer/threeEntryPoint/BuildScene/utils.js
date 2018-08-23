@@ -19,9 +19,7 @@ export const get_building_ifc_elements = (building) => {
     const mesh_all = [];
 
 
-    building.traverse((node_no) => {
-        const node = node_no;
-
+    building.traverse((node) => {
         if ((node instanceof THREE.Mesh || node instanceof THREE.Object3D) && node.name !== '') {
             mesh_all.push(node);
 
@@ -39,19 +37,31 @@ export const get_building_ifc_elements = (building) => {
                     ifc_building_element.ifc_name = ifc_name;
                     ifc_building_element.visible_order = true;
                     ifc_building_element.children.push(node);
+                    addCategoryuuid(node, ifc_building_element);
+
                     building_ifc_elements.push(ifc_building_element);
                 } else {
                     const ifc_building_element = building_ifc_elements.find(
                         obj => obj.ifc_tag === ifc_tag,
                     );
+                    addCategoryuuid(node, ifc_building_element);
                     ifc_building_element.children.push(node);
                 }
             }
         }
     });
+    console.log(building_ifc_elements);
 
     return {
         building_ifc_elements,
         mesh_all,
     };
 };
+
+function addCategoryuuid(node, { uuid }) {
+    if (node.category) {
+        node.category.push(uuid);
+    } else {
+        node.category = [uuid];
+    }
+}
