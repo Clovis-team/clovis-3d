@@ -149,10 +149,10 @@ function createSelectionMenu() {
     }, false);
 
     SelectionMenu.appendChild(SelectionMenuButton);
-    SelectionMenu.appendChild(SelectionMenuElement0);
-    SelectionMenu.appendChild(SelectionMenuElement2);
-    SelectionMenu.appendChild(SelectionMenuElement1);
     SelectionMenu.appendChild(CloseSelectionMenu);
+    SelectionMenu.appendChild(SelectionMenuElement2);
+    SelectionMenu.appendChild(SelectionMenuElement0);
+    SelectionMenu.appendChild(SelectionMenuElement1);
 
 
     document.getElementById('popup-viewer').appendChild(SelectionMenu);

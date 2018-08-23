@@ -694,7 +694,7 @@
   opacity: 0;
   color: #060d2d;
   font-size: 1rem;
-  padding: 0 0.75rem 0 0.75rem;
+  padding: 0 1rem 0 0.75rem;
   width: 100%;
   height: 2.5rem;
   cursor: pointer;
@@ -727,7 +727,7 @@
   background-color: rgba(0, 177, 106, 0.2) !important;
 }
 #three-selection-menu .three-selection-menu-element.three-type-bim {
-  margin-top: 0.5rem;
+  /* margin-top: 1rem; */
 }
 #three-selection-menu .three-selection-menu-element.three-type-bim span {
   font-size: 1.1rem !important;
@@ -745,7 +745,7 @@
 
 #three-selection-menu .three-selection-menu-element span {
   font-size: 1.5rem;  
-  margin-right: 0.25rem;
+  margin-right: 0.5rem;
   width: 1rem;
   display: flex;
   justify-content: center;
