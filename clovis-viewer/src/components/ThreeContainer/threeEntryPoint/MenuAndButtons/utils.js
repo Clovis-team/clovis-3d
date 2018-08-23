@@ -186,7 +186,7 @@ export const createCrossSectionButton = (ButtonsContainer) => {
 
 export const createHelpButton = (ButtonsContainer) => {
     const InnerButton = document.createElement('div');
-    InnerButton.innerHTML = '⚁';
+    InnerButton.innerHTML = '✰';
 
     const InfoBar = document.createElement('div');
     InfoBar.className = 'three-clovis-buttons_info-bar';
@@ -215,11 +215,11 @@ const HelpPopupContent = (HelpPopupContentContainer) => {
 
     const Help1Element = document.createElement('div');
     Help1Element.className = 'three-clovis-buttons_help-element';
-    Help1Element.innerHTML = '<p>⚀<br/><br/>Zoomer sur le bâtiment pour activer le mode "première personne"</p>';
+    Help1Element.innerHTML = '<p>1<br/><br/>Zoomer sur le bâtiment pour activer le mode "première personne"</p>';
 
     const Help2Element = document.createElement('div');
     Help2Element.className = 'three-clovis-buttons_help-element';
-    Help2Element.innerHTML = '<p>⚁<br/><br/>Utilisez E ⇧ - D ⇩ - S ⇦ - F ⇨ - T ⇑ - G ⇓ pour vous diriger</p>';
+    Help2Element.innerHTML = '<p>2<br/><br/>Utilisez E ⇧ - D ⇩ - S ⇦ - F ⇨ - T ⇑ - G ⇓ pour vous diriger</p>';
 
 
     HelpPopupContentContainer.appendChild(HelpTitle);

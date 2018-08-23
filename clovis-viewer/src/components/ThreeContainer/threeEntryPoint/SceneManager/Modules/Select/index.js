@@ -25,7 +25,7 @@ function Select(scene, camera, buildingDatas, canvas) {
 
         if (hitPoint) {
             if (!objSel.div) {
-                objSel.div = createDiv();
+                objSel.div = createSelectionMenu();
             }
             colorElement(hitPoint, objSel);
             if (objSel.sphere) {
@@ -98,23 +98,68 @@ function Select(scene, camera, buildingDatas, canvas) {
     };
 }
 
-function createDiv() {
-    const div = document.createElement('div');
-    div.id = 'three-selection-menu';
-    div.style.position = 'absolute';
-    div.addEventListener('mousedown', (event) => {
+function createSelectionMenu() {
+    const SelectionMenu = document.createElement('div');
+    SelectionMenu.id = 'three-selection-menu';
+    SelectionMenu.style.position = 'absolute';
+    SelectionMenu.addEventListener('mousedown', (event) => {
         event.stopImmediatePropagation();
         event.preventDefault();
         event.stopPropagation();
     }, false);
-    div.addEventListener('touchstart', (event) => {
+    SelectionMenu.addEventListener('touchstart', (event) => {
         event.stopImmediatePropagation();
         event.preventDefault();
         event.stopPropagation();
     }, false);
 
-    document.getElementById('popup-viewer').appendChild(div);
-    return div;
+    const toggleSelectionMenuButton = () => {
+        if (SelectionMenu.classList.contains('selection-menu-open')) {
+            SelectionMenu.classList.remove('selection-menu-open');
+        } else {
+            SelectionMenu.classList.add('selection-menu-open');
+        }
+    };
+
+    const SelectionMenuButton = document.createElement('div');
+    SelectionMenuButton.classList.add('three-selection-menu-button');
+    SelectionMenuButton.innerHTML = '···';
+    SelectionMenuButton.addEventListener('mousedown', () => {
+        toggleSelectionMenuButton();
+    }, false);
+    SelectionMenuButton.addEventListener('touchstart', () => {
+        toggleSelectionMenuButton();
+    }, false);
+
+    const SelectionMenuElement0 = document.createElement('div');
+    SelectionMenuElement0.className = 'three-selection-menu-element three-type-bim';
+    SelectionMenuElement0.innerHTML = '<span>☷</span> Détails BIM';
+    const SelectionMenuElement1 = document.createElement('div');
+    SelectionMenuElement1.className = 'three-selection-menu-element three-type-action';
+    SelectionMenuElement1.innerHTML = '<span>⊛</span> Se rapprocher';
+    const SelectionMenuElement2 = document.createElement('div');
+    SelectionMenuElement2.className = 'three-selection-menu-element three-type-creation';
+    SelectionMenuElement2.innerHTML = '<span>+</span> Ajouter une tâche ici';
+
+    const CloseSelectionMenu = document.createElement('div');
+    CloseSelectionMenu.className = 'three-selection-menu-element three-selection-menu-close';
+    CloseSelectionMenu.innerHTML = '✕';
+    CloseSelectionMenu.addEventListener('mousedown', () => {
+        toggleSelectionMenuButton();
+    }, false);
+    CloseSelectionMenu.addEventListener('touchstart', () => {
+        toggleSelectionMenuButton();
+    }, false);
+
+    SelectionMenu.appendChild(SelectionMenuButton);
+    SelectionMenu.appendChild(SelectionMenuElement0);
+    SelectionMenu.appendChild(SelectionMenuElement1);
+    SelectionMenu.appendChild(SelectionMenuElement2);
+    SelectionMenu.appendChild(CloseSelectionMenu);
+
+
+    document.getElementById('popup-viewer').appendChild(SelectionMenu);
+    return SelectionMenu;
 }
 
 function getScreenTranslation(object, camera, canvas) {
