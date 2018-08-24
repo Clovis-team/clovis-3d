@@ -9,9 +9,9 @@ const Modules = ({
     camera,
     controls,
     buildingDatas,
-}, canvas) => {
+}, canvas, addTask) => {
     const walkModule = new Walk(scene, camera, controls);
-    const selectModule = new Select(scene, camera, buildingDatas, canvas);
+    const selectModule = new Select(scene, camera, buildingDatas, canvas, addTask);
     const cutModule = new Cut({
         renderer, controls, canvas, buildingDatas, scene,
     });

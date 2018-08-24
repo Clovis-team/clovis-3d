@@ -10,7 +10,7 @@ import Controllers from './Controllers';
 import Listeners from './Listeners';
 import MenuAndButtons from './MenuAndButtons';
 
-const ThreeEntryPoint = (domContainer, buildingGltfPath, DatasFromReact) => {
+const ThreeEntryPoint = (domContainer, buildingGltfPath, DatasFromReact, addTask) => {
     const canvas = createCanvas(document, domContainer);
     // TODO: use it to display tasks
     const { selectedTask, allTasks } = DatasFromReact;
@@ -23,7 +23,7 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, DatasFromReact) => {
     // TODO: put condition with NODE_ENV
     const devTools = DevTools(InitializedScene);
 
-    const sceneManager = SceneManager(canvas, InitializedScene);
+    const sceneManager = SceneManager(canvas, InitializedScene, addTask);
 
 
     // its a function that loops 60 times per second ideally

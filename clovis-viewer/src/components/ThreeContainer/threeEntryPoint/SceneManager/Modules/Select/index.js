@@ -1,6 +1,6 @@
 
 
-function Select(scene, camera, buildingDatas, canvas) {
+function Select(scene, camera, buildingDatas, canvas, addTask) {
     const mouse = {};
 
     const objSel = {
@@ -27,7 +27,7 @@ function Select(scene, camera, buildingDatas, canvas) {
 
         if (hitPoint) {
             if (!objSel.div) {
-                objSel.div = createSelectionMenu();
+                objSel.div = createSelectionMenu(addTask, hitPoint);
             }
             colorElement(hitPoint, objSel);
             if (objSel.sphere) {
@@ -122,7 +122,7 @@ const closeSelectionMenuButton = () => {
     }
 };
 
-function createSelectionMenu() {
+function createSelectionMenu(addTask, hitPoint) {
     const SelectionMenu = document.createElement('div');
     SelectionMenu.id = 'three-selection-menu';
     SelectionMenu.style.position = 'absolute';
@@ -147,12 +147,18 @@ function createSelectionMenu() {
     const SelectionMenuElement0 = document.createElement('div');
     SelectionMenuElement0.className = 'three-selection-menu-element three-type-bim';
     SelectionMenuElement0.innerHTML = '<span>☷</span> Détails BIM';
+
+
     const SelectionMenuElement1 = document.createElement('div');
     SelectionMenuElement1.className = 'three-selection-menu-element three-type-action';
     SelectionMenuElement1.innerHTML = '<span>⊛</span> Se rapprocher';
     const SelectionMenuElement2 = document.createElement('div');
     SelectionMenuElement2.className = 'three-selection-menu-element three-type-creation';
     SelectionMenuElement2.innerHTML = '<span>+</span> Ajouter une tâche ici';
+    SelectionMenuElement2.addEventListener('click', () => {
+        toggleSelectionMenuButton();
+        addTask(hitPoint);
+    }, false);
 
     const CloseSelectionMenu = document.createElement('div');
     CloseSelectionMenu.className = 'three-selection-menu-element three-selection-menu-close';

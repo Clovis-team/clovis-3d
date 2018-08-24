@@ -78,22 +78,23 @@ class ThreeContainer extends Component {
         };
     }
 
+    addTask = (ThreeData) => {
+        alert('Add Task, here is the THreeData :');
+        console.log('ThreeData : ', ThreeData);
+    }
+
     componentDidMount() {
         const threeRootElement = this.threeRootElement;
         const buildingGltfPath = this.buildingGltfPath;
         const DatasFromReact = this.DatasFromReact;
+        const addTask = this.addTask;
 
         const threeControllers = threeEntryPoint(
             threeRootElement,
             buildingGltfPath,
             DatasFromReact,
+            addTask,
         );
-        // console.log('>>>> threeControllers :', threeControllers);
-
-        // this.ToggleWalking = threeControllers.ToggleWalking;
-
-
-        // this.ToggleWalking();
     }
 
     render() {

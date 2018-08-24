@@ -493,11 +493,14 @@
   background-color: #f4b350;
 }
 
+.three-menu_section-element .select-control {
+  font-size: 2.5rem;
+}
 
 .three-menu_section-element .tag-controls {
-  width: 2.75rem;
-  min-width: 2.75rem;
-  max-width: 2.75rem;
+  width: 4.75rem;
+  min-width: 4.75rem;
+  max-width: 4.75rem;
   height: 2.5rem;
   display: flex;
   border-radius: 0.25rem;
@@ -520,8 +523,8 @@
 
 .three-menu_section-element .tag-name {
   justify-content: flex-start;
-  width: 9.75rem;
-  min-width: 9.75rem;
+  width: 7.75rem;
+  min-width: 7.75rem;
   height: 2.5rem;
   display: flex;
   align-items: center;

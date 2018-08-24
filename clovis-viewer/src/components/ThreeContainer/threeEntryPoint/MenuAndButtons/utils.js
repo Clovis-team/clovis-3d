@@ -473,85 +473,77 @@ const createTagsSelectionSection = (
     const SectionElements = document.createElement('div');
     SectionElements.className = 'three-menu_section-elements';
 
-    // WIP, we will use this function later, when the data will be well
-    // prepared
-    const toggleSelectTag = (TagElement, the_category) => {
+    // Toggle the removed tags
+    const toggleTag = (TagElement, the_category, type) => {
         const tag_uuid = the_category.uuid;
 
-        const updateSelectedTags = () => {
-            const selectedTags = getSelectedTags();
+        // Update the arrays of selected and removed tags
+        const removedTags = getRemovedTags();
+        const selectedTags = getSelectedTags();
 
 
-            building_ifc_categories.forEach((category) => {
-                // If at least one tag is selected, go to hide all the other ones
-                if (selectedTags.length > 0) {
-                    // If the current category tag is the same as one of selected
-                    // show all the elements inside it
-                    if (selectedTags.includes(category.uuid)) {
-                        category.visible = false;
-                        category.children.forEach((obj) => {
-                            obj.visible = true;
-                        });
-                        // Else hide of the element inside (because it's not selected)
-                    } else {
-                        category.visible = false;
-                        category.children.forEach((obj) => {
-                            // If the object categories don't match the selected ones, hide it
-                            if (_.intersection(selectedTags, obj.uuid).length === 0) {
-                                obj.visible = false;
-                            }
-                        });
-                    }
-                // Else if no tag is selected, show all the building so all
-                // the elements of this category
-                } else {
-                    category.visible = true;
-                    category.children.forEach((obj) => {
-                        obj.visible = true;
-                    });
+        // Update the arrays of selected and removed tags
+        // Update the css class of selected tag
+        switch (type) {
+        case 'select': {
+            if (!selectedTags.includes(the_category.uuid)) {
+                // Select
+                const new_selectedTags = selectedTags;
+                new_selectedTags[new_selectedTags.length] = tag_uuid;
+                changeSelectedTags(new_selectedTags);
+                TagElement.classList.add('tag-element-selected');
+
+                // Remove the "removed" mode if the user selects the element
+                if (removedTags.includes(the_category.uuid)) {
+                    // Show
+                    const new_removedTags = removedTags.filter(tag => tag !== tag_uuid);
+                    changeRemovedTags(new_removedTags);
+                    TagElement.classList.remove('tag-element-removed');
                 }
-            });
-        };
-
-        if (TagElement.classList.contains('tag-element-selected')) {
-            // Unselect
-            const selectedTags = getSelectedTags();
-            const new_selectedTags = selectedTags.filter(tag => tag !== tag_uuid);
-            changeSelectedTags(new_selectedTags);
-
-            updateSelectedTags();
-            TagElement.classList.remove('tag-element-selected');
-        } else {
-            // Select
-            const selectedTags = getSelectedTags();
-            const new_selectedTags = selectedTags;
-            new_selectedTags[new_selectedTags.length] = tag_uuid;
-            changeSelectedTags(new_selectedTags);
-
-            updateSelectedTags();
-
-            TagElement.classList.add('tag-element-selected');
+            } else {
+                // Unselect
+                const new_selectedTags = selectedTags.filter(tag => tag !== tag_uuid);
+                changeSelectedTags(new_selectedTags);
+                TagElement.classList.remove('tag-element-selected');
+            }
+            break;
         }
-    };
+        case 'remove':
+            if (!removedTags.includes(the_category.uuid)) {
+                // Remove
+                const new_removedTags = removedTags;
+                new_removedTags[new_removedTags.length] = tag_uuid;
+                changeRemovedTags(new_removedTags);
+                TagElement.classList.add('tag-element-removed');
 
-
-    // WIP, we will use this function later, when the data will be well
-    // prepared
-    const toggleRemovedTag = (TagElement, the_category) => {
-        const tag_uuid = the_category.uuid;
+                // Remove the "selected" mode if the user removes the element
+                if (selectedTags.includes(the_category.uuid)) {
+                    // Show
+                    const new_selectedTags = selectedTags.filter(tag => tag !== tag_uuid);
+                    changeSelectedTags(new_selectedTags);
+                    TagElement.classList.remove('tag-element-selected');
+                }
+            } else {
+                // Show
+                const new_removedTags = removedTags.filter(tag => tag !== tag_uuid);
+                changeRemovedTags(new_removedTags);
+                TagElement.classList.remove('tag-element-removed');
+            }
+            break;
+        default:
+            break;
+        }
 
         const updateRemovedTags = () => {
-            const removedTags = getRemovedTags();
-
             building_ifc_categories.forEach((category) => {
-                // Remove all tags children
-                if (removedTags.includes(category.uuid)) {
+                if (removedTagsUpdated.includes(category.uuid)) {
+                    // Remove all tags children
                     category.visible = false;
                     category.children.forEach((obj) => {
                         obj.visible = false;
                     });
-                // Else hide of the element inside (because it's not selected)
                 } else {
+                    // Else hide of the element inside (because it's not selected)
                     category.visible = true;
                     category.children.forEach((obj) => {
                         obj.visible = true;
@@ -560,27 +552,52 @@ const createTagsSelectionSection = (
             });
         };
 
-        if (TagElement.classList.contains('tag-element-removed')) {
-            // Unselect
-            const removedTags = getRemovedTags();
-            const new_removedTags = removedTags.filter(tag => tag !== tag_uuid);
-            changeRemovedTags(new_removedTags);
+        const updateSelectedTags = () => {
+            building_ifc_categories.forEach((category) => {
+                // If the current category tag is the same as one of selected
+                // show all the elements inside it
+                if (selectedTagsUpdated.includes(category.uuid)) {
+                    category.visible = false;
+                    category.children.forEach((obj) => {
+                        obj.visible = true;
+                    });
+                    // Else hide of the element inside (because it's not selected)
+                } else {
+                    category.visible = false;
+                    category.children.forEach((obj) => {
+                        // If the object categories don't match the selected ones, hide it
+                        if (_.intersection(selectedTagsUpdated, obj.uuid).length === 0) {
+                            obj.visible = false;
+                        }
+                    });
+                }
+            });
+        };
 
+        const showAllTags = () => {
+            building_ifc_categories.forEach((category) => {
+                category.visible = true;
+                category.children.forEach((obj) => {
+                    obj.visible = true;
+                });
+            });
+        };
+
+        // Update the Array of 3D Objects
+        // If at least one element is selected, avoid Removing Mode
+        const selectedTagsUpdated = getSelectedTags();
+        const removedTagsUpdated = getRemovedTags();
+
+        if (selectedTagsUpdated.length > 0) {
+            updateSelectedTags();
+        } else if (removedTagsUpdated.length > 0) {
             updateRemovedTags();
-            TagElement.classList.remove('tag-element-removed');
         } else {
-            // Select
-            const removedTags = getRemovedTags();
-            const new_removedTags = removedTags;
-            new_removedTags[new_removedTags.length] = tag_uuid;
-            changeRemovedTags(new_removedTags);
-
-            updateRemovedTags();
-
-            TagElement.classList.add('tag-element-removed');
+            showAllTags();
         }
     };
 
+    // JUST Create the html elements of the if categories
     if (typeof building_ifc_categories !== 'undefined') {
         for (let i = sortedIfcCategories.length - 1; i >= 0; i -= 1) {
             const category = sortedIfcCategories[i];
@@ -591,12 +608,12 @@ const createTagsSelectionSection = (
 
             const TagControlSelect = document.createElement('div');
             TagControlSelect.className = 'tag-control select-control';
+            TagControlSelect.innerHTML = '·';
             const TagControlRemove = document.createElement('div');
             TagControlRemove.className = 'tag-control remove-control';
             TagControlRemove.innerHTML = '-';
 
-            // WIP : just wait for building data little change from Nicola
-            // TagControls.appendChild(TagControlSelect);
+            TagControls.appendChild(TagControlSelect);
             TagControls.appendChild(TagControlRemove);
 
             const TagName = document.createElement('div');
@@ -618,14 +635,26 @@ const createTagsSelectionSection = (
             addEventListeners(document, 'mousedown touchstart', () => { mouseMoved = false; });
             addEventListeners(document, 'mousemove touchmove', () => { mouseMoved = true; });
             addEventListeners(
-                TagElement,
+                TagControlRemove,
                 'mouseup touchend',
                 (event) => {
                     event.stopImmediatePropagation();
                     event.preventDefault();
                     event.stopPropagation();
                     if (mouseMoved === false) {
-                        toggleRemovedTag(TagElement, category);
+                        toggleTag(TagElement, category, 'remove');
+                    }
+                },
+            );
+            addEventListeners(
+                TagControlSelect,
+                'mouseup touchend',
+                (event) => {
+                    event.stopImmediatePropagation();
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if (mouseMoved === false) {
+                        toggleTag(TagElement, category, 'select');
                     }
                 },
             );

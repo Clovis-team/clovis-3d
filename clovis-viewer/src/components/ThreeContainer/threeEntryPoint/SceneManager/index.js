@@ -1,6 +1,6 @@
 import Modules from './Modules';
 
-const SceneManager = (canvas, InitializedScene) => {
+const SceneManager = (canvas, InitializedScene, addTask) => {
     const {
         scene,
         renderer,
@@ -12,7 +12,7 @@ const SceneManager = (canvas, InitializedScene) => {
     const clock = new THREE.Clock();
 
     // sceneSubjects, now called modulesArray
-    const { modules, modulesArray } = Modules(InitializedScene, canvas);
+    const { modules, modulesArray } = Modules(InitializedScene, canvas, addTask);
 
     /**
      * updates the stuff that has to be updated every frame cycle
