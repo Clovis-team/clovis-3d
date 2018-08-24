@@ -23,8 +23,6 @@ function Select(scene, camera, buildingDatas, canvas, addTask) {
         raycaster.setFromCamera(mouse, camera);
         const hitPoint = getHitPoint(raycaster, buildingDatas);
 
-        closeSelectionMenuButton();
-
         if (hitPoint) {
             if (!objSel.div) {
                 objSel.div = createSelectionMenu(addTask, hitPoint);
@@ -36,6 +34,11 @@ function Select(scene, camera, buildingDatas, canvas, addTask) {
             objSel.sphere = addSphereOnHitPoint(hitPoint, scene);
             const pos = getScreenTranslation(objSel.sphere, camera, canvas);
             console.log(pos);
+        } else {
+            // Remove all the stuff is the user doesn't select an element
+            scene.remove(objSel.sphere);
+            removeSelectionMenu(objSel);
+            colorElement(null, objSel);
         }
     }
 
@@ -46,12 +49,22 @@ function Select(scene, camera, buildingDatas, canvas, addTask) {
         raycaster.setFromCamera(mouse, camera);
         const hitPoint = getHitPoint(raycaster, buildingDatas);
 
+        closeSelectionMenuButton();
+
         if (hitPoint) {
+            if (!objSel.div) {
+                objSel.div = createSelectionMenu(addTask, hitPoint);
+            }
             colorElement(hitPoint, objSel);
             if (objSel.sphere) {
                 scene.remove(objSel.sphere);
             }
             objSel.sphere = addSphereOnHitPoint(hitPoint, scene);
+        } else {
+            // Remove all the stuff is the user doesn't select an element
+            scene.remove(objSel.sphere);
+            removeSelectionMenu(objSel);
+            colorElement(null, objSel);
         }
     }
 
@@ -89,6 +102,9 @@ function Select(scene, camera, buildingDatas, canvas, addTask) {
     }, false);
     // ///////////////////////////////////////////////
 
+    this.destroy = () => {
+        // scene.remove(objSel.sphere);
+    };
 
     this.update = () => {
         if (objSel.sphere && objSel.div) {
@@ -122,9 +138,19 @@ const closeSelectionMenuButton = () => {
     }
 };
 
+function removeSelectionMenu(objSel) {
+    const SelectionMenu = document.getElementById('three-selection-menu');
+    if (SelectionMenu) {
+        SelectionMenu.parentElement.removeChild(SelectionMenu);
+    }
+
+    objSel.div = null;
+}
+
 function createSelectionMenu(addTask, hitPoint) {
     const SelectionMenu = document.createElement('div');
     SelectionMenu.id = 'three-selection-menu';
+    SelectionMenu.className = 'three-selection-menu';
     SelectionMenu.style.position = 'absolute';
     SelectionMenu.addEventListener('mousedown', (event) => {
         event.stopImmediatePropagation();
@@ -194,19 +220,25 @@ function getScreenTranslation(object, camera, canvas) {
     return pos;
 }
 
-function colorElement({ object }, objSel) {
+function colorElement(hitPoint, objSel) {
     if (objSel.obj && objSel.old_material) {
         objSel.obj.material = objSel.old_material;
     }
-    objSel.ifc_tag = object.ifc_tag;
-    objSel.ifc_name = object.ifc_name;
+    if (hitPoint) {
+        objSel.ifc_tag = hitPoint.object.ifc_tag;
+        objSel.ifc_name = hitPoint.object.ifc_name;
 
-    const event_color = new THREE.Color(0x9ed0eb);
+        const event_color = new THREE.Color(0x55dda7);
 
-    const event_material = new THREE.MeshBasicMaterial({ color: event_color });
-    objSel.obj = object;
-    objSel.old_material = object.material;
-    object.material = event_material;
+        const event_material = new THREE.MeshBasicMaterial({ color: event_color });
+        objSel.obj = hitPoint.object;
+        objSel.old_material = hitPoint.object.material;
+        hitPoint.object.material = event_material;
+    } else {
+        // If no element is selected, remove the color on the previous
+        // selected Object
+        objSel.obj.material = objSel.old_material;
+    }
 }
 
 function getHitPoint(raycaster, buildingDatas) {
@@ -219,7 +251,7 @@ function getHitPoint(raycaster, buildingDatas) {
 
 function addSphereOnHitPoint(intersected, scene) {
     const geometry = new THREE.SphereGeometry(0.25, 32, 32);
-    const material = new THREE.MeshBasicMaterial({ color: 0x22a7f0 });
+    const material = new THREE.MeshBasicMaterial({ color: 0x00b16a });
     const sphere = new THREE.Mesh(geometry, material);
     const position = intersected.point;
 

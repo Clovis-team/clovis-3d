@@ -7,13 +7,13 @@ export function initSky(scene, dev) {
 
 
     const effectController = {
-        turbidity: 10,
-        rayleigh: 2,
+        turbidity: 1,
+        rayleigh: 1.642,
         mieCoefficient: 0.005,
         mieDirectionalG: 0.8,
-        luminance: 1,
-        inclination: 0.25, // elevation / inclination
-        azimuth: 0.25, // Facing front,
+        luminance: 1.3,
+        inclination: -0.2812, // elevation / inclination
+        azimuth: 0.2673, // Facing front,
     };
     populateDevGui(effectController, guiChanged);
     const devSphere = getDevSphere(scene, dev);

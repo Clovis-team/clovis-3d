@@ -549,24 +549,48 @@ const createTagsSelectionSection = (
             });
         };
 
+
         const updateSelectedTags = () => {
+            const arrayOfUnselectedObjects = [];
+
+            const modificationKey = Math.floor(Math.random() * 1000000);
+
             building_ifc_categories.forEach((category) => {
                 if (selectedTagsUpdated.includes(category.uuid)) {
                     // If the current category tag is selected
                     // show all the elements inside it
-                    category.visible = false;
-                    category.children.forEach((obj) => {
-                        obj.visible = true;
-                    });
+                    category.visible = true;
+
+                    const makeDeepChildrenVisible = (categoryChildren) => {
+                        categoryChildren.forEach((obj) => {
+                            obj.visible = true;
+                            obj.modificationKey = modificationKey;
+                            arrayOfUnselectedObjects.push(obj);
+
+                            if (obj.children.length > 0) {
+                                makeDeepChildrenVisible(obj.children);
+                            }
+                        });
+                    };
+
+                    makeDeepChildrenVisible(category.children);
                 } else {
                     // Else hide all the elements inside (because it's not selected)
                     category.visible = false;
-                    category.children.forEach((obj) => {
-                        // If the object categories aren't the same than selectedTags, hide it
-                        if (_.intersection(selectedTagsUpdated, obj.categories).length === 0) {
-                            obj.visible = false;
-                        }
-                    });
+
+                    const makeDeepChildrenInvisible = (categoryChildren) => {
+                        categoryChildren.forEach((obj) => {
+                            if (_.intersection(selectedTagsUpdated, obj.categories).length === 0 && obj.modificationKey !== modificationKey) {
+                                obj.visible = false;
+                                obj.modificationKey = modificationKey;
+                            }
+
+                            if (obj.children.length > 0) {
+                                makeDeepChildrenInvisible(obj.children);
+                            }
+                        });
+                    };
+                    makeDeepChildrenInvisible(category.children);
                 }
             });
         };
@@ -621,6 +645,9 @@ const createTagsSelectionSection = (
             TagElement.className = 'three-menu_section-element tag-element';
             if (getRemovedTags().length > 0 && sortedIfcCategories[i].visible === false) {
                 TagElement.classList.add('tag-element-removed');
+            }
+            if (getSelectedTags().length > 0 && sortedIfcCategories[i].visible === true) {
+                TagElement.classList.add('tag-element-selected');
             }
 
 
