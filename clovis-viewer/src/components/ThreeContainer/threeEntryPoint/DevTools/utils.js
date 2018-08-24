@@ -1,6 +1,6 @@
 import dat from 'dat.gui/build/dat.gui.module';
 import Stats from 'stats.js/src/Stats';
-import RendererStats from '@xailabs/three-renderer-stats';
+// import RendererStats from '@xailabs/three-renderer-stats';
 
 
 /** Stats is the Three.js Stats panel on bottom left */
@@ -17,14 +17,14 @@ export function loadStats() {
     return window.stats;
 }
 
-export function loadRendererStats() {
-    window.rendererStats = new RendererStats();
-    window.rendererStats.domElement.className = 'renderer-stats';
+// export function loadRendererStats() {
+//     window.rendererStats = new RendererStats();
+//     window.rendererStats.domElement.className = 'renderer-stats';
 
-    document.getElementById('stats-container').appendChild(window.rendererStats.domElement);
+//     document.getElementById('stats-container').appendChild(window.rendererStats.domElement);
 
-    return window.rendererStats;
-}
+//     return window.rendererStats;
+// }
 
 /** GUI is the black top left menu with many controls */
 export function loadGui() {

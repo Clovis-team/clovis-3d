@@ -161,9 +161,10 @@ function Cut({
         }
     }
 
+    const guiFolder = window.gui.addFolder('Section');
 
-    window.gui.add(this, 'start');
-    window.gui.add(this, 'destroy');
+    guiFolder.add(this, 'start');
+    guiFolder.add(this, 'destroy');
 }
 
 

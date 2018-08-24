@@ -18,10 +18,7 @@ const SceneManager = (canvas, InitializedScene) => {
      * updates the stuff that has to be updated every frame cycle
      * (This function is launched many times per second)
      */
-    function update(rendererStats) {
-        // For the RendereStats Frame/s tool
-        rendererStats.update(renderer);
-
+    function update() {
         // update sceneSubjects every cycle
         const elapsedTime = clock.getElapsedTime();
         for (let i = 0; i < modulesArray.length; i += 1) {

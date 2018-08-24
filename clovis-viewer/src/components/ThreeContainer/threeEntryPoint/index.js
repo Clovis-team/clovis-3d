@@ -15,26 +15,24 @@ const ThreeEntryPoint = (domContainer, buildingGltfPath, DatasFromReact) => {
     // TODO: use it to display tasks
     const { selectedTask, allTasks } = DatasFromReact;
 
+    // Display the stats and renderer stats Dev Tools
+    const devTools = DevTools();
+
     const InitializedScene = BuildScene(canvas, buildingGltfPath);
 
-    // Display the stats and renderer stats Dev Tools
     // TODO: put condition with NODE_ENV
-    const devTools = DevTools(InitializedScene);
 
     const sceneManager = SceneManager(canvas, InitializedScene);
 
 
     // its a function that loops 60 times per second ideally
     function render() {
-        // TODO: look into stop running when tab on foreground but browser is not https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
+        // TODO: look into stop running when browser on blur https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
         // FrameRequestCallback. calls the render when window is active
         requestAnimationFrame(render);
-        devTools.stats.begin();
+        devTools.stats.update();
         // renders the frame and updates the controls and sceneSubjects
-        sceneManager.update(
-            devTools.rendererStats,
-        );
-        devTools.stats.end();
+        sceneManager.update();
     }
 
     // setup listener outside of THREEJS, for GUI and external controls
