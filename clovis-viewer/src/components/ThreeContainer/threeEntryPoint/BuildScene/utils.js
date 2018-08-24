@@ -18,7 +18,6 @@ export const get_building_ifc_elements = (building) => {
     const building_ifc_elements = [];
     const mesh_all = [];
 
-
     building.traverse((node) => {
         if ((node instanceof THREE.Mesh || node instanceof THREE.Object3D) && node.name !== '') {
             mesh_all.push(node);
@@ -37,20 +36,20 @@ export const get_building_ifc_elements = (building) => {
                     ifc_building_element.ifc_name = ifc_name;
                     ifc_building_element.visible_order = true;
                     ifc_building_element.children.push(node);
-                    addCategoryuuid(node, ifc_building_element);
+                    addCategoryUuid(node, ifc_building_element);
 
                     building_ifc_elements.push(ifc_building_element);
                 } else {
                     const ifc_building_element = building_ifc_elements.find(
                         obj => obj.ifc_tag === ifc_tag,
                     );
-                    addCategoryuuid(node, ifc_building_element);
+                    addCategoryUuid(node, ifc_building_element);
                     ifc_building_element.children.push(node);
                 }
             }
         }
     });
-    console.log(building_ifc_elements);
+
 
     return {
         building_ifc_elements,
@@ -58,11 +57,13 @@ export const get_building_ifc_elements = (building) => {
     };
 };
 
-function addCategoryuuid(node, { uuid }) {
-    if (typeof node.categories !== 'undefined' && node.categories.length > 0) {
-        console.log('IF WORKS :');
-        node.categories.push(uuid);
-    } else {
+function addCategoryUuid(node, { uuid }) {
+    if (!node.categories) {
         node.categories = [uuid];
+        if (node.parent.categories) {
+            node.categories.push(...node.parent.categories);
+        }
+    } else {
+        node.categories.push(uuid);
     }
 }
