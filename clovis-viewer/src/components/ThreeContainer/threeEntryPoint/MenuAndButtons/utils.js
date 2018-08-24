@@ -429,8 +429,6 @@ const createFloorsSelectionSection = (
             );
 
             SectionElements.appendChild(FloorElement);
-
-            // gui_floor_folder.add(floors[i], 'visible').name(floor_name);
         }
     } else {
         SectionElements.innerHTML = `
@@ -480,7 +478,6 @@ const createTagsSelectionSection = (
         // Update the arrays of selected and removed tags
         const removedTags = getRemovedTags();
         const selectedTags = getSelectedTags();
-
 
         // Update the arrays of selected and removed tags
         // Update the css class of selected tag
@@ -554,19 +551,19 @@ const createTagsSelectionSection = (
 
         const updateSelectedTags = () => {
             building_ifc_categories.forEach((category) => {
-                // If the current category tag is the same as one of selected
-                // show all the elements inside it
                 if (selectedTagsUpdated.includes(category.uuid)) {
+                    // If the current category tag is selected
+                    // show all the elements inside it
                     category.visible = false;
                     category.children.forEach((obj) => {
                         obj.visible = true;
                     });
-                    // Else hide of the element inside (because it's not selected)
                 } else {
+                    // Else hide all the elements inside (because it's not selected)
                     category.visible = false;
                     category.children.forEach((obj) => {
-                        // If the object categories don't match the selected ones, hide it
-                        if (_.intersection(selectedTagsUpdated, obj.uuid).length === 0) {
+                        // If the object categories aren't the same than selectedTags, hide it
+                        if (_.intersection(selectedTagsUpdated, obj.categories).length === 0) {
                             obj.visible = false;
                         }
                     });

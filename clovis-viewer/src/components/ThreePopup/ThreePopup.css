@@ -674,7 +674,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  transition: width 0.2s ease-in-out, max-height 0.2s ease-in-out, border 0.2s ease-out;
+  transition: width 0.2s ease-in-out, max-height 0.2s ease-in-out;
   flex-direction: column;
   overflow: hidden;
 }
@@ -684,7 +684,7 @@
   height: auto;
   max-height: 15rem;
   width: auto;
-  border: 2px solid white;
+  border: 0 solid white;
 }
 
 #three-selection-menu.selection-menu-open .three-selection-menu-button {
@@ -753,7 +753,7 @@
   width: 1rem;
   display: flex;
   justify-content: center;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 
 #three-selection-menu.selection-menu-open .three-selection-menu-element {
@@ -765,6 +765,7 @@
   justify-content: center !important;
   padding-top: 2rem;
   transition: opacity 0.2s ease-in-out, padding-top 0.3s ease-in-out !important;
+  border-bottom: 1px dashed rgba(6, 13, 45, 0.1);
 }
 
 #three-selection-menu.selection-menu-open .three-selection-menu-close {

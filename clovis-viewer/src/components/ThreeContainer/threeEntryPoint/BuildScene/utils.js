@@ -59,9 +59,10 @@ export const get_building_ifc_elements = (building) => {
 };
 
 function addCategoryuuid(node, { uuid }) {
-    if (node.category) {
-        node.category.push(uuid);
+    if (typeof node.categories !== 'undefined' && node.categories.length > 0) {
+        console.log('IF WORKS :');
+        node.categories.push(uuid);
     } else {
-        node.category = [uuid];
+        node.categories = [uuid];
     }
 }
