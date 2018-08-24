@@ -50,7 +50,6 @@ export const get_building_ifc_elements = (building) => {
             }
         }
     });
-    console.log(building_ifc_elements);
 
     return {
         building_ifc_elements,

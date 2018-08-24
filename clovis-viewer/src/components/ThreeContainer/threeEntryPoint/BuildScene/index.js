@@ -1,4 +1,5 @@
 import 'three/examples/js/controls/OrbitControls';
+import 'three/examples/js/objects/Sky';
 import loadBuilding from './loadBuilding';
 
 
@@ -14,11 +15,12 @@ function BuildScene(canvas, buildingGltfPath) {
      *
      * @returns new scene
      */
-    function buildScene() {
+    function buildScene(renderer) {
         const new_scene = new THREE.Scene();
-        flamingo(new_scene);
+        // flamingo(new_scene);
+        initSky(new_scene, renderer, camera);
         const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x777788, 1);
-        // new_scene.add(hemisphereLight);
+        new_scene.add(hemisphereLight);
         return new_scene;
     }
 
@@ -94,10 +96,11 @@ function BuildScene(canvas, buildingGltfPath) {
     }
 
     // BUILD STUFF
-    const scene = buildScene();
+
     const renderer = buildRenderer(canvas);
-    let camera = buildCamera(canvas);
-    let controls = buildControls(camera, renderer);
+    const camera = buildCamera(canvas);
+    const scene = buildScene(renderer);
+    const controls = buildControls(camera, renderer);
 
     // buildCameraAndControls();
 
@@ -123,6 +126,69 @@ function shadow(object) {
         object.castShadow = true;
         object.receiveShadow = true;
     }
+}
+
+function initSky(scene, renderer, camera) {
+    const sky = new THREE.Sky();
+    sky.scale.setScalar(450000);
+    scene.add(sky);
+
+    // Add Sun Helper
+    const sunSphere = new THREE.Mesh(
+        new THREE.SphereBufferGeometry(20000, 16, 8),
+        new THREE.MeshBasicMaterial({ color: 0xffffff }),
+    );
+    sunSphere.position.y = -700000;
+    sunSphere.visible = false;
+    scene.add(sunSphere);
+
+    const effectController = {
+        turbidity: 10,
+        rayleigh: 2,
+        mieCoefficient: 0.005,
+        mieDirectionalG: 0.8,
+        luminance: 1,
+        inclination: 0.25, // elevation / inclination
+        azimuth: 0.25, // Facing front,
+        sun: !true,
+    };
+    const distance = 400000;
+
+    function guiChanged() {
+        const uniforms = sky.material.uniforms;
+        uniforms.turbidity.value = effectController.turbidity;
+        uniforms.rayleigh.value = effectController.rayleigh;
+        uniforms.luminance.value = effectController.luminance;
+        uniforms.mieCoefficient.value = effectController.mieCoefficient;
+        uniforms.mieDirectionalG.value = effectController.mieDirectionalG;
+        const theta = Math.PI * (effectController.inclination - 0.5);
+        const phi = 2 * Math.PI * (effectController.azimuth - 0.5);
+        sunSphere.position.x = distance * Math.cos(phi);
+        sunSphere.position.y = distance * Math.sin(phi) * Math.sin(theta);
+        sunSphere.position.z = distance * Math.sin(phi) * Math.cos(theta);
+        sunSphere.visible = effectController.sun;
+        uniforms.sunPosition.value.copy(sunSphere.position);
+        renderer.render(scene, camera);
+    }
+
+
+    const axesHelper = new THREE.AxesHelper(5);
+    scene.add(axesHelper);
+
+    const dir = new THREE.Vector3(1, 2, 0);
+
+    // normalize the direction vector (convert to vector of length 1)
+    dir.normalize();
+
+    const origin = new THREE.Vector3(0, 0, 0);
+    const length = 1;
+    const hex = 0xffff00;
+
+    const arrowHelper = new THREE.ArrowHelper(dir, origin, length, hex);
+    scene.add(arrowHelper);
+
+
+    guiChanged();
 }
 
 function flamingo(scene, camera) {
