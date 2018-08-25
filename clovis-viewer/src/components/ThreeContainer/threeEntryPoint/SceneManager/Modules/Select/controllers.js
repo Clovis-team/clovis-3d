@@ -22,7 +22,6 @@ function UserSelection({
         }
         objSel.sphere = addSphereOnHitPoint(hitPoint, scene);
         const pos = getScreenTranslation(objSel.sphere, camera, canvas);
-        console.log(pos);
     } else {
         // Remove all the stuff is the user doesn't select an element
         scene.remove(objSel.sphere);

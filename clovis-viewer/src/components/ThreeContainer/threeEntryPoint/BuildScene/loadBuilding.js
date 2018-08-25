@@ -40,11 +40,17 @@ const loadBuilding = (scene, buildingPath, gltfLoadedCallback) => {
         },
         // Called while loading is progressing
         (xhr) => {
-            // TODO: xhr.total doesn't work for gzip or on chrome.
-            // We can use this to fetch the file size : https://stackoverflow.com/questions/17416274/ajax-get-size-of-file-before-downloading
-            document
-                .getElementById('three-progress-text')
-                .innerHTML = `${(xhr.loaded / 1000000).toFixed(2)} Mo`;
+            if (xhr.total) {
+                document
+                    .getElementById('three-progress-text')
+                    .innerHTML = `${xhr.loaded / xhr.total * 100} % loaded`;
+            } else {
+                // TODO: xhr.total doesn't work for gzip or on chrome.
+                // We can use this to fetch the file size : https://stackoverflow.com/questions/17416274/ajax-get-size-of-file-before-downloading
+                document
+                    .getElementById('three-progress-text')
+                    .innerHTML = `${(xhr.loaded / 1000000).toFixed(2)} Mo`;
+            }
         },
         // Called when loading has errors
         (error) => {
