@@ -35,6 +35,18 @@ const Listeners = (canvas, sceneManager, Controllers) => {
         document.body.style.cursor = 'default';
         userIsDragging = false;
     }, false);
+
+    // Global know if we are on mouse or touch screen
+    document.addEventListener('touchstart', () => {
+        const ClovisViewerContainer = document.getElementById('clovis-viewer-container');
+        ClovisViewerContainer.classList.add('touch-device');
+        ClovisViewerContainer.classList.remove('non-touch-device');
+    }, false);
+    document.addEventListener('mousemove', () => {
+        const ClovisViewerContainer = document.getElementById('clovis-viewer-container');
+        ClovisViewerContainer.classList.add('non-touch-device');
+        ClovisViewerContainer.classList.remove('touch-device');
+    }, false);
 };
 
 export default Listeners;

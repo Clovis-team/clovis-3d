@@ -3,8 +3,12 @@ export function getScreenTranslation(object, camera, canvas) {
     const widthHalf = width / 2;
     const heightHalf = height / 2;
 
+    // TODO : these two functions don't have the same behavior on touch screens
+    // TODO: what does .clone() really do ?
     const pos = object.position.clone();
+    // TODO: what does .project() really do ?
     pos.project(camera);
+
     pos.x = (pos.x * widthHalf) + widthHalf;
     pos.y = -(pos.y * heightHalf) + heightHalf;
 

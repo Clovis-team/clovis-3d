@@ -13,15 +13,21 @@ function UserSelection({
     closeSelectionMenuButton();
 
     if (hitPoint) {
-        if (!objSel.div) {
-            objSel.div = createSelectionMenu({ SelectOptions, hitPoint });
-        }
+        // Color the element
         colorElement(hitPoint, objSel);
+        // Remove sphere is existed
         if (objSel.sphere) {
             scene.remove(objSel.sphere);
         }
         objSel.sphere = addSphereOnHitPoint(hitPoint, scene);
+        // If the menu doesn't exist, create it
+        if (!objSel.div) {
+            objSel.div = createSelectionMenu({ SelectOptions, hitPoint, camera });
+        }
+
         const pos = getScreenTranslation(objSel.sphere, camera, canvas);
+        objSel.div.style.left = `${pos.x + 16}px`;
+        objSel.div.style.top = `${pos.y - 48}px`;
     } else {
         // Remove all the stuff is the user doesn't select an element
         scene.remove(objSel.sphere);

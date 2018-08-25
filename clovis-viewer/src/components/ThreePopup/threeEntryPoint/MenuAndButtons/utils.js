@@ -226,7 +226,7 @@ const createHelpPopup = () => {
     ClosePopupButton.innerHTML = '✕';
     addEventListeners(
         ClosePopupButton,
-        'click touchend',
+        'click touchstart',
         () => {
             closeHelpPopup();
         },

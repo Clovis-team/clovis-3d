@@ -44,9 +44,9 @@ function Select({
     this.update = () => {
         if (objSel.sphere && objSel.div) {
             const pos = getScreenTranslation(objSel.sphere, camera, canvas);
+            // ObjSel.div is 'three-selection-menu'
             objSel.div.style.left = `${pos.x + 16}px`;
             objSel.div.style.top = `${pos.y - 48}px`;
-            console.log();
         }
     };
 }

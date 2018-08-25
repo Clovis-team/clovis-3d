@@ -152,30 +152,30 @@ class ThreePopup extends Component {
         const popupClassName = `popup-viewer ${this.props.isViewerOpened ? 'popup-viewer-open' : ''}`;
 
         return (
-          <div
-                className={popupClassName}
-              id="popup-viewer"
-            >
+            <div
+            className={popupClassName}
+            id="popup-viewer"
+          >
 
-              <div
-                    className="popup-close-button"
-                  onClick={e => this.props.OnViewerClose()}
-                >
+                <div
+                className="popup-close-button"
+                    onClick={e => this.props.OnViewerClose()}
+              >
                 ✕
-                </div>
+              </div>
 
-              { this.props.isViewerOpened
+                { this.props.isViewerOpened
                     ? (
-                      <div
-                          ref={element => this.threeRootElement = element}
-                          className="clovis-3d-viewer-container"
-                          id="clovis-viewer-container"
-                        />
+                        <div
+                            ref={element => this.threeRootElement = element}
+                            className="clovis-3d-viewer-container non-touch-device"
+                            id="clovis-viewer-container"
+                      />
                     )
                     : 'Loading Viewer...'
                 }
 
-            </div>
+          </div>
         );
     }
 }

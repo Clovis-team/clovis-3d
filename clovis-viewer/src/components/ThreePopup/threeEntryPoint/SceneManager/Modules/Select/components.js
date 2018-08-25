@@ -15,7 +15,15 @@ export function addSphereOnHitPoint(intersected, scene) {
 
 // HTML Components
 
-export function createSelectionMenu({ SelectOptions, hitPoint }) {
+export function createSelectionMenu({ SelectOptions, hitPoint, camera }) {
+    const Selection = {
+        position: hitPoint.point,
+        camera: {
+            position: camera.position,
+        },
+        object: hitPoint.object,
+    };
+
     const { CustomButtons } = SelectOptions.options;
 
     const SelectionMenu = document.createElement('div');
@@ -60,7 +68,7 @@ export function createSelectionMenu({ SelectOptions, hitPoint }) {
         ButtonElement.style.color = !Button.color ? '#060d2d' : Button.color;
         ButtonElement.addEventListener('click', () => {
             toggleSelectionMenuButton();
-            Button.ClickFunction(hitPoint);
+            Button.ClickFunction(Selection);
         }, false);
         ButtonElement.addEventListener('mouseover', () => {
             ButtonElement.style.backgroundColor = !Button.color ? hexToRgbA('#060d2d', 0.07) : hexToRgbA(Button.color, 0.12);

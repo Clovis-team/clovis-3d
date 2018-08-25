@@ -11,7 +11,7 @@ export function initSky(scene, dev) {
         rayleigh: 1.642,
         mieCoefficient: 0.005,
         mieDirectionalG: 0.8,
-        luminance: 1.3,
+        luminance: 0.4,
         inclination: -0.2812, // elevation / inclination
         azimuth: 0.2673, // Facing front,
     };
