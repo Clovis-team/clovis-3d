@@ -23,6 +23,8 @@ class App extends Component {
 
   OnViewerClose = () => {
 
+    console.log('CLOSE VIEWER :');
+
     /** Clean GUI and Stats when popup closes */
     const gui_container = document.getElementById('gui-container') && 
     document.getElementById('gui-container');

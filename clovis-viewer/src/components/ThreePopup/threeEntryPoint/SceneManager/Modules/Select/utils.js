@@ -25,7 +25,7 @@ export function colorElement(hitPoint, objSel) {
         objSel.obj = hitPoint.object;
         objSel.old_material = hitPoint.object.material;
         hitPoint.object.material = event_material;
-    } else {
+    } else if (objSel.obj) {
         // If no element is selected, remove the color on the previous
         // selected Object
         objSel.obj.material = objSel.old_material;
