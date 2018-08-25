@@ -13,6 +13,16 @@ export function loadStats() {
         bottom: 0,
         right: 0,
     };
+
+    const ClovisViewerContainer = document.getElementById('clovis-viewer-container');
+    const StatsContainer = document.createElement('div');
+    StatsContainer.id = 'stats-container';
+    StatsContainer.className = 'stats-container';
+
+    ClovisViewerContainer.appendChild(StatsContainer);
+
+    // StatsContainer.appendChild(window.stats.dom);
+
     document.getElementById('stats-container').appendChild(window.stats.dom);
     return window.stats;
 }
@@ -32,9 +42,14 @@ export function loadGui() {
 
     window.gui = new dat.GUI();
 
+    const ClovisViewerContainer = document.getElementById('clovis-viewer-container');
+    const GuiContainer = document.createElement('div');
+    GuiContainer.style.display = 'none';
+    GuiContainer.id = 'gui-container';
+
+    ClovisViewerContainer.appendChild(GuiContainer);
     // Place the GUI inside the right html container
-    const customContainer = document.getElementById('gui-container');
-    customContainer.appendChild(window.gui.domElement);
+    GuiContainer.appendChild(window.gui.domElement);
 
     return window.gui;
 }
