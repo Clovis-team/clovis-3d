@@ -7,6 +7,9 @@ import { fillBuildingDatas, positionCameraToBuilding } from './analyseBuilding';
 import { asynchronous_gltf_loader_gui_populate } from '../DevTools/utils';
 
 function BuildScene(canvas, buildingGltfPath, ViewerOptions) {
+    initializeViewerHtmlContainers();
+
+
     let buildingDatas = {};
 
     const getBuildingDatas = () => buildingDatas;
@@ -108,8 +111,6 @@ function BuildScene(canvas, buildingGltfPath, ViewerOptions) {
         buildingGltfPath,
         gltfLoadedCallback,
     );
-
-    initializeViewerHtmlContainers();
 
     return {
         scene,

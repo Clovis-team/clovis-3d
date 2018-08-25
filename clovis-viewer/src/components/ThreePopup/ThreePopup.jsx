@@ -10,8 +10,8 @@ const ThreePopup = ({ isViewerOpened, OnViewerClose }) => {
 
     return (
         <div
-            className={popupClassName}
-        id="popup-viewer"
+        className={popupClassName}
+            id="popup-viewer"
       >
 
             <div
@@ -20,26 +20,6 @@ const ThreePopup = ({ isViewerOpened, OnViewerClose }) => {
           >
             ✕
           </div>
-
-        <div
-                id="three-progress-container"
-              className="three-progress-container loading"
-            >
-                <div
-                    id="three-loader"
-                    className="three-loader loading"
-          >
-            <div className="three-loader-spinner" />
-
-
-          </div>
-                <div
-                    id="three-progress-text"
-                    className="three-progress-text"
-          >
-                  Chargement
-          </div>
-            </div>
 
             { isViewerOpened
                 ? <ThreeContainer />

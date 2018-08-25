@@ -72,6 +72,23 @@ export function initializeViewerHtmlContainers() {
     // Create main html containers
     const ClovisViewerContainer = document.getElementById('clovis-viewer-container');
 
+    const ProgressContainer = document.createElement('div');
+    ProgressContainer.id = 'three-progress-container';
+    ProgressContainer.className = 'three-progress-container loading';
+    const ProgressLoader = document.createElement('div');
+    ProgressLoader.id = 'three-loader';
+    ProgressLoader.className = 'three-loader loading';
+    const LoaderSpinner = document.createElement('div');
+    LoaderSpinner.className = 'three-loader-spinner';
+    ProgressLoader.appendChild(LoaderSpinner);
+    ProgressContainer.appendChild(ProgressLoader);
+    const ProgressText = document.createElement('div');
+    ProgressText.id = 'three-progress-text';
+    ProgressText.className = 'three-progress-text';
+    ProgressText.innerHTML = 'Chargement';
+    ProgressContainer.appendChild(ProgressText);
+    ClovisViewerContainer.appendChild(ProgressContainer);
+
     const ButtonsContainer = document.createElement('div');
     ButtonsContainer.id = 'three-clovis-buttons-container';
     ButtonsContainer.className = 'three-clovis-buttons-container';
