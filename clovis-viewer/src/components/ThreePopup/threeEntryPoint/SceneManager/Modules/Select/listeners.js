@@ -5,7 +5,7 @@ import {
 } from './controllers';
 
 export default function Listeners({
-    scene, camera, mouse, buildingDatas, canvas, ViewerOptions, raycaster, objSel, SelectOptions,
+    scene, camera, mouse, buildingDatas, canvas, ViewerOptions, raycaster, objSel, SelectOptions, renderer,
 }) {
     // Don't trigger the Select if the user rotates the camera with mouse
     let mouseMoved = false;
@@ -33,6 +33,7 @@ export default function Listeners({
                 raycaster,
                 objSel,
                 SelectOptions,
+                renderer,
             });
         }
     }, false);
@@ -66,6 +67,7 @@ export default function Listeners({
                 raycaster,
                 objSel,
                 SelectOptions,
+                renderer,
             });
         }
     }, false);

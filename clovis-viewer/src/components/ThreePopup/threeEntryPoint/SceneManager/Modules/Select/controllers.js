@@ -8,7 +8,7 @@ import {
 } from './utils';
 
 function UserSelection({
-    hitPoint, objSel, canvas, scene, camera, SelectOptions,
+    hitPoint, objSel, canvas, scene, camera, SelectOptions, renderer,
 }) {
     closeSelectionMenuButton();
 
@@ -22,7 +22,9 @@ function UserSelection({
         objSel.sphere = addSphereOnHitPoint(hitPoint, scene);
         // If the menu doesn't exist, create it
         if (!objSel.div) {
-            objSel.div = createSelectionMenu({ SelectOptions, hitPoint, camera });
+            objSel.div = createSelectionMenu({
+                SelectOptions, hitPoint, camera, canvas, renderer, scene,
+            });
         }
 
         const pos = getScreenTranslation(objSel.sphere, camera, canvas);
@@ -38,7 +40,7 @@ function UserSelection({
 
 // Click controller
 export function onDocumentMouseClick({
-    event, mouse, canvas, camera, scene, buildingDatas, raycaster, objSel, SelectOptions,
+    event, mouse, canvas, camera, scene, buildingDatas, raycaster, objSel, SelectOptions, renderer,
 }) {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -47,13 +49,13 @@ export function onDocumentMouseClick({
     const hitPoint = getHitPoint(raycaster, buildingDatas);
 
     UserSelection({
-        hitPoint, objSel, canvas, scene, camera, SelectOptions,
+        hitPoint, objSel, canvas, scene, camera, SelectOptions, renderer,
     });
 }
 
 // Touch controller
 export function onDocumentTouchEnd({
-    event, mouse, canvas, camera, scene, buildingDatas, raycaster, objSel, SelectOptions,
+    event, mouse, canvas, camera, scene, buildingDatas, raycaster, objSel, SelectOptions, renderer,
 }) {
     mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
@@ -62,7 +64,7 @@ export function onDocumentTouchEnd({
     const hitPoint = getHitPoint(raycaster, buildingDatas);
 
     UserSelection({
-        hitPoint, objSel, canvas, scene, camera, SelectOptions,
+        hitPoint, objSel, canvas, scene, camera, SelectOptions, renderer,
     });
 }
 

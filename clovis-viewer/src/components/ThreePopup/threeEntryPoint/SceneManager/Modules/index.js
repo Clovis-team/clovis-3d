@@ -15,7 +15,7 @@ const Modules = (InitializedScene, canvas) => {
 
     const walkModule = new Walk(scene, camera, controls);
     const selectModule = new Select({
-        scene, camera, buildingDatas, canvas, ViewerOptions,
+        scene, camera, buildingDatas, canvas, ViewerOptions, renderer,
     });
     const cutModule = new Cut({
         renderer, controls, canvas, buildingDatas, scene,

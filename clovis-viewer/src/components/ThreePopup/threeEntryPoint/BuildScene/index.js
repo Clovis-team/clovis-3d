@@ -35,7 +35,12 @@ function BuildScene(canvas, buildingGltfPath, ViewerOptions) {
      * @returns new renderer
      */
     function buildRenderer({ width, height }) {
-        const new_renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        const new_renderer = new THREE.WebGLRenderer({
+            canvas,
+            antialias: true,
+            alpha: true,
+            preserveDrawingBuffer: true, // Usefull for canvas capture
+        });
         const DPR = window.devicePixelRatio ? window.devicePixelRatio : 1;
 
         new_renderer.setPixelRatio(DPR);

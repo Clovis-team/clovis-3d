@@ -1,4 +1,4 @@
-import { toggleSelectionMenuButton, hexToRgbA } from './utils';
+import { toggleSelectionMenuButton, hexToRgbA, takeScreenshot } from './utils';
 
 // 3D Components
 
@@ -15,7 +15,9 @@ export function addSphereOnHitPoint(intersected, scene) {
 
 // HTML Components
 
-export function createSelectionMenu({ SelectOptions, hitPoint, camera }) {
+export function createSelectionMenu({
+    SelectOptions, hitPoint, camera, renderer, scene,
+}) {
     const Selection = {
         position: hitPoint.point,
         camera: {
@@ -47,6 +49,9 @@ export function createSelectionMenu({ SelectOptions, hitPoint, camera }) {
     SelectionMenuButton.addEventListener('click', () => {
         toggleSelectionMenuButton();
     }, false);
+    SelectionMenuButton.addEventListener('touchend', () => {
+        toggleSelectionMenuButton();
+    }, false);
 
     const CloseSelectionMenu = document.createElement('div');
     CloseSelectionMenu.className = 'three-selection-menu-element three-selection-menu-close';
@@ -54,7 +59,7 @@ export function createSelectionMenu({ SelectOptions, hitPoint, camera }) {
     CloseSelectionMenu.addEventListener('mousedown', () => {
         toggleSelectionMenuButton();
     }, false);
-    CloseSelectionMenu.addEventListener('touchstart', () => {
+    CloseSelectionMenu.addEventListener('touchend', () => {
         toggleSelectionMenuButton();
     }, false);
 
@@ -70,10 +75,20 @@ export function createSelectionMenu({ SelectOptions, hitPoint, camera }) {
             toggleSelectionMenuButton();
             Button.ClickFunction(Selection);
         }, false);
+        ButtonElement.addEventListener('touchend', () => {
+            toggleSelectionMenuButton();
+            Button.ClickFunction(Selection);
+        }, false);
         ButtonElement.addEventListener('mouseover', () => {
             ButtonElement.style.backgroundColor = !Button.color ? hexToRgbA('#060d2d', 0.07) : hexToRgbA(Button.color, 0.12);
         }, false);
         ButtonElement.addEventListener('mouseleave', () => {
+            ButtonElement.style.backgroundColor = 'transparent';
+        }, false);
+        ButtonElement.addEventListener('touchstart', () => {
+            ButtonElement.style.backgroundColor = !Button.color ? hexToRgbA('#060d2d', 0.07) : hexToRgbA(Button.color, 0.12);
+        }, false);
+        ButtonElement.addEventListener('touchend', () => {
             ButtonElement.style.backgroundColor = 'transparent';
         }, false);
 
@@ -82,9 +97,15 @@ export function createSelectionMenu({ SelectOptions, hitPoint, camera }) {
 
 
     // GO CLOSER interaction
-    const SelectionMenuElement1 = document.createElement('div');
+    const SelectionMenuElement1 = document.createElement('a');
     SelectionMenuElement1.className = 'three-selection-menu-element three-type-action';
-    SelectionMenuElement1.innerHTML = '<span>⊛</span> Se rapprocher';
+    SelectionMenuElement1.innerHTML = '<span>⊛</span> Prendre une capture';
+    SelectionMenuElement1.addEventListener('click', () => {
+        takeScreenshot(renderer, scene, camera);
+    });
+    SelectionMenuElement1.addEventListener('touchend', () => {
+        takeScreenshot(renderer, scene, camera);
+    });
     SelectionMenu.appendChild(SelectionMenuElement1);
 
 
