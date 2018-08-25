@@ -5,7 +5,7 @@ import { initSky } from './backgrounds';
 import { fillBuildingDatas, positionCameraToBuilding } from './analyseBuilding';
 import { asynchronous_gltf_loader_gui_populate } from '../DevTools/utils';
 
-function BuildScene(canvas, buildingGltfPath) {
+function BuildScene(canvas, buildingGltfPath, ViewerOptions) {
     let buildingDatas = {};
 
     const getBuildingDatas = () => buildingDatas;
@@ -115,6 +115,7 @@ function BuildScene(canvas, buildingGltfPath) {
         camera,
         controls,
         buildingDatas,
+        ViewerOptions,
     };
 }
 

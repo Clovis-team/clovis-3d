@@ -690,13 +690,13 @@
   box-sizing: border-box;
   height: 2.5rem;
   width: 2.5rem;
-  border-radius: 50% 50% 50% 0.2rem;
+  border-radius: 50% 50% 50% 0.25rem;
   content: '';
   position: absolute;
   top: -2px;
   left: -2px;
   z-index: 0;
-  transform: rotate(5deg);
+  transform: rotate(6deg);
   cursor: pointer;
 }
 
@@ -826,8 +826,15 @@
 
 .three-selection-menu-element.three-selection-menu-close {
   justify-content: center !important;
-  transition: opacity 0.2s ease-in-out;
+  opacity: 0;
+  padding-top: 2px;
+  transition: opacity 0.3s 0.2s ease-in-out;
   border-bottom: 1px dashed rgba(6, 13, 45, 0.1);
+}
+
+.three-selection-menu.selection-menu-open .three-selection-menu-close {
+  visibility: visible;
+  opacity: 1;
 }
 
 .three-selection-menu-button {

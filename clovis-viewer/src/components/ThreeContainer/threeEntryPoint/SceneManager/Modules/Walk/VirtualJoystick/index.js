@@ -8,7 +8,11 @@ import nipplejs from 'nipplejs';
  * @param {*} walkingModule Clovis Walking module for threejs
  */
 const VirtualJoystick = (joystickMovement) => {
-    const joystick1DomContainer = document.getElementById('joystick1-container');
+    const ClovisViewerContainer = document.getElementById('clovis-viewer-container');
+
+    const joystick1DomContainer = document.createElement('div');
+    joystick1DomContainer.id = 'joystick1-container';
+    ClovisViewerContainer.appendChild(joystick1DomContainer);
 
     const joystick1_options = {
         zone: joystick1DomContainer,
@@ -46,7 +50,9 @@ const VirtualJoystick = (joystickMovement) => {
 
     // SECOND JOYSTICK
 
-    // const joystick2DomContainer = document.getElementById('joystick2-container');
+    // const joystick2DomContainer = document.createElement('div');
+    // joystick2DomContainer.id = 'joystick2-container';
+    // ClovisViewerContainer.appendChild(joystick2DomContainer);
 
     // const joystick2_options = {
     //     zone: joystick2DomContainer,

@@ -3,15 +3,20 @@ import Select from './Select';
 import Cut from './Cut';
 import Explosion from './Explosion';
 
-const Modules = ({
-    scene,
-    renderer,
-    camera,
-    controls,
-    buildingDatas,
-}, canvas, addTask) => {
+const Modules = (InitializedScene, canvas) => {
+    const {
+        scene,
+        renderer,
+        camera,
+        controls,
+        buildingDatas,
+        ViewerOptions,
+    } = InitializedScene;
+
     const walkModule = new Walk(scene, camera, controls);
-    const selectModule = new Select(scene, camera, buildingDatas, canvas, addTask);
+    const selectModule = new Select({
+        scene, camera, buildingDatas, canvas, ViewerOptions,
+    });
     const cutModule = new Cut({
         renderer, controls, canvas, buildingDatas, scene,
     });

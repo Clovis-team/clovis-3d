@@ -21,12 +21,16 @@ class ThreeContainer extends Component {
         const generatedTasks = [];
         // Randomly generated tasks
         for (let i = 0; i <= 30; i += 1) {
+            const RandomArbitraryID = getRandomArbitrary(1000, 100000);
             generatedTasks.push({
-                _id: getRandomArbitrary(1000, 100000),
+                _id: RandomArbitraryID,
+                onNoteOpen: () => { alert(`Open note n° ${RandomArbitraryID}`); },
+
                 '3d_datas': {
                     x: getRandomArbitrary(0, 80),
                     y: getRandomArbitrary(0, 80),
                     z: getRandomArbitrary(0, 20),
+                    selected: false,
                     linked_object: {
                         uuid: getRandomArbitrary(1000, 100000),
                         name: 'Jacuzzi',
@@ -45,13 +49,17 @@ class ThreeContainer extends Component {
                 },
             });
         }
+
         // Edit this one if needed
         generatedTasks.push({
             _id: '59026b827ec0050001ac0cc9',
+            onNoteOpen: () => { alert('Open note n° 59026b827ec0050001ac0cc9'); },
+
             '3d_datas': {
                 x: 20,
                 y: 40,
                 z: 30,
+                selected: true,
                 linked_object: {
                     uuid: 'AF987b827ec005000197687',
                     name: 'IfcStephenHawking',
@@ -70,30 +78,72 @@ class ThreeContainer extends Component {
             },
         });
 
-        this.DatasFromReact = {
-            selectedTask: {
-                _id: '59026b827ec0050001ac0cc9',
+        this.ViewerOptions = {
+            LocalizedNotes: generatedTasks,
+            Modules: {
+                Select: {
+                    active: true,
+                    options: {
+                        StandardButtons: {
+                            // Smart is both 'GoTo' or 'GoThru' if it's a door
+                            SmartGo: true,
+                            GoCloser: true,
+                        },
+                        CustomButtons: [
+                            {
+                                name: 'AddTask',
+                                text: 'Créer une tâche',
+                                icon: '+', // Could also be html node
+                                color: '#00b16a',
+                                ClickFunction: (ObjectDatas) => {
+                                    alert('Add Task, here is the ObjectDatas :');
+                                    console.log('ObjectDatas : ', ObjectDatas);
+                                },
+                            },
+                            {
+                                name: 'ShowObjectInfos',
+                                text: 'Voir les infos BIM',
+                                icon: '☷', // Could also be html node
+                                ClickFunction: (ObjectDatas) => {
+                                    alert('Add Task, here is the ObjectDatas :');
+                                    console.log('ObjectDatas : ', ObjectDatas);
+                                },
+                            },
+                        ],
+                    },
+                },
+                HorizontalSection: {
+                    active: true,
+                    options: {},
+                },
+                Explosion: {
+                    active: true,
+                    options: {},
+                },
+                BimMenu: {
+                    active: true,
+                    options: {},
+                },
             },
-            allTasks: generatedTasks,
+            Background: {
+                // Type could also be 3d model
+                type: 'sky',
+                options: {
+                    // We can bring many options here
+                },
+            },
         };
-    }
-
-    addTask = (ThreeData) => {
-        alert('Add Task, here is the THreeData :');
-        console.log('ThreeData : ', ThreeData);
     }
 
     componentDidMount() {
         const threeRootElement = this.threeRootElement;
         const buildingGltfPath = this.buildingGltfPath;
-        const DatasFromReact = this.DatasFromReact;
-        const addTask = this.addTask;
+        const ViewerOptions = this.ViewerOptions;
 
         const threeControllers = threeEntryPoint(
             threeRootElement,
             buildingGltfPath,
-            DatasFromReact,
-            addTask,
+            ViewerOptions,
         );
     }
 
@@ -102,11 +152,8 @@ class ThreeContainer extends Component {
             <div
                 ref={element => this.threeRootElement = element}
                 className="canvas-wrapper"
+                id="clovis-viewer-container"
           />
-
-        //   <button
-        //     onClick={(e)=> this.ToggleWalking()}>
-        //   </button>
         );
     }
 }
