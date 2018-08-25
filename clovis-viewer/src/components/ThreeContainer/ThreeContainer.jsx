@@ -149,11 +149,11 @@ class ThreeContainer extends Component {
 
     render() {
         return (
-            <div
-                ref={element => this.threeRootElement = element}
-                className="canvas-wrapper"
-                id="clovis-viewer-container"
-          />
+          <div
+              ref={element => this.threeRootElement = element}
+              className="clovis-3d-viewer-container"
+              id="clovis-viewer-container"
+            />
         );
     }
 }

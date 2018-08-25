@@ -582,6 +582,13 @@
   align-items: center;
 }
 
+.three-help-popup-container.show-help-popup {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
 .three-clovis-help_overlay {
   background-color: rgba(34, 167, 240, 0.3);
   position: fixed;
@@ -677,7 +684,7 @@
   justify-content: flex-start;
   align-items: center;
   position: absolute;
-  transition: max-width 0.3s ease-in-out, max-height 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  transition: max-width 0.3s ease-in-out, max-height 0.3s ease-in-out;
   flex-direction: column;
   /* overflow: hidden; */
 }

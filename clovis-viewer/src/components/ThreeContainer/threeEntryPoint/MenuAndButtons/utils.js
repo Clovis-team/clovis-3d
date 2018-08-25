@@ -214,9 +214,11 @@ const HelpPopupContent = (HelpPopupContentContainer) => {
 
 const createHelpPopup = () => {
     const HelpPopupContainer = document.getElementById('three-help-popup-container');
+    HelpPopupContainer.classList.add('show-help-popup');
 
     const closeHelpPopup = () => {
         HelpPopupContainer.innerHTML = '';
+        HelpPopupContainer.classList.remove('show-help-popup');
     };
 
     const ClosePopupButton = document.createElement('div');

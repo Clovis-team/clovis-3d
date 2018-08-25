@@ -1,6 +1,7 @@
 import 'three/examples/js/controls/OrbitControls';
 import loadBuilding from './loadBuilding';
 import { initSky } from './backgrounds';
+import { initializeViewerHtmlContainers } from './utils';
 
 import { fillBuildingDatas, positionCameraToBuilding } from './analyseBuilding';
 import { asynchronous_gltf_loader_gui_populate } from '../DevTools/utils';
@@ -107,6 +108,8 @@ function BuildScene(canvas, buildingGltfPath, ViewerOptions) {
         buildingGltfPath,
         gltfLoadedCallback,
     );
+
+    initializeViewerHtmlContainers();
 
     return {
         scene,

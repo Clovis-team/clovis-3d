@@ -12,8 +12,6 @@ import MenuAndButtons from './MenuAndButtons';
 
 const ThreeEntryPoint = (ThreeDomContainer, buildingGltfPath, ViewerOptions) => {
     const canvas = createCanvas(document, ThreeDomContainer);
-    // TODO: use it to display tasks
-    const { selectedTask, allTasks } = ViewerOptions;
 
     // Display the stats and renderer stats Dev Tools
     const devTools = DevTools();

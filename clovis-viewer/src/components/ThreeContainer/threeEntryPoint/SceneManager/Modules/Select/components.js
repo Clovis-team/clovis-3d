@@ -63,7 +63,7 @@ export function createSelectionMenu({ SelectOptions, hitPoint }) {
             Button.ClickFunction(hitPoint);
         }, false);
         ButtonElement.addEventListener('mouseover', () => {
-            ButtonElement.style.backgroundColor = !Button.color ? hexToRgbA('#060d2d', 0.1) : hexToRgbA(Button.color, 0.1);
+            ButtonElement.style.backgroundColor = !Button.color ? hexToRgbA('#060d2d', 0.07) : hexToRgbA(Button.color, 0.12);
         }, false);
         ButtonElement.addEventListener('mouseleave', () => {
             ButtonElement.style.backgroundColor = 'transparent';

@@ -67,3 +67,23 @@ function addCategoryUuid(node, { uuid }) {
         node.categories.push(uuid);
     }
 }
+
+export function initializeViewerHtmlContainers() {
+    // Create main html containers
+    const ClovisViewerContainer = document.getElementById('clovis-viewer-container');
+
+    const ButtonsContainer = document.createElement('div');
+    ButtonsContainer.id = 'three-clovis-buttons-container';
+    ButtonsContainer.className = 'three-clovis-buttons-container';
+    ClovisViewerContainer.appendChild(ButtonsContainer);
+
+    const MenuContainer = document.createElement('div');
+    MenuContainer.id = 'three-clovis-menu-container';
+    MenuContainer.className = 'three-clovis-menu-container';
+    ClovisViewerContainer.appendChild(MenuContainer);
+
+    const HelpPopupContainer = document.createElement('div');
+    HelpPopupContainer.id = 'three-help-popup-container';
+    HelpPopupContainer.className = 'three-help-popup-container';
+    ClovisViewerContainer.appendChild(HelpPopupContainer);
+}
