@@ -1,0 +1,838 @@
+
+.clovis-3d-viewer-container {
+  width: 100%;
+  height: 100%;
+}
+
+.clovis-3d-viewer-container canvas {
+  width: 100%;
+  height: 100%;
+}
+
+
+.clovis-3d-viewer-container .gui-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+.clovis-3d-viewer-container .dg.a {
+  position: absolute;
+  top: 0;
+  height: 0;
+}
+
+.clovis-3d-viewer-container .dg.main {
+  height: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 200px;
+  min-width: 200px;
+  border-bottom-right-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 12px 1px;
+  background-color: #060d2d;
+  font-size: 12px !important;
+}
+
+.clovis-3d-viewer-container .stats-container {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: none;
+}
+
+.renderer-stats > div {
+  background-color: #060d2d !important;
+}
+.renderer-stats > div > div {
+  color: #22a7f0 !important;
+  background-color: #060d2d !important;
+}
+
+.three-progress-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  opacity: 0;
+  visibility: hidden;
+  justify-content: center;
+  flex-direction: column;
+  transition: opacity 1s ease-in-out;
+}
+
+.three-progress-container.loading {
+  visibility: visible;
+  opacity: 1;
+}
+
+.three-loader {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  height: 6rem;
+  width: 6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.three-loader .three-loader-spinner {
+  border: 0.3rem solid rgba(6, 13, 45, 0.1);
+  border-top: 0.3rem solid rgba(6, 13, 45, 1);
+  border-radius: 100%;
+  width: 3.5rem;
+  height: 3.5rem;
+  display: block;
+  animation: spinLoader 0.6s linear infinite;
+  z-index: 1;
+}
+
+.three-progress-text {
+  font-weight: 600;
+  text-align: center;
+}
+
+@keyframes spinLoader {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: rotate(360deg);
+    opacity: 0.2;
+  }
+}
+
+.joystick1-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.joystick2-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.three-clovis-menu-container {
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 14rem;
+  background-color: rgba(6, 13, 45, 0.8);
+  transform: translate3d(-16rem, 0, 0);
+  transition: all 0.3s ease-in-out;
+}
+.popup-viewer_menu-open .three-clovis-menu-container {
+  transform: translate3d(0, 0, 0);
+}
+.popup-viewer_menu-open .three-clovis-buttons-container {
+  display: none;
+}
+.popup-viewer_menu-open .joystick1-container {
+  display: none;
+}
+.popup-viewer_menu-open .joystick2-container {
+  display: none;
+}
+.popup-viewer_menu-open .three-menu_close-button {
+  visibility: visible;
+  opacity: 1;
+}
+
+.three-clovis-buttons-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4rem;
+  height: auto;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.three-clovis-buttons-container > div {
+  width: 4rem;
+  height: 4rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  opacity: 0.8;
+}
+
+.three-clovis-buttons-container > div > div {
+  padding: 0.5rem;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: background-color 0.3s;
+  color: #060d2d;
+  display: flex;
+  justify-content: center;
+  font-size: 1.5rem;
+  align-items: center;
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+}
+
+.three-clovis-buttons-container .three-clovis-buttons_info-bar {
+  position: absolute;
+  top: 1rem;
+  left: 4rem;
+  height: 2rem;
+  width: auto;
+  border-radius: 2rem;
+  background-color: transparent;
+  color: transparent !important;
+  text-shadow: none;
+  font-size: 1rem !important;
+  padding: 1rem;
+  white-space: nowrap;
+}
+
+.three-clovis-buttons-container > div:hover > div {
+  background-color: #060d2d;
+  color: white !important;
+}
+
+.three-clovis-buttons-container > div:hover:active > div {
+  cursor: default;
+  font-size: 0.98rem;
+}
+
+.horizontal-section-message {
+  visibility: hidden;
+  opacity: 0 !important;
+  transition: all 0.3s ease-in-out;
+  width: auto !important;
+  height: 2rem !important;
+  background-color: #22a7f0;
+  left: 50%;
+  transform: translate3d(-50%, -4rem, 0);
+  position: fixed !important;
+  top: 0.75rem;
+  border-radius: 1rem;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem !important;
+  user-select: none;
+  cursor: default;
+}
+
+.three-clovis-buttons-container > div:not(.horizontal-section-message) {
+  transform: translate3d(0, 0, 0);
+  transition: all 0.3s ease-in-out;
+}
+
+.three-clovis-buttons-container.hide-buttons > div:not(.horizontal-section-message) {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(-4rem, 0, 0);
+}
+
+.three-clovis-buttons-container.hide-buttons.show-horizontal-section-message .horizontal-section-message {
+  visibility: visible;
+  opacity: 0.8 !important;
+  transform: translate3d(-50%, 0, 0);
+}
+
+
+.three-clovis-buttons_explosion:hover > div,
+.three-clovis-buttons_horizontal-section:hover > div,
+.three-clovis-buttons_cross-section:hover > div {
+  background-color: #060d2d !important;
+}
+
+.three-clovis-buttons_explosion > div,
+.three-clovis-buttons_horizontal-section > div,
+.three-clovis-buttons_cross-section > div {
+  color: #060d2d !important;
+}
+
+.three-clovis-buttons-container.explosion-is-on .three-clovis-buttons_explosion > div:not(.three-clovis-buttons_info-bar) {
+  border: 2px solid #060d2d;
+}
+
+.three-clovis-buttons-container .three-clovis-buttons_explosion > div:not(.three-clovis-buttons_info-bar)::after {
+  content: 'OFF';
+  transition: all 0.3s;
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 24px;
+  height: 24px;
+  font-size: 0.7rem;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+.three-clovis-buttons-container.explosion-is-on .three-clovis-buttons_explosion > div:not(.three-clovis-buttons_info-bar)::after {
+  content: 'ON';
+  background-color: #f4b350 !important;
+  color: white !important;
+  visibility: visible;
+  opacity: 1;
+}
+
+.three-clovis-buttons-container.explosion-is-on .three-clovis-buttons_explosion:hover > div:not(.three-clovis-buttons_info-bar)::after {
+  background-color: #060d2d;
+  color: white !important;
+}
+
+.three-clovis-buttons-container .three-clovis-buttons_horizontal-section > div:not(.three-clovis-buttons_info-bar)::after {
+  content: 'OFF';
+  transition: all 0.3s;
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 24px;
+  height: 24px;
+  font-size: 0.7rem;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.three-clovis-buttons-container.horizontal-section-is-on .three-clovis-buttons_horizontal-section > div:not(.three-clovis-buttons_info-bar) {
+  border: 2px solid #060d2d;
+}
+
+.three-clovis-buttons-container.horizontal-section-is-on .three-clovis-buttons_horizontal-section > div:not(.three-clovis-buttons_info-bar)::after {
+  content: 'ON';
+  background-color: #f4b350 !important;
+  color: white !important;
+  visibility: visible;
+  opacity: 1;
+}
+
+.three-clovis-buttons-container.horizontal-section-is-on .three-clovis-buttons_horizontal-section:hover > div:not(.three-clovis-buttons_info-bar)::after {
+  background-color: #060d2d;
+  color: white !important;
+}
+
+.three-clovis-buttons_help {
+  position: fixed !important;
+  bottom: 0;
+  right: 0;
+}
+
+.three-clovis-buttons_help .three-clovis-buttons_info-bar {
+  position: absolute;
+  bottom: 0;
+  right: 4rem;
+  left: auto;
+}
+
+.three-clovis-buttons_help > div {
+  color: #22a7f0 !important;
+}
+.three-clovis-buttons_help:hover > div {
+  background-color: #22a7f0 !important;
+}
+
+.three-clovis-buttons_menu {
+  margin-bottom: 1rem !important;
+}
+
+.three-menu_close-button {
+  position: absolute;
+  right: -3rem;
+  top: 0;
+  bottom: 0;
+  width: 3rem;
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.6);
+  justify-content: center;
+  display: flex;
+  background-color: rgba(6, 13, 45, 0.85);
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s opacity;
+  visibility: hidden;
+  opacity: 0;
+  user-select: none;
+}
+
+.three-menu_close-button:hover {
+  background-color: rgba(6, 13, 45, 0.9);
+}
+
+.three-menu_close-button:hover:active {
+  background-color: rgba(6, 13, 45, 0.95);
+  cursor: default;
+  font-size: 1.8rem;
+}
+
+.three-menu_menu-content {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+/* .three-menu_menu-content::-webkit-scrollbar {
+  display: inline: 4px;
+} */
+
+.three-menu_section-title {
+  color: #00b16a;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  padding: 0.5rem 0.5rem;
+  opacity: 0.8;
+  font-weight: bold;
+  user-select: none;
+}
+
+.three-menu_section-element {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  height: 2.5rem;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 0.25rem 0.5rem;
+  margin-bottom: 0.25rem;
+  cursor: pointer;
+  user-select: none;
+  white-space: pre;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+
+.three-menu_section-content {
+  margin-bottom: 1rem;
+}
+
+.three-menu_section-element:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.three-menu_section-element:active {
+  cursor: default;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f4b350;
+}
+
+.three-menu_section-element.floor-element-selected {
+  color: #f4b350;
+}
+
+.three-menu_section-element.tag-element-selected {
+  color: #f4b350;
+}
+
+.three-menu_section-element.tag-element-selected:hover {
+  color: #f4b350 !important;
+}
+
+.three-menu_section-element.tag-element-selected .select-control {
+  background-color: #f4b350;
+}
+
+.three-menu_section-element .select-control {
+  font-size: 2.5rem;
+}
+
+.three-menu_section-element .tag-controls {
+  width: 4.75rem;
+  min-width: 4.75rem;
+  max-width: 4.75rem;
+  height: 2.5rem;
+  display: flex;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.three-menu_section-element .tag-control {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.4);
+  border-radius: 0.25rem;
+  margin: 0.5rem;
+  margin-right: 0;
+  cursor: default;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.three-menu_section-element .tag-name {
+  justify-content: flex-start;
+  width: 7.75rem;
+  min-width: 7.75rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.three-menu_section-element .tag-control:hover {
+  cursor: pointer;
+}
+
+.three-menu_section-element .tag-control.select-control:hover {
+  background-color: #f4b350 !important;
+  opacity: 0.4;
+}
+.three-menu_section-element .tag-control.remove-control:hover {
+  background-color: #f64747;
+  opacity: 0.4;
+}
+
+.three-menu_section-element .tag-control:active {
+  cursor: default;
+}
+
+.tags-section .three-menu_section-element {
+  padding: 0;
+}
+.tags-section .three-menu_section-element:hover {
+  color: rgba(255, 255, 255, 0.85);
+  cursor: default;
+}
+
+.three-menu_section-content.tags-section {
+  margin-bottom: 30vh;
+}
+
+.three-menu_section-content.tags-section .three-menu_section-element {
+  cursor: default;
+}
+
+.three-menu_section-element.tag-element-removed .remove-control {
+  background-color: #f64747;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.3rem;
+}
+.three-menu_section-element.tag-element-removed .tag-name {
+  color: #f64747;
+}
+
+/* HELP POPUP */
+.three-help-popup-container {
+  position: absolute;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.three-help-popup-container.show-help-popup {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.three-clovis-help_overlay {
+  background-color: rgba(34, 167, 240, 0.3);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.three-clovis-help_popup {
+  background-color: #22a7f0;
+  height: 80vh;
+  width: 40rem;
+  max-width: 100vw;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  z-index: 1;
+  position: relative;
+}
+
+.three-clovis-help_close-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 3rem;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 1.25rem;
+  color: white;
+  user-select: none;
+}
+
+.three-clovis-help_close-button:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  cursor: pointer;
+}
+
+.three-clovis-help_close-button:hover:active {
+  background: rgba(255, 255, 255, 0.6) !important;
+  cursor: default;
+}
+
+.three-clovis-help_content-container {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  padding: 1rem;
+  color: white;
+}
+
+.three-clovis-buttons_help-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.three-clovis-buttons_help-element {
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+.three-clovis-buttons_help-element p::first-letter {
+  font-size: 4rem;
+  font-weight: bold;
+}
+
+.three-clovis-buttons_help-element:last-child {
+  margin-bottom: 30vh;
+}
+
+.three-selection-menu {
+  background-color: rgba(255, 255, 255, 0);
+  height: 2.5rem;
+  max-height: 2.5rem;
+  min-height: 2.5rem;
+  width: 2.5rem;
+  max-width: 2.5rem;
+  border-radius: 1.25rem  ;
+  border: 2px solid transparent;
+  user-select: none;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 12px 1px;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: absolute;
+  transition: max-width 0.3s ease-in-out, max-height 0.3s ease-in-out;
+  flex-direction: column;
+  /* overflow: hidden; */
+}
+
+.three-selection-menu::before {
+  opacity: 1;
+  visibility: visible;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: 2px solid #00b16a;
+  box-sizing: border-box;
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50% 50% 50% 0.25rem;
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  z-index: 0;
+  transform: rotate(6deg);
+  cursor: pointer;
+}
+
+.three-selection-menu:hover::before {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 2px solid #56d6a3;
+}
+
+
+.three-selection-menu.selection-menu-open::before {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.three-selection-menu::after {
+  opacity: 0;
+  visibility: hidden;
+  background-color: rgba(255, 255, 255, 1);
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50% 50% 50% 0.2rem;
+  content: '';
+  position: absolute;
+  top: 27px;
+  left: 0;
+  z-index: 0;
+  transform: rotate(45deg);
+  transition: opacity 0.2s 0.1s ease-in-out;
+}
+.three-selection-menu.selection-menu-open::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+
+.three-selection-menu.selection-menu-open {
+  background-color: rgba(255, 255, 255, 1);
+  height: auto;
+  max-height: 15rem;
+  max-width: 30rem;
+  width: auto;
+  border: 0 solid white;
+}
+
+.three-selection-menu.selection-menu-open .three-selection-menu-button {
+  visibility: hidden;
+  opacity: 0;
+  transform: rotate3d(0, 0, 1, 270deg);
+}
+
+.three-selection-menu .three-selection-menu-element {
+  visibility: hidden;
+  opacity: 0;
+  color: #060d2d;
+  font-size: 1rem;
+  padding: 0 1rem 0 0.75rem;
+  width: 100%;
+  height: 2.5rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-grow: 1;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease-in-out;
+  white-space: pre;
+  user-select: none;
+  z-index: 1;
+}
+
+.three-selection-menu.selection-menu-open .three-selection-menu-element:nth-child(2) {
+  border-radius: 1.25rem 1.25rem 0 0;
+}
+
+.three-selection-menu.selection-menu-open .three-selection-menu-element:nth-last-child(1) {
+  border-radius: 0 0 1.25rem 1.25rem;
+}
+
+.three-selection-menu .three-selection-menu-element.three-type-action {
+  color: #22a7f0 !important;
+}
+.three-selection-menu .three-selection-menu-element.three-type-action:hover {
+  background-color: rgba(34, 167, 240, 0.1) !important;
+}
+.three-selection-menu .three-selection-menu-element.three-type-action:active {
+  background-color: rgba(34, 167, 240, 0.2) !important;
+}
+.three-selection-menu .three-selection-menu-element.three-type-creation {
+  color: #00b16a !important;
+}
+.three-selection-menu .three-selection-menu-element.three-type-creation:hover {
+  background-color: rgba(0, 177, 106, 0.1) !important;
+}
+.three-selection-menu .three-selection-menu-element.three-type-creation:active {
+  background-color: rgba(0, 177, 106, 0.2) !important;
+}
+.three-selection-menu .three-selection-menu-element.three-type-bim {
+  /* margin-top: 1rem; */
+}
+.three-selection-menu .three-selection-menu-element.three-type-bim span {
+  font-size: 1.1rem !important;
+}
+
+
+.three-selection-menu .three-selection-menu-element:hover {
+  background-color: rgba(6, 13, 45, 0.05);
+}
+
+.three-selection-menu .three-selection-menu-element:active {
+  cursor: default;
+  background-color: rgba(6, 13, 45, 0.15);
+}
+
+.three-selection-menu .three-selection-menu-element span {
+  font-size: 1.5rem;  
+  margin-right: 0.5rem;
+  width: 1rem;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3px;
+}
+
+.three-selection-menu.selection-menu-open .three-selection-menu-element {
+  visibility: visible;
+  opacity: 1;
+}
+
+.three-selection-menu-element.three-selection-menu-close {
+  justify-content: center !important;
+  opacity: 0;
+  padding-top: 2px;
+  transition: opacity 0.3s 0.2s ease-in-out;
+  border-bottom: 1px dashed rgba(6, 13, 45, 0.1);
+}
+
+.three-selection-menu.selection-menu-open .three-selection-menu-close {
+  visibility: visible;
+  opacity: 1;
+}
+
+.three-selection-menu-button {
+  cursor: pointer;
+  font-weight: bold;
+  color: #00b16a;
+  visibility: visible;
+  opacity: 1;
+  top: -2px;
+  left: -2px;
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+  position: absolute;
+  transform: rotate3d(0, 0, 1, 90deg);
+  font-size: 1.64rem;
+  right: auto;
+  padding-top: 6px;
+  z-index: 1;
+}
+
+.three-selection-menu-button:active {
+  cursor: default;
+}

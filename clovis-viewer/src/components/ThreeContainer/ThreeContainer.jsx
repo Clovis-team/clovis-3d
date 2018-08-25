@@ -8,7 +8,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import threeEntryPoint from './threeEntryPoint';
 
-import './ThreeContainer.css';
+import './clovis-3d-viewer.css';
 
 class ThreeContainer extends Component {
     constructor(props) {
@@ -149,11 +149,11 @@ class ThreeContainer extends Component {
 
     render() {
         return (
-          <div
-              ref={element => this.threeRootElement = element}
-              className="clovis-3d-viewer-container"
-              id="clovis-viewer-container"
-            />
+            <div
+                ref={element => this.threeRootElement = element}
+                className="clovis-3d-viewer-container"
+                id="clovis-viewer-container"
+          />
         );
     }
 }
