@@ -100,7 +100,7 @@ export function initializeViewerHtmlContainers() {
     ClovisViewerContainer.appendChild(MenuContainer);
 
     const HelpPopupContainer = document.createElement('div');
-    HelpPopupContainer.id = 'three-help-popup-container';
-    HelpPopupContainer.className = 'three-help-popup-container';
+    HelpPopupContainer.id = 'three-popup-container';
+    HelpPopupContainer.className = 'three-popup-container';
     ClovisViewerContainer.appendChild(HelpPopupContainer);
 }

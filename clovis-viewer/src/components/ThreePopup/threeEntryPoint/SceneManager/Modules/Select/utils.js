@@ -119,7 +119,7 @@ export function hexToRgbA(hex, opacity) {
     throw new Error('Bad Hex');
 }
 
-export function takeScreenshot(renderer, scene, camera) {
+export function takeScreenshot(renderer) {
     // open in new window like this
     //
     const w = window.open('', '');
@@ -134,7 +134,7 @@ export function takeScreenshot(renderer, scene, camera) {
     //
     var a = document.createElement('a');
     // Without 'preserveDrawingBuffer' set to true, we must render now
-    renderer.render(scene, camera);
+    // renderer.render(scene, camera);
     a.href = renderer.domElement.toDataURL().replace("image/png", "image/octet-stream");
     a.download = 'canvas.png'
     a.click();

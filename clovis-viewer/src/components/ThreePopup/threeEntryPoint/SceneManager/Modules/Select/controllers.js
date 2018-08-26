@@ -1,4 +1,5 @@
-import { createSelectionMenu, addSphereOnHitPoint } from './components';
+import createSelectionMenu from './components/SelectionMenu/index';
+import addSphereOnHitPoint from './components/Sphere';
 import {
     getScreenTranslation,
     getHitPoint,
@@ -23,7 +24,7 @@ function UserSelection({
         // If the menu doesn't exist, create it
         if (!objSel.div) {
             objSel.div = createSelectionMenu({
-                SelectOptions, hitPoint, camera, canvas, renderer, scene,
+                SelectOptions, hitPoint, camera, canvas, renderer,
             });
         }
 

@@ -86,6 +86,7 @@ class ThreePopup extends Component {
                     active: true,
                     options: {
                         StandardButtons: {
+                            SeeBimInfos: true,
                             // Smart is both 'GoTo' or 'GoThru' if it's a door
                             SmartGo: true,
                             GoCloser: true,
@@ -96,15 +97,6 @@ class ThreePopup extends Component {
                                 text: 'Créer une tâche',
                                 icon: '+', // Could also be html node
                                 color: '#00b16a',
-                                ClickFunction: (ObjectDatas) => {
-                                    alert('Add Task, here is the ObjectDatas :');
-                                    console.log('ObjectDatas : ', ObjectDatas);
-                                },
-                            },
-                            {
-                                name: 'ShowObjectInfos',
-                                text: 'Voir les infos BIM',
-                                icon: '☷', // Could also be html node
                                 ClickFunction: (ObjectDatas) => {
                                     alert('Add Task, here is the ObjectDatas :');
                                     console.log('ObjectDatas : ', ObjectDatas);
@@ -153,12 +145,12 @@ class ThreePopup extends Component {
 
         return (
             <div
-            className={popupClassName}
+                className={popupClassName}
             id="popup-viewer"
           >
 
                 <div
-                className="popup-close-button"
+                    className="popup-close-button"
                     onClick={e => this.props.OnViewerClose()}
               >
                 ✕

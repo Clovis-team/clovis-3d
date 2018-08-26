@@ -544,7 +544,7 @@
 }
 
 /* HELP POPUP */
-.three-help-popup-container {
+.three-popup-container {
   position: absolute;
   z-index: 1000;
   display: flex;
@@ -552,15 +552,15 @@
   align-items: center;
 }
 
-.three-help-popup-container.show-help-popup {
+.three-popup-container.three-show-popup {
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
 }
 
-.three-clovis-help_overlay {
-  background-color: rgba(34, 167, 240, 0.3);
+.three-clovis-popup_overlay {
+  background-color: rgba(6, 13, 45, 0.4);
   position: fixed;
   top: 0;
   right: 0;
@@ -568,10 +568,14 @@
   left: 0;
 }
 
-.three-clovis-help_popup {
-  background-color: #22a7f0;
+.three-help-popup-container .three-clovis-popup_overlay {
+  background-color: rgba(34, 167, 240, 0.3);
+}
+
+.three-clovis_popup {
+  background-color: white;
   height: 80vh;
-  width: 40rem;
+  width: 20rem;
   max-width: 100vw;
   border-radius: 1.5rem;
   overflow: hidden;
@@ -579,7 +583,12 @@
   position: relative;
 }
 
-.three-clovis-help_close-button {
+.three-help-popup-container .three-clovis_popup {
+  background-color: #22a7f0;
+  width: 40rem;
+}
+
+.three-clovis-popup_close-button {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
@@ -589,30 +598,60 @@
   align-items: center;
   border-radius: 50%;
   width: 3rem;
-  background: rgba(255, 255, 255, 0.1);
+  background-color: rgba(6, 13, 45, 0.1);
   font-size: 1.25rem;
   color: white;
   user-select: none;
 }
 
-.three-clovis-help_close-button:hover {
-  background: rgba(255, 255, 255, 0.3) !important;
+.three-help-popup-container .three-clovis-popup_close-button {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.three-clovis-popup_close-button:hover {
+  background-color: rgba(6, 13, 45, 0.2) !important;
   cursor: pointer;
 }
 
-.three-clovis-help_close-button:hover:active {
-  background: rgba(255, 255, 255, 0.6) !important;
+.three-help-popup-container .three-clovis-popup_close-button:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.three-clovis-popup_close-button:hover:active {
+  background-color: rgba(6, 13, 45, 0.3) !important;
   cursor: default;
 }
 
-.three-clovis-help_content-container {
+.three-help-popup-container .three-clovis-popup_close-button:hover:active {
+  background: rgba(255, 255, 255, 0.6) !important;
+}
+
+.three-clovis-popup_content-container {
   height: 100%;
   width: 100%;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
-  padding: 1rem;
   color: white;
 }
+
+.three-help-popup-container.three-clovis-popup_content-container {
+  padding: 1rem;
+}
+
+.three-clovis-popup_capture-header {
+  height: 10rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.three-clovis-popup_capture-header img {
+  max-width: 100%;
+  min-width: 100%;
+}
+
 
 .three-clovis-buttons_help-title {
   font-size: 2rem;
@@ -654,9 +693,8 @@
   justify-content: flex-start;
   align-items: center;
   position: absolute;
-  transition: max-width 0.3s ease-in-out, max-height 0.3s ease-in-out;
+  transition: max-width 0.3s ease-out, max-height 0.3s ease-out;
   flex-direction: column;
-  /* overflow: hidden; */
 }
 
 .three-selection-menu::before {
@@ -701,7 +739,7 @@
   left: 0;
   z-index: 0;
   transform: rotate(45deg);
-  transition: opacity 0.2s 0.1s ease-in-out;
+  transition: opacity 0.2s 0.1s ease-out;
 }
 .three-selection-menu.selection-menu-open::after {
   opacity: 1;
