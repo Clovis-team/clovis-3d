@@ -1,6 +1,6 @@
 import 'three/examples/js/controls/OrbitControls';
 import loadBuilding from './loadBuilding';
-import { initSky } from './backgrounds';
+import { initSky, flamingo } from './backgrounds';
 
 import { fillBuildingDatas, positionCameraToBuilding } from './analyseBuilding';
 import { asynchronous_gltf_loader_gui_populate } from '../DevTools/utils';
@@ -14,12 +14,11 @@ function BuildScene(canvas, buildingGltfPath) {
      *
      * @returns new scene
      */
-    function buildScene(renderer) {
+    function buildScene() {
         const new_scene = new THREE.Scene();
-        // flamingo(new_scene);
-        initSky(new_scene, true);
-        const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x777788, 0.3);
-        new_scene.add(hemisphereLight);
+
+        // initSky(new_scene, true);
+        flamingo(new_scene);
         return new_scene;
     }
 
@@ -97,7 +96,7 @@ function BuildScene(canvas, buildingGltfPath) {
 
     const renderer = buildRenderer(canvas);
     const camera = buildCamera(canvas);
-    const scene = buildScene(renderer);
+    const scene = buildScene();
     const controls = buildControls(camera, renderer);
 
     // buildCameraAndControls();

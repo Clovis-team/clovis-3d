@@ -5,6 +5,9 @@ export function initSky(scene, dev) {
     sky.scale.setScalar(450000);
     scene.add(sky);
 
+    const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x777788, 0.3);
+    new_scene.add(hemisphereLight);
+
 
     const effectController = {
         turbidity: 10,
@@ -102,44 +105,53 @@ function populateDevGui(effectController, guiChanged) {
     gui.add(effectController, 'azimuth', 0, 0.5, 0.0001).onChange(guiChanged);
 }
 
-function flamingo(scene, camera) {
+export function flamingo(scene, camera) {
     scene.background = new THREE.Color().setHSL(0.6, 0, 1);
     scene.fog = new THREE.Fog(scene.background, 1, 5000);
-    // directionalLightS
-    const hemidirectionalLight = new THREE.HemispheredirectionalLight(0xffffff, 0xffffff, 0.6);
-    hemidirectionalLight.color.setHSL(0.6, 1, 0.6);
-    hemidirectionalLight.groundColor.setHSL(0.095, 1, 0.75);
-    hemidirectionalLight.position.set(0, 50, 0);
-    scene.add(hemidirectionalLight);
-    // const hemidirectionalLightHelper = new THREE.HemispheredirectionalLightHelper(hemidirectionalLight, 10);
-    // scene.add(hemidirectionalLightHelper);
+
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
+    hemiLight.color.setHSL(0.6, 1, 0.6);
+    hemiLight.groundColor.setHSL(0.095, 1, 0.75);
+    hemiLight.position.set(0, 50, 0);
+    scene.add(hemiLight);
+    const hemiLightHelper = new THREE.HemisphereLightHelper(hemiLight, 10);
+    scene.add(hemiLightHelper);
     //
-    const dirdirectionalLight = new THREE.DirectionaldirectionalLight(0xffffff, 1);
-    dirdirectionalLight.color.setHSL(0.1, 1, 0.95);
-    dirdirectionalLight.position.set(-1, 1.75, 1);
-    dirdirectionalLight.position.multiplyScalar(30);
-    scene.add(dirdirectionalLight);
-    dirdirectionalLight.castShadow = true;
-    dirdirectionalLight.shadow.mapSize.width = 2048;
-    dirdirectionalLight.shadow.mapSize.height = 2048;
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    dirLight.color.setHSL(0.1, 1, 0.95);
+    dirLight.position.set(-1, 1.75, 1);
+    dirLight.position.multiplyScalar(30);
+    scene.add(dirLight);
+    dirLight.castShadow = true;
+    dirLight.shadow.mapSize.width = 2048;
+    dirLight.shadow.mapSize.height = 2048;
     const d = 50;
-    dirdirectionalLight.shadow.camera.left = -d;
-    dirdirectionalLight.shadow.camera.right = d;
-    dirdirectionalLight.shadow.camera.top = d;
-    dirdirectionalLight.shadow.camera.bottom = -d;
-    dirdirectionalLight.shadow.camera.far = 3500;
-    dirdirectionalLight.shadow.bias = -0.0001;
-    // dirdirectionalLightHeper = new THREE.DirectionaldirectionalLightHelper(dirdirectionalLight, 10);
-    // scene.add(dirdirectionalLightHeper);
-    // GROUND
+    dirLight.shadow.camera.left = -d;
+    dirLight.shadow.camera.right = d;
+    dirLight.shadow.camera.top = d;
+    dirLight.shadow.camera.bottom = -d;
+    dirLight.shadow.camera.far = 3500;
+    dirLight.shadow.bias = -0.0001;
+    const dirLightHeper = new THREE.DirectionalLightHelper(dirLight, 10);
+    scene.add(dirLightHeper);
+
+    // GROUND;
+
+
     const groundGeo = new THREE.PlaneBufferGeometry(10000, 10000);
     const groundMat = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0x050505 });
-    groundMat.color.setHSL(0.095, 1, 0.75);
+
+
+    groundMat.color.setHex(0x9dce58);
+
+
     const ground = new THREE.Mesh(groundGeo, groundMat);
     ground.rotation.x = -Math.PI / 2;
-    ground.position.y = -33;
+    ground.position.y = -100;
     scene.add(ground);
+
     ground.receiveShadow = true;
+
     // SKYDOME
     const vertexShader = 'varying vec3 vWorldPosition;\
         void main() {\
@@ -162,7 +174,7 @@ function flamingo(scene, camera) {
         offset: { value: 33 },
         exponent: { value: 0.6 },
     };
-    uniforms.topColor.value.copy(hemidirectionalLight.color);
+    uniforms.topColor.value.copy(hemiLight.color);
     scene.fog.color.copy(uniforms.bottomColor.value);
     const skyGeo = new THREE.SphereBufferGeometry(4000, 32, 15);
     const skyMat = new THREE.ShaderMaterial({
