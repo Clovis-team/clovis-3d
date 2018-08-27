@@ -1,7 +1,8 @@
 import Walk from './Walk';
 import Select from './Select';
-import Cut from './Cut';
+import HorizontalSection from './Cut';
 import Explosion from './Explosion';
+import Label from './Label';
 
 const Modules = (InitializedScene, canvas) => {
     const {
@@ -13,36 +14,31 @@ const Modules = (InitializedScene, canvas) => {
         ViewerOptions,
     } = InitializedScene;
 
-    const walkModule = new Walk(scene, camera, controls);
-    const selectModule = new Select({
-        scene, camera, buildingDatas, canvas, ViewerOptions, renderer,
-    });
-    const cutModule = new Cut({
-        renderer, controls, canvas, buildingDatas, scene,
-    });
-    const explosionModule = new Explosion({ buildingDatas });
+    InitializedScene.canvas = canvas;
 
-    const modules = {
-        walk: walkModule,
-        select: selectModule,
-        cut: cutModule,
-        explosion: explosionModule,
+    const bindingModules = {
+        Walk,
+        Select,
+        HorizontalSection,
+        Explosion,
+        Label,
     };
 
-    /**
-     * creates the modulesArray. modular elements meant for plug and play
-     * @returns an array of scenes
-     */
-    function createModules() {
-        const modulesArray = [
-            walkModule,
-            selectModule,
-        ];
-        return modulesArray;
-    }
-    const modulesArray = createModules();
+    const modulesObject = {};
+    const modulesArray = [];
 
-    return { modules, modulesArray };
+    Object.keys(ViewerOptions.Modules).forEach((element) => {
+        if (ViewerOptions.Modules[element].active === true) {
+            const object = new bindingModules[element](InitializedScene);
+            modulesObject[element] = object;
+            if (object.update) {
+                modulesArray.push(object);
+            }
+        }
+    });
+
+
+    return { modulesObject, modulesArray };
 };
 
 export default Modules;

@@ -20,7 +20,7 @@ const ThreeEntryPoint = (ThreeDomContainer, buildingGltfPath, ViewerOptions) => 
 
     // TODO: put condition with NODE_ENV
 
-    const sceneManager = SceneManager(canvas, InitializedScene);
+    const sceneManager = SceneManager(canvas, InitializedScene, ViewerOptions);
 
 
     // its a function that loops 60 times per second ideally

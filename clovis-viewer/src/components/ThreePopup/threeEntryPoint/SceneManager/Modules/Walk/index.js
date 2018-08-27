@@ -1,7 +1,7 @@
 import virtualJoystick from './VirtualJoystick';
 import populateGuiWalking from './gui';
 
-function walk(scene, camera, controls) {
+function walk({ scene, camera, controls }) {
     // if not enabled doesnt move
     this.enabled = true;
     this.movementSpeed = 10; // units per second

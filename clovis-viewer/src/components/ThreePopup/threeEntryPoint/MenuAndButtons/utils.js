@@ -13,7 +13,7 @@ export const addEventListeners = (targetElement, eventsString, triggeredFunction
     eventsString.split(' ').forEach(event => targetElement.addEventListener(event, triggeredFunction, false));
 };
 
-export const createToggleExplosionButton = (ButtonsContainer, { cut, explosion }) => {
+export const createToggleExplosionButton = (ButtonsContainer, { HorizontalSection, Explosion }) => {
     const InnerButton = document.createElement('div');
     InnerButton.innerHTML = '✧';
 
@@ -32,11 +32,11 @@ export const createToggleExplosionButton = (ButtonsContainer, { cut, explosion }
 
     const toggleExplosionButton = () => {
         if (ButtonsContainer.classList.contains('explosion-is-on')) {
-            explosion.destroy();
+            Explosion.destroy();
         } else {
-            explosion.start();
+            Explosion.start();
             if (ButtonsContainer.classList.contains('horizontal-section-is-on')) {
-                cut.destroy();
+                HorizontalSection.destroy();
             }
         }
     };
@@ -53,7 +53,7 @@ export const createToggleExplosionButton = (ButtonsContainer, { cut, explosion }
         .appendChild(horizontalSectionMessage);
 };
 
-export const createHorizontalSectionButton = (ButtonsContainer, { cut, explosion }) => {
+export const createHorizontalSectionButton = (ButtonsContainer, { HorizontalSection, Explosion }) => {
     const InnerButton = document.createElement('div');
     InnerButton.innerHTML = '⇔';
 
@@ -69,11 +69,11 @@ export const createHorizontalSectionButton = (ButtonsContainer, { cut, explosion
 
     const toggleHorizontalCutButton = () => {
         if (ButtonsContainer.classList.contains('horizontal-section-is-on')) {
-            cut.destroy();
+            HorizontalSection.destroy();
         } else {
-            cut.start();
+            HorizontalSection.start();
             if (ButtonsContainer.classList.contains('explosion-is-on')) {
-                explosion.destroy();
+                Explosion.destroy();
             }
         }
     };
