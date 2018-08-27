@@ -138,6 +138,7 @@ class ThreePopup extends Component {
             buildingGltfPath,
             ViewerOptions,
         );
+        this.destroy = threeControllers.destroy;
     }
 
     render() {

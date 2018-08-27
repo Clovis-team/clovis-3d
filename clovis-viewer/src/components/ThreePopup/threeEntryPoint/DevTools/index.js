@@ -23,8 +23,13 @@ const DevTools = () => {
     // window.scene = scene;
     // window.THREE = THREE;
 
+    function destroy() {
+        gui.destroy();
+    }
+
     return {
         stats,
+        destroy,
         // rendererStats,
     };
 };

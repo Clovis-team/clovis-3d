@@ -40,8 +40,13 @@ const ThreeEntryPoint = (ThreeDomContainer, buildingGltfPath, ViewerOptions) => 
     // Show the menu and buttons
     MenuAndButtons(InitializedScene.getBuildingDatas, sceneManager);
 
+    function destroy() {
+        devTools.stats.destroy();
+    }
+
     // starts the rendering loop
     render();
+    return { destroy };
 };
 
 function createCanvas(document, container) {
