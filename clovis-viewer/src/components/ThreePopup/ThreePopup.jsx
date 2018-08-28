@@ -26,28 +26,27 @@ class ThreePopup extends Component {
             generatedTasks.push({
                 _id: RandomArbitraryID,
                 onNoteOpen: () => { alert(`Open note n° ${RandomArbitraryID}`); },
-
-                '3d_datas': {
+                position: {
                     x: getRandomArbitrary(0, 80),
                     y: getRandomArbitrary(0, 80),
                     z: getRandomArbitrary(0, 20),
-                    selected: false,
-                    linked_object: {
-                        uuid: getRandomArbitrary(1000, 100000),
-                        name: 'Jacuzzi',
-                        categories: [
-                            'IfcCovering',
-                            'IfcColumn',
-                        ],
-                    },
-                    camera_position: {
-                        x: getRandomArbitrary(0, 80),
-                        y: getRandomArbitrary(0, 80),
-                        z: getRandomArbitrary(0, 20),
-                    },
-                    done: _.sample([true, false]),
-                    notification: _.sample(['none', 'low', 'high']),
                 },
+                selected: false,
+                linked_object: {
+                    uuid: getRandomArbitrary(1000, 100000),
+                    name: 'Jacuzzi',
+                    categories: [
+                        'IfcCovering',
+                        'IfcColumn',
+                    ],
+                },
+                cameraPosition: {
+                    x: getRandomArbitrary(0, 80),
+                    y: getRandomArbitrary(0, 80),
+                    z: getRandomArbitrary(0, 20),
+                },
+                done: _.sample([true, false]),
+                notification: _.sample(['none', 'low', 'high']),
             });
         }
 
@@ -56,27 +55,27 @@ class ThreePopup extends Component {
             _id: '59026b827ec0050001ac0cc9',
             onNoteOpen: () => { alert('Open note n° 59026b827ec0050001ac0cc9'); },
 
-            '3d_datas': {
+            position: {
                 x: 20,
                 y: 40,
                 z: 30,
-                selected: true,
-                linked_object: {
-                    uuid: 'AF987b827ec005000197687',
-                    name: 'IfcStephenHawking',
-                    categories: [
-                        'IfcWall',
-                        'IfcDoor',
-                    ],
-                },
-                camera_position: {
-                    x: 30,
-                    y: 70,
-                    z: 30,
-                },
-                done: false,
-                notification: 'high',
             },
+            selected: true,
+            linked_object: {
+                uuid: 'AF987b827ec005000197687',
+                name: 'IfcStephenHawking',
+                categories: [
+                    'IfcWall',
+                    'IfcDoor',
+                ],
+            },
+            cameraPosition: {
+                x: 30,
+                y: 70,
+                z: 30,
+            },
+            done: false,
+            notification: 'high',
         });
 
         this.ViewerOptions = {
@@ -121,6 +120,10 @@ class ThreePopup extends Component {
                     active: true,
                     options: {},
                 },
+                Label: {
+                    active: true,
+                    options: {},
+                },
             },
             Background: {
                 // Type could also be 3d model
@@ -151,7 +154,7 @@ class ThreePopup extends Component {
         return (
           <div
               className={popupClassName}
-              id="popup-viewer"
+                id="popup-viewer"
             >
 
               <div
