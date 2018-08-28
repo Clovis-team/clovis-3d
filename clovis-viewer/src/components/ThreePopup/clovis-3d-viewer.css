@@ -874,3 +874,49 @@
 .three-selection-menu-button:active {
   cursor: default;
 }
+
+/* LABELS */
+
+.three-clovis-label {
+  background-color: rgba(34, 167, 240, 1);
+  position: absolute;
+  visibility: visible;
+  opacity: 1;
+  cursor: pointer;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: white;
+  font-weight: bold;
+  font-size: 0.7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid rgba(255, 255, 255, 1);
+  border-radius: 50%;
+  user-select: none;
+  box-sizing: content-box;
+}
+
+.three-clovis-label.three-clovis-label_selected {
+  background-color: #00b16a;
+  visibility: visible;
+  opacity: 1;
+  border: 6px solid white;
+}
+
+/* .three-clovis-label.three-clovis-label_selected::before {
+  background-color: rgba(255, 255, 255, 1);
+  content: '';
+  background-color: yellow;
+  opacity: 0.8;
+  position: absolute;
+  transform: scale(2.5);
+  border-radius: 50%;
+  z-index: -1;
+} */
+
+.three-clovis-label.three-clovis-label_hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+

@@ -6,7 +6,18 @@ function Label({
     const tags = [];
     labels.forEach((label) => {
         const tag = createDiv(label);
-        tag.addEventListener('mousedown', moveCameraOnClick);
+        tag.addEventListener('mousedown', (event) => {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            event.stopPropagation();
+            moveCameraOnClick(event);
+        });
+        tag.addEventListener('touchend', (event) => {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            event.stopPropagation();
+            moveCameraOnClick(event);
+        });
         tags.push(tag);
     });
 
@@ -36,17 +47,32 @@ function Label({
     this.update = () => {
         for (let i = 0; i < tags.length; i += 1) {
             const pos = getScreenPosition(labels[i], camera, canvas);
+
+            // Manage the position of the label
             tags[i].style.left = `${pos.x + 10}px`;
             tags[i].style.top = `${pos.y - 40}px`;
+
+
             if (pos.z > 1) {
-                tags[i].style.visibility = 'hidden';
+                // If the camera is after the lable, hide the label
+                tags[i].classList.add('three-clovis-label_hidden');
             } else if (tags[i].selected) {
-                tags[i].style.background = 'green';
+                // If the label is selected, change its color
+                tags[i].classList.add('three-clovis-label_selected');
             } else {
-                tags[i].style.background = 'blue';
-                tags[i].style.visibility = 'visible';
+                // Show the label back
+                tags[i].classList.remove('three-clovis-label_hidden');
+                tags[i].classList.remove('three-clovis-label_selected');
             }
-            tags[i].style.fontSize = `${1 / tags[i].labelPosition.distanceTo(camera.position) * 200 + 12}px`;
+
+            // Change the font size function of the distance
+            // With font-size
+            // tags[i].style.fontSize = `${1 / tags[i].labelPosition.distanceTo(camera.position) * 200 + 12}px`;
+            // With Element size
+            // tags[i].style.height = `${1 / tags[i].labelPosition.distanceTo(camera.position) * 300 + 12}px`;
+            // tags[i].style.width = `${1 / tags[i].labelPosition.distanceTo(camera.position) * 300 + 12}px`;
+            // With z-index
+            tags[i].style.zIndex = `${Math.floor(1 / tags[i].labelPosition.distanceTo(camera.position) * 10000) + 2}`;
         }
     };
 }
@@ -74,22 +100,23 @@ function Label({
 // }
 
 function createDiv(label) {
-    const div = document.createElement('div');
-    div.style.background = 'red';
-    div.style.color = 'white';
-    div.style.position = 'absolute';
-    div.style.textAlign = 'center';
-    div.style.verticalAlign = 'middle';
+    const LabelElement = document.createElement('div');
+    LabelElement.className = 'three-clovis-label';
 
+    LabelElement.labelPosition = new THREE.Vector3().add(label.position);
+    LabelElement.cameraPosition = new THREE.Vector3().add(label.cameraPosition);
 
-    div.labelPosition = new THREE.Vector3().add(label.position);
-    div.cameraPosition = new THREE.Vector3().add(label.cameraPosition);
-    div.selected = false;
+    if (label.selected === true) {
+        // TODO: uncomment this to open the viewer with selected task
+        // LabelElement.selected = true;
+        // LabelElement.classList.add('three-clovis-label_selected');
+    } else {
+        LabelElement.selected = false;
+    }
 
-
-    div.innerHTML = label._id;
-    document.getElementById('popup-viewer').appendChild(div);
-    return div;
+    LabelElement.innerHTML = `${label._id}`.substring(0, Math.floor(Math.random() * 3) + 1);
+    document.getElementById('popup-viewer').appendChild(LabelElement);
+    return LabelElement;
 }
 
 function getScreenPosition(object, camera, canvas) {
