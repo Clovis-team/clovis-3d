@@ -897,23 +897,25 @@
   box-sizing: content-box;
 }
 
+.three-clovis-label:hover:not(.three-clovis-label_selected) {
+  border: 6px solid rgba(255, 255, 255, 1);
+  transform: translate3d(-3px, -3px, 0);
+}
+
+.three-clovis-label:active:not(.three-clovis-label_selected) {
+  border: 9px solid rgba(255, 255, 255, 1);
+  transform: translate3d(-6px, -6px, 0);
+  cursor: default;
+}
+
 .three-clovis-label.three-clovis-label_selected {
   background-color: #00b16a;
   visibility: visible;
   opacity: 1;
   border: 6px solid white;
+  box-sizing: content-box;
 }
 
-/* .three-clovis-label.three-clovis-label_selected::before {
-  background-color: rgba(255, 255, 255, 1);
-  content: '';
-  background-color: yellow;
-  opacity: 0.8;
-  position: absolute;
-  transform: scale(2.5);
-  border-radius: 50%;
-  z-index: -1;
-} */
 
 .three-clovis-label.three-clovis-label_hidden {
   visibility: hidden;

@@ -27,9 +27,9 @@ class ThreePopup extends Component {
                 _id: RandomArbitraryID,
                 onNoteOpen: () => { alert(`Open note n° ${RandomArbitraryID}`); },
                 position: {
-                    x: getRandomArbitrary(0, 80),
-                    y: getRandomArbitrary(0, 80),
-                    z: getRandomArbitrary(0, 20),
+                    x: getRandomArbitrary(0, 160),
+                    y: getRandomArbitrary(0, 40),
+                    z: getRandomArbitrary(-80, 80),
                 },
                 selected: false,
                 linked_object: {
@@ -152,30 +152,30 @@ class ThreePopup extends Component {
         const popupClassName = `popup-viewer ${this.props.isViewerOpened ? 'popup-viewer-open' : ''}`;
 
         return (
-          <div
-              className={popupClassName}
-                id="popup-viewer"
-            >
+            <div
+                className={popupClassName}
+            id="popup-viewer"
+          >
 
-              <div
-                  className="popup-close-button"
-                  onClick={e => this.props.OnViewerClose()}
-                >
+                <div
+                    className="popup-close-button"
+                    onClick={e => this.props.OnViewerClose()}
+              >
                 ✕
-                </div>
+              </div>
 
-              { this.props.isViewerOpened
+                { this.props.isViewerOpened
                     ? (
-                      <div
-                          ref={element => this.threeRootElement = element}
-                          className="clovis-3d-viewer-container non-touch-device"
-                          id="clovis-viewer-container"
-                        />
+                        <div
+                            ref={element => this.threeRootElement = element}
+                            className="clovis-3d-viewer-container non-touch-device"
+                            id="clovis-viewer-container"
+                      />
                     )
                     : 'Loading Viewer...'
                 }
 
-            </div>
+          </div>
         );
     }
 }

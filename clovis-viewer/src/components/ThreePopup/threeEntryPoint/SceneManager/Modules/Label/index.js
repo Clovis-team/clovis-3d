@@ -6,7 +6,7 @@ function Label({
     const tags = [];
     labels.forEach((label) => {
         const tag = createDiv(label);
-        tag.addEventListener('mousedown', (event) => {
+        tag.addEventListener('click', (event) => {
             event.stopImmediatePropagation();
             event.preventDefault();
             event.stopPropagation();
