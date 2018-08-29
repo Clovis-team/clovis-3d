@@ -4,10 +4,7 @@ export function getScreenTranslation(object, camera, canvas) {
     const widthHalf = width / 2;
     const heightHalf = height / 2;
 
-    // TODO : these two functions don't have the same behavior on touch screens
-    // TODO: what does .clone() really do ?
     const pos = object.position.clone();
-    // TODO: what does .project() really do ?
     pos.project(camera);
 
     pos.x = (pos.x * widthHalf) + widthHalf;
@@ -68,10 +65,26 @@ export function removeSelectionMenu(objSel) {
     objSel.div = null;
 }
 
-export function getHitPoint(raycaster, buildingDatas) {
+export function getHitPoint(raycaster, buildingDatas, scene, modulesObject) {
+    // const intersects = raycaster.intersectObject(scene, true);
     const intersects = raycaster.intersectObjects(buildingDatas.mesh_all);
+
     if (intersects.length > 0) {
-        return intersects[0];
+        if (modulesObject &&
+            modulesObject.HorizontalSection &&
+            modulesObject.HorizontalSection.splittingPlane
+        ){
+            const keyArray = intersects.map(function(item) { return item["object"]; });
+            if (keyArray.includes(modulesObject.HorizontalSection.splittingPlane) ) {
+                const i = keyArray.indexOf(modulesObject.HorizontalSection.splittingPlane);
+                return intersects[i + 1];
+            } else {
+                return intersects[0];
+            }
+        }
+        else{
+            return intersects[0];
+        }
     }
     return null;
 }

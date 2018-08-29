@@ -36,7 +36,7 @@ function BuildScene(canvas, buildingGltfPath, ViewerOptions) {
     function buildRenderer({ width, height }) {
         const new_renderer = new THREE.WebGLRenderer({
             canvas,
-            antialias: true,
+            antialias: false,
             alpha: true,
             preserveDrawingBuffer: true, // Usefull for canvas capture
         });

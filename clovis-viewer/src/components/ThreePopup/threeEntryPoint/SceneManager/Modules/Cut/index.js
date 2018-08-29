@@ -6,10 +6,9 @@ function Cut({
         clipping: new THREE.Plane(new THREE.Vector3(0, -1, 0), 2),
         edged: new THREE.Group(),
     };
+    this.planeExist = false;
 
     const mouse = { y: 0, y_prev: 0 };
-
-    this.planeExist = false;
 
     const ButtonsContainer = document.getElementById('three-clovis-buttons-container');
 
@@ -22,9 +21,17 @@ function Cut({
         if (controls) { controls.enabled = false; }
         if (!this.planeExist) {
             initSectionPlane(plane, buildingDatas, scene);
+            console.log(plane.edged)
+
+            buildingDatas.mesh_all.push(plane.edged.children[0]);
             this.planeExist = true;
+            this.splittingPlane = plane.edged.children[0]
+
         }
         plane.edged.visible = true;
+        plane.edged.children[0].visible = true;
+
+
 
 
         renderer.clippingPlanes = [plane.clipping];
@@ -65,7 +72,6 @@ function Cut({
         // end set the opacity back to normal
 
         // TODO: if the cut is not destroyed, show section intersection as RED (like in BimX)
-
         if (controls) { controls.enabled = true; }
     };
 
@@ -73,6 +79,8 @@ function Cut({
         ButtonsContainer.classList.remove('horizontal-section-is-on');
         buildingDatas.building.traverse(convertToSingleSided);
         plane.edged.visible = false;
+        plane.edged.children[0].visible = false;
+        
         if (controls) { controls.enabled = true; }
         renderer.clippingPlanes.pop();
     };
@@ -113,7 +121,7 @@ const makeVisiblePlane = ({ x, z }, color) => {
     const edges = new THREE.EdgesGeometry(planeMesh.geometry);
     const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xf64747 }));
 
-    const group = new THREE.Group();
+    const group = new THREE.Object3D();
 
     group.add(planeMesh);
     group.add(line);
@@ -121,7 +129,7 @@ const makeVisiblePlane = ({ x, z }, color) => {
     return (group);
 };
 
-const initSectionPlane = (plane, { building, size, center }, scene) => {
+const initSectionPlane = (plane, { size, center }, scene) => {
     plane.edged = makeVisiblePlane(size, 0xf64747);
     scene.add(plane.edged);
     plane.edged.position.copy(center);

@@ -41,13 +41,13 @@ function UserSelection({
 
 // Click controller
 export function onDocumentMouseClick({
-    event, mouse, canvas, camera, scene, buildingDatas, raycaster, objSel, SelectOptions, renderer,
+    event, mouse, canvas, camera, scene, buildingDatas, raycaster, objSel, SelectOptions, renderer, modulesObject
 }) {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
-    const hitPoint = getHitPoint(raycaster, buildingDatas);
+    const hitPoint = getHitPoint( raycaster, buildingDatas, scene, modulesObject );
 
     UserSelection({
         hitPoint, objSel, canvas, scene, camera, SelectOptions, renderer,

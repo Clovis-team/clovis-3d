@@ -13,8 +13,11 @@ const Modules = (InitializedScene, canvas) => {
         // buildingDatas,
         ViewerOptions,
     } = InitializedScene;
+    const modulesObject = {};
+    const modulesArray = [];
 
     InitializedScene.canvas = canvas;
+    InitializedScene.modulesObject = modulesObject;
 
     const bindingModules = {
         Walk,
@@ -23,9 +26,6 @@ const Modules = (InitializedScene, canvas) => {
         Explosion,
         Label,
     };
-
-    const modulesObject = {};
-    const modulesArray = [];
 
     Object.keys(ViewerOptions.Modules).forEach((element) => {
         if (ViewerOptions.Modules[element].active === true) {

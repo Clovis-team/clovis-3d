@@ -5,7 +5,7 @@ function walk({ scene, camera, controls }) {
     // if not enabled doesnt move
     this.enabled = true;
     this.movementSpeed = 10; // units per second
-    this.yMovements = true;
+    this.yMovements = false;
     this.up = new THREE.Vector3(0, 1, 0);
     this.walkingSwitch = false;
     // key true or false movements

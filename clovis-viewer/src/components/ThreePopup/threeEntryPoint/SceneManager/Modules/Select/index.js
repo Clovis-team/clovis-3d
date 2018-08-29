@@ -3,7 +3,7 @@ import Listeners from './listeners';
 
 
 function Select({
-    scene, camera, buildingDatas, canvas, ViewerOptions, renderer,
+    scene, camera, buildingDatas, canvas, ViewerOptions, renderer, modulesObject
 }) {
     const mouse = {};
 
@@ -34,6 +34,7 @@ function Select({
         objSel,
         SelectOptions,
         renderer,
+        modulesObject,
     });
 
     // LIFECYCLE OF MODULE
