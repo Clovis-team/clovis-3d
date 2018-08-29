@@ -21,12 +21,10 @@ function Cut({
         if (controls) { controls.enabled = false; }
         if (!this.planeExist) {
             initSectionPlane(plane, buildingDatas, scene);
-            console.log(plane.edged)
 
             buildingDatas.mesh_all.push(plane.edged.children[0]);
             this.planeExist = true;
             this.splittingPlane = plane.edged.children[0]
-
         }
         plane.edged.visible = true;
         plane.edged.children[0].visible = true;
