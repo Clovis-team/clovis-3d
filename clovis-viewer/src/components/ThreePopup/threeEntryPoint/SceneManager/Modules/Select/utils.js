@@ -1,5 +1,6 @@
 export function getScreenTranslation(object, camera, canvas) {
-    const { width, height } = canvas;
+    const width = parseInt(canvas.style.width);
+    const height = parseInt(canvas.style.height);
     const widthHalf = width / 2;
     const heightHalf = height / 2;
 
