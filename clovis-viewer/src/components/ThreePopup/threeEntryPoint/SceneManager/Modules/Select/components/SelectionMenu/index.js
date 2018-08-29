@@ -65,6 +65,6 @@ export default function createSelectionMenu({
     });
 
 
-    document.getElementById('popup-viewer').appendChild(SelectionMenu);
+    document.getElementById('clovis-viewer-container').appendChild(SelectionMenu);
     return SelectionMenu;
 }

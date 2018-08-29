@@ -3,9 +3,16 @@ function Label({
 }) {
     const labels = ViewerOptions.LocalizedNotes;
 
+    // Initialize he dom container of labels
+    const LabelContainer = document.createElement('div');
+    LabelContainer.id = 'three-clovis-label-container';
+    const ThreeClovisContainer = document.getElementById('clovis-viewer-container');
+    ThreeClovisContainer.appendChild(LabelContainer);
+
     const tags = [];
     labels.forEach((label) => {
-        const tag = createDiv(label);
+        const tag = createDiv(label, LabelContainer);
+
         tag.addEventListener('mousedown', (event) => {
             event.stopImmediatePropagation();
             event.preventDefault();
@@ -99,7 +106,7 @@ function Label({
 //     }
 // }
 
-function createDiv(label) {
+function createDiv(label, LabelContainer) {
     const LabelElement = document.createElement('div');
     LabelElement.className = 'three-clovis-label';
 
@@ -115,7 +122,8 @@ function createDiv(label) {
     }
 
     LabelElement.innerHTML = `${label._id}`.substring(0, Math.floor(Math.random() * 3) + 1);
-    document.getElementById('popup-viewer').appendChild(LabelElement);
+
+    LabelContainer.appendChild(LabelElement);
     return LabelElement;
 }
 

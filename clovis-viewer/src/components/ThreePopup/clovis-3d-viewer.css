@@ -695,6 +695,7 @@
   position: absolute;
   transition: max-width 0.3s ease-out, max-height 0.3s ease-out;
   flex-direction: column;
+  z-index: 10000;
 }
 
 .three-selection-menu::before {
