@@ -47,7 +47,7 @@ export default function generateTasks() {
             y: 40,
             z: 30,
         },
-        selected: true,
+        selected: false,
         linked_object: {
             uuid: 'AF987b827ec005000197687',
             name: 'IfcStephenHawking',
@@ -90,7 +90,7 @@ export default function generateTasks() {
         cameraPosition: {
             x: 20,
             y: 40,
-            z: 70,
+            z: 90,
         },
         done: false,
         notifications: {
