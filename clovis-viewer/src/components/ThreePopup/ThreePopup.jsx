@@ -3,7 +3,6 @@
  * ^Clement : To understand the implementation of Three.js in React, read this article :
  * https://itnext.io/how-to-use-plain-three-js-in-your-react-apps-417a79d926e0
  */
-import _ from 'lodash';
 
 import React, { Component } from 'react';
 import threeEntryPoint from './threeEntryPoint';
@@ -11,75 +10,16 @@ import threeEntryPoint from './threeEntryPoint';
 import './clovis-3d-viewer.css';
 import './ThreePopup.css';
 
+import generatedTasks from './fixtures/tasks';
+
 class ThreePopup extends Component {
     constructor(props) {
         super(props);
         // this.buildingGltfPath = '/gltfs/Project1-assimp.gltf';
         this.buildingGltfPath = 'gltfs/15-assimp.gltf';
 
-        const getRandomArbitrary = (min, max) => Math.round(Math.random() * (max - min) + min);
-
-        const generatedTasks = [];
-        // Randomly generated tasks
-        for (let i = 0; i <= 30; i += 1) {
-            const RandomArbitraryID = getRandomArbitrary(1000, 100000);
-            generatedTasks.push({
-                _id: RandomArbitraryID,
-                onNoteOpen: () => { alert(`Open note n° ${RandomArbitraryID}`); },
-                position: {
-                    x: getRandomArbitrary(0, 160),
-                    y: getRandomArbitrary(0, 40),
-                    z: getRandomArbitrary(-80, 80),
-                },
-                selected: false,
-                linked_object: {
-                    uuid: getRandomArbitrary(1000, 100000),
-                    name: 'Jacuzzi',
-                    categories: [
-                        'IfcCovering',
-                        'IfcColumn',
-                    ],
-                },
-                cameraPosition: {
-                    x: getRandomArbitrary(0, 80),
-                    y: getRandomArbitrary(0, 80),
-                    z: getRandomArbitrary(0, 20),
-                },
-                done: _.sample([true, false]),
-                notification: _.sample(['none', 'low', 'high']),
-            });
-        }
-
-        // Edit this one if needed
-        generatedTasks.push({
-            _id: '59026b827ec0050001ac0cc9',
-            onNoteOpen: () => { alert('Open note n° 59026b827ec0050001ac0cc9'); },
-
-            position: {
-                x: 20,
-                y: 40,
-                z: 30,
-            },
-            selected: true,
-            linked_object: {
-                uuid: 'AF987b827ec005000197687',
-                name: 'IfcStephenHawking',
-                categories: [
-                    'IfcWall',
-                    'IfcDoor',
-                ],
-            },
-            cameraPosition: {
-                x: 30,
-                y: 70,
-                z: 30,
-            },
-            done: false,
-            notification: 'high',
-        });
-
         this.ViewerOptions = {
-            LocalizedNotes: generatedTasks,
+            LocalizedNotes: generatedTasks(),
             Modules: {
                 Select: {
                     active: true,

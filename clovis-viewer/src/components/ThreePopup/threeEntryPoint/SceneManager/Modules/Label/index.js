@@ -109,9 +109,23 @@ function Label({
 function createDiv(label, LabelContainer) {
     const LabelElement = document.createElement('div');
     LabelElement.className = 'three-clovis-label';
+    const LabelNotification = document.createElement('div');
+    LabelNotification.className = 'three-clovis-label_notification';
 
     LabelElement.labelPosition = new THREE.Vector3().add(label.position);
     LabelElement.cameraPosition = new THREE.Vector3().add(label.cameraPosition);
+
+
+    if (label.notifications.amount > 0) {
+        if (label.notifications.strong) {
+            console.log('label._id :', label._id);
+            LabelElement.classList.add('three-clovis-label_notification-high');
+            LabelNotification.innerHTML = label.notifications.amount;
+        } else {
+            LabelElement.classList.add('three-clovis-label_notification-low');
+        }
+    }
+
 
     if (label.selected === true) {
         // TODO: uncomment this to open the viewer with selected task
@@ -122,6 +136,8 @@ function createDiv(label, LabelContainer) {
     }
 
     LabelElement.innerHTML = `${label._id}`.substring(0, Math.floor(Math.random() * 3) + 1);
+
+    LabelElement.appendChild(LabelNotification);
 
     LabelContainer.appendChild(LabelElement);
     return LabelElement;
