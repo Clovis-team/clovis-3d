@@ -79,21 +79,21 @@ export const createHorizontalSectionButton = (ButtonsContainer, { HorizontalSect
     };
 
     // This includes and Easter Egg / Let the devtools appear holding the CrossSectionButton
-    let timeout_id = 0;
-    const hold_time = 1500;
+    // let timeout_id = 0;
+    // const hold_time = 1500;
+    // addEventListeners(
+    //     HorizontalSectionButton,
+    //     'touchstart mousedown',
+    //     () => {
+    //         timeout_id = setTimeout(Controllers.toggleDevTools, hold_time);
+    //     },
+    // );
     addEventListeners(
         HorizontalSectionButton,
-        'touchstart mousedown',
-        () => {
-            timeout_id = setTimeout(Controllers.toggleDevTools, hold_time);
-        },
-    );
-    addEventListeners(
-        HorizontalSectionButton,
-        'mouseup touchend',
+        'click',
         () => {
             toggleHorizontalCutButton();
-            clearTimeout(timeout_id);
+            // clearTimeout(timeout_id);
         },
     );
 
