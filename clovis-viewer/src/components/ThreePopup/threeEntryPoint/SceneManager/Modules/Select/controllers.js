@@ -41,7 +41,7 @@ function UserSelection({
 
 // Click controller
 export function onDocumentMouseClick({
-    event, mouse, canvas, camera, scene, buildingDatas, raycaster, objSel, SelectOptions, renderer, modulesObject
+    event, mouse, canvas, camera, scene, buildingDatas, raycaster, objSel, SelectOptions, renderer, modulesObject,
 }) {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -56,15 +56,13 @@ export function onDocumentMouseClick({
 
 // Touch controller
 export function onDocumentTouchEnd({
-    event, mouse, canvas, camera, scene, buildingDatas, raycaster, objSel, SelectOptions, renderer, modulesObject
+    event, mouse, canvas, camera, scene, buildingDatas, raycaster, objSel, SelectOptions, renderer, modulesObject,
 }) {
     mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
     const hitPoint = getHitPoint(raycaster, buildingDatas, modulesObject);
-
-    console.log("TOUCH!")
 
     UserSelection({
         hitPoint, objSel, canvas, scene, camera, SelectOptions, renderer,
