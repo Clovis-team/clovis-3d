@@ -69,6 +69,7 @@ export default function Listeners({
                 objSel,
                 SelectOptions,
                 renderer,
+                modulesObject, 
             });
         }
     }, false);
