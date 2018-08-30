@@ -65,16 +65,16 @@ export function removeSelectionMenu(objSel) {
     objSel.div = null;
 }
 
-export function getHitPoint(raycaster, buildingDatas, scene, modulesObject) {
+export function getHitPoint(raycaster, buildingDatas, modulesObject) {
     // const intersects = raycaster.intersectObject(scene, true);
     const intersects = raycaster.intersectObjects(buildingDatas.mesh_all);
 
     if (intersects.length > 0) {
-        if (modulesObject &&
-            modulesObject.HorizontalSection &&
-            modulesObject.HorizontalSection.splittingPlane
-        ){
-            const keyArray = intersects.map(function(item) { return item["object"]; });
+        if (modulesObject
+            && modulesObject.HorizontalSection
+            && modulesObject.HorizontalSection.splittingPlane
+        ) {
+            const keyArray = intersects.map( (item) =>{ return item["object"]; });
             if (keyArray.includes(modulesObject.HorizontalSection.splittingPlane) ) {
                 const i = keyArray.indexOf(modulesObject.HorizontalSection.splittingPlane);
                 return intersects[i + 1];
