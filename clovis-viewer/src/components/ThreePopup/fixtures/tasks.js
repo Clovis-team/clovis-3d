@@ -78,7 +78,7 @@ export default function generateTasks() {
             y: 20,
             z: 70,
         },
-        selected: true,
+        selected: false,
         linked_object: {
             uuid: '89768767b827ec005000765756',
             name: 'IfcStephenHawking',

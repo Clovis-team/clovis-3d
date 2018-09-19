@@ -1,23 +1,29 @@
 import virtualJoystick from './VirtualJoystick';
 import populateGuiWalking from './gui';
 
-function walk({ scene, camera, controls }) {
+function walk({
+    scene, camera, controls, buildingDatas,
+}) {
     // if not enabled doesnt move
     this.enabled = true;
     this.movementSpeed = 10; // units per second
     this.yMovements = false;
     this.up = new THREE.Vector3(0, 1, 0);
     this.walkingSwitch = false;
+    this.nearObjectWalkingMode = false;
+    this.nearObjectWalkingModeEnabled = true;
     // key true or false movements
-    let moveForward = false;
-    let moveBackward = false;
-    let moveLeft = false;
-    let moveRight = false;
-    let moveUp = false;
-    let moveDown = false;
-    // time stuff
-    let t0 = 0;
-    let delta = 0;
+    const movement = {
+        Forward: false,
+        Backward: false,
+        Left: false,
+        Right: false,
+        Up: false,
+        Down: false,
+    };
+
+    const raycaster = new THREE.Raycaster();
+
 
     // vector for
     const camVector = new THREE.Vector3();
@@ -25,29 +31,31 @@ function walk({ scene, camera, controls }) {
     const joystickMovementVector = new THREE.Vector3();
     const distanceToTarget = new THREE.Vector3();
 
+    // for normal keyboards
+    const matchWASD = {
+        w: 'Forward',
+        s: 'Backward',
+        a: 'Left',
+        d: 'Right',
+        r: 'Up',
+        f: 'Down',
+    };
+    // for french keyboards
+    const matchESDF = {
+        e: 'Forward',
+        d: 'Backward',
+        s: 'Left',
+        f: 'Right',
+        t: 'Up',
+        g: 'Down',
+    };
+
     const keyDown = (event) => {
-        switch (event.keyCode) {
-        case 69: /* E */ moveForward = true; break;
-        case 83: /* S */ moveLeft = true; break;
-        case 68: /* D */ moveBackward = true; break;
-        case 70: /* F */ moveRight = true; break;
-        case 84: /* T */ moveUp = true; break;
-        case 71: /* G */ moveDown = true; break;
-        default: break;
-        }
-        // move(1);
+        movement[matchWASD[event.key]] = true;
     };
 
     const keyUp = (event) => {
-        switch (event.keyCode) {
-        case 69: /* E */ moveForward = false; break;
-        case 83: /* S */ moveLeft = false; break;
-        case 68: /* D */ moveBackward = false; break;
-        case 70: /* F */ moveRight = false; break;
-        case 84: /* T */ moveUp = false; break;
-        case 71: /* G */ moveDown = false; break;
-        default: break;
-        }
+        movement[matchWASD[event.key]] = false;
     };
 
     const move = (actualMoveSpeed) => {
@@ -67,27 +75,27 @@ function walk({ scene, camera, controls }) {
         verticalSpeedVector.copy(this.up);
         verticalSpeedVector.multiplyScalar(actualMoveSpeed);
 
-        if (moveForward) {
+        if (movement.Forward) {
             camera.position.add(camVector);
             controls.target.add(camVector);
         }
-        if (moveBackward) {
+        if (movement.Backward) {
             camera.position.sub(camVector);
             controls.target.sub(camVector);
         }
-        if (moveLeft) {
+        if (movement.Left) {
             camera.position.add(leftRigthVector);
             controls.target.add(leftRigthVector);
         }
-        if (moveRight) {
+        if (movement.Right) {
             camera.position.sub(leftRigthVector);
             controls.target.sub(leftRigthVector);
         }
-        if (moveUp) {
+        if (movement.Up) {
             camera.position.add(verticalSpeedVector);
             controls.target.add(verticalSpeedVector);
         }
-        if (moveDown) {
+        if (movement.Down) {
             camera.position.sub(verticalSpeedVector);
             controls.target.sub(verticalSpeedVector);
         }
@@ -119,14 +127,6 @@ function walk({ scene, camera, controls }) {
         controls.target.add(SpeedVector);
     };
 
-    const addListener = (Dom) => {
-        Dom.addEventListener('keydown', keyDown, false);
-        Dom.addEventListener('keyup', keyUp, false);
-    };
-
-    const removeGuiFolder = (gui, folder) => {
-        gui.removeFolder(folder);
-    };
 
     // EXTERNAL METHODS
 
@@ -136,23 +136,50 @@ function walk({ scene, camera, controls }) {
         removeGuiFolder(window.gui, walkingUI);
     };
 
-    this.update = (elapsed) => {
+    this.update = (delta) => {
         if (this.enabled === false) {
             console.log('movements not enabled');
             return;
         }
-        delta = elapsed - t0;
-        t0 = elapsed;
 
         const actualMoveSpeed = delta * this.movementSpeed;
 
         move(actualMoveSpeed);
         moveByJoystickVector(actualMoveSpeed);
+
+        if (this.nearObjectWalkingModeEnabled) {
+            nearObjectWalkingMode(raycaster, controls, camera, buildingDatas);
+        }
     };
 
-    addListener(window);
+    addListener(window, keyDown, keyUp);
     const guiFolder = populateGuiWalking(this, window.gui, camera, controls);
     virtualJoystick(joystickMovement);
 }
+
+const nearObjectWalkingMode = (raycaster, controls, camera, buildingDatas) => {
+    raycaster.setFromCamera({ x: 0, y: 0 }, camera);
+    const intersects = raycaster.intersectObjects(buildingDatas.mesh_all);
+    if (intersects.length) {
+        if (intersects[0].distance < 5 && !this.nearObjectWalkingMode) {
+            controls.target.copy(camera.position.clone().add(raycaster.ray.direction.multiplyScalar(0.1)));
+            this.nearObjectWalkingMode = true;
+        }
+    }
+    if (this.nearObjectWalkingMode && camera.position.distanceTo(controls.target) > 0.11) {
+        controls.target.copy(camera.position.clone().add(raycaster.ray.direction.multiplyScalar(20)));
+        this.nearObjectWalkingMode = false;
+    }
+};
+
+const addListener = (Dom, keyDown, keyUp) => {
+    Dom.addEventListener('keydown', keyDown, false);
+    Dom.addEventListener('keyup', keyUp, false);
+};
+
+const removeGuiFolder = (gui, folder) => {
+    gui.removeFolder(folder);
+};
+
 
 export default walk;

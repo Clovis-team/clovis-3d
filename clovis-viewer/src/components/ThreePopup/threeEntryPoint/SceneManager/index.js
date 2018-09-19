@@ -20,9 +20,10 @@ const SceneManager = (canvas, InitializedScene, ViewerOptions) => {
      */
     function update() {
         // update sceneSubjects every cycle
-        const elapsedTime = clock.getElapsedTime();
+        const delta = clock.getDelta();
         for (let i = 0; i < modulesArray.length; i += 1) {
-            modulesArray[i].update(elapsedTime);
+            modulesArray[i].update(delta);
+            // TODO: add away to track the impact of every singel module on performance
         }
         // required if controls.enableDamping or controls.autoRotate are set to true
         controls.update();
