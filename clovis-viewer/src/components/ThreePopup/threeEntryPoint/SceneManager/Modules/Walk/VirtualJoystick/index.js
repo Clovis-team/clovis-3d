@@ -7,7 +7,7 @@ import nipplejs from 'nipplejs';
  * https://www.npmjs.com/package/nipplejs
  * @param {*} walkingModule Clovis Walking module for threejs
  */
-const VirtualJoystick = (joystickMovement) => {
+const VirtualJoystick = (joystickMovement, joystickRising) => {
     const ClovisViewerContainer = document.getElementById('clovis-viewer-container');
 
     const joystick1DomContainer = document.createElement('div');
@@ -50,39 +50,45 @@ const VirtualJoystick = (joystickMovement) => {
 
     // SECOND JOYSTICK
 
-    // const joystick2DomContainer = document.createElement('div');
-    // joystick2DomContainer.id = 'joystick2-container';
-    // ClovisViewerContainer.appendChild(joystick2DomContainer);
+    const joystick2DomContainer = document.createElement('div');
+    joystick2DomContainer.id = 'joystick2-container';
+    ClovisViewerContainer.appendChild(joystick2DomContainer);
 
-    // const joystick2_options = {
-    //     zone: joystick2DomContainer,
-    //     mode: 'static',
-    //     position: {
-    //         right: '8rem',
-    //         bottom: '8rem',
-    //     },
-    //     color: '#00b16a',
-    //     lockY: true,
-    //     threshold: 0.2,
-    // };
+    const joystick2_options = {
+        zone: joystick2DomContainer,
+        mode: 'static',
+        position: {
+            right: '8rem',
+            bottom: '8rem',
+        },
+        color: '#00b16a',
+        lockY: true,
+        threshold: 0.2,
+    };
     // Up and Down Joystick
-    // const joystick2 = nipplejs.create(joystick2_options);
-    // joystick2
-    //     .on('dir:up dir:down', (evt) => {
-    //         switch (evt.type) {
-    //         case 'dir:up':
-    //             // moveUp = true;
-    //             break;
-    //         case 'dir:down':
-    //             // moveDown = true;
-    //             break;
-    //         default:
-    //             break;
-    //         }
-    //     })
-    //     .on('end', () => {
-    //         // stopMoving();
-    //     });
+    const joystick2 = nipplejs.create(joystick2_options);
+
+    const vector = new THREE.Vector3(0, 0, 0);
+    joystick2
+        .on('move', (evt, data) => {
+            // const vector = getVectorFromJoystick(data);
+            // joystickMovement(vector);
+            // console.log(controls.target);
+
+
+            if (data.direction && data.direction.y === 'up') {
+                vector.y = data.force;
+                joystickRising(vector);
+            } else if (data.direction && data.direction.y === 'down') {
+                vector.y = -data.force;
+                joystickRising(vector);
+            }
+        }).on('end', () => {
+            vector.y = 0;
+            joystickRising(vector);
+            // const emptyvector = new THREE.Vector3(0, 0, 0);
+            // joystickMovement(emptyvector);
+        });
 };
 
 

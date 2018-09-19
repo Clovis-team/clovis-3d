@@ -37,6 +37,7 @@ const Modules = (InitializedScene, canvas) => {
         }
     });
 
+    // TODO: add performance monitor of every module
 
     return { modulesObject, modulesArray };
 };
