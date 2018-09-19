@@ -29,6 +29,8 @@ function walk({
     const camVector = new THREE.Vector3();
     const leftRigthVector = new THREE.Vector3();
     const joystickMovementVector = new THREE.Vector3();
+    const joystickRiseVector = new THREE.Vector3();
+
     const distanceToTarget = new THREE.Vector3();
 
     // for normal keyboards
@@ -119,9 +121,21 @@ function walk({
         joystickMovementVector.copy(movementVector);
     };
 
+    const joystickRising = (risingVector) => {
+        joystickRiseVector.copy(risingVector);
+    };
+
+    const SpeedVector = new THREE.Vector3();
+
     const moveByJoystickVector = (actualMoveSpeed) => {
-        const SpeedVector = new THREE.Vector3();
         SpeedVector.copy(joystickMovementVector);
+        SpeedVector.multiplyScalar(actualMoveSpeed);
+        camera.position.add(SpeedVector);
+        controls.target.add(SpeedVector);
+    };
+
+    const riseByJoystickVector = (actualMoveSpeed) => {
+        SpeedVector.copy(joystickRiseVector);
         SpeedVector.multiplyScalar(actualMoveSpeed);
         camera.position.add(SpeedVector);
         controls.target.add(SpeedVector);
@@ -146,6 +160,7 @@ function walk({
 
         move(actualMoveSpeed);
         moveByJoystickVector(actualMoveSpeed);
+        riseByJoystickVector(actualMoveSpeed);
 
         if (this.nearObjectWalkingModeEnabled) {
             nearObjectWalkingMode(raycaster, controls, camera, buildingDatas);
@@ -154,7 +169,7 @@ function walk({
 
     addListener(window, keyDown, keyUp);
     const guiFolder = populateGuiWalking(this, window.gui, camera, controls);
-    virtualJoystick(joystickMovement);
+    virtualJoystick(joystickMovement, joystickRising);
 }
 
 const nearObjectWalkingMode = (raycaster, controls, camera, buildingDatas) => {
