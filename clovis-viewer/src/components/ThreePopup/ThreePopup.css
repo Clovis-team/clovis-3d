@@ -1,0 +1,41 @@
+.popup-viewer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: #22a7f0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-viewer-open {
+  display: flex;
+}
+
+.popup-close-button {
+  border-radius: 50%;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 3rem;
+  height: 3rem;
+  background-color: rgba(6, 13, 45, 0.05);
+  color: #060d2d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1.25rem;
+}
+
+.popup-close-button:hover {
+  background-color: rgba(6, 13, 45, 0.15);
+}
+
+.popup-close-button:active {
+  background-color: #22a7f0;
+  color: white;
+}

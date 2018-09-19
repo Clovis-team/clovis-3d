@@ -27,7 +27,6 @@ It visualize a gltf file and allow user to perform some basic tasks.
 ## Planned:
 -   think about touch events for mobile phone.
 -   add viusalization styles, transparency, wireframe, etc
--   reimplement function look at.
 -   better selecting management, object get colored on overlay
 -   walking mode
 -   switch between walking and orbit

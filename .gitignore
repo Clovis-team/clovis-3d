@@ -62,3 +62,11 @@ typings/
 
 #apple
 .DS_Store
+
+#3d file extension
+*.ifc
+*.gltf
+*.bin
+
+#webpack folder
+dist/
