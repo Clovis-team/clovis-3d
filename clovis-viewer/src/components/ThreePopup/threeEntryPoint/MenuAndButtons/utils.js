@@ -43,11 +43,15 @@ export const createToggleExplosionButton = (ButtonsContainer, { HorizontalSectio
 
     addEventListeners(
         ToggleExplosionButton,
-        'click, touchstart',
-        () => {
+        'click touchend',
+        (event) => {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            event.stopPropagation();
             toggleExplosionButton();
         },
     );
+
 
     ButtonsContainer
         .appendChild(ToggleExplosionButton)
@@ -94,12 +98,15 @@ export const createHorizontalSectionButton = (ButtonsContainer, { HorizontalSect
     // );
     addEventListeners(
         HorizontalSectionButton,
-        'click, touchstart',
-        () => {
+        'click touchend',
+        (event) => {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            event.stopPropagation();
             toggleHorizontalCutButton();
-            // clearTimeout(timeout_id);
         },
     );
+
 
     ButtonsContainer
         .appendChild(HorizontalSectionButton)
@@ -138,7 +145,10 @@ export const createHelpButton = (ButtonsContainer) => {
     addEventListeners(
         HelpButton,
         'click touchend',
-        () => {
+        (event) => {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            event.stopPropagation();
             createHelpPopup();
         },
     );
@@ -183,7 +193,10 @@ const createHelpPopup = () => {
     addEventListeners(
         ClosePopupButton,
         'click touchend',
-        () => {
+        (event) => {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            event.stopPropagation();
             closeHelpPopup();
         },
     );
@@ -201,7 +214,10 @@ const createHelpPopup = () => {
     addEventListeners(
         HelpOverlay,
         'mousedown touchend',
-        () => {
+        (event) => {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            event.stopPropagation();
             closeHelpPopup();
         },
     );

@@ -30,7 +30,10 @@ const createToggleMenuButton = (ButtonsContainer, getBuildingDatas) => {
     addEventListeners(
         ToggleMenuButton,
         'click touchend',
-        () => {
+        (event) => {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            event.stopPropagation();
             toggleViewerMenu();
             createMenu(
                 getBuildingDatas,
