@@ -41,9 +41,13 @@ export const createToggleExplosionButton = (ButtonsContainer, { HorizontalSectio
         }
     };
 
-    ToggleExplosionButton.addEventListener('click', () => {
-        toggleExplosionButton();
-    });
+    addEventListeners(
+        ToggleExplosionButton,
+        'click, touchstart',
+        () => {
+            toggleExplosionButton();
+        },
+    );
 
     ButtonsContainer
         .appendChild(ToggleExplosionButton)
@@ -90,7 +94,7 @@ export const createHorizontalSectionButton = (ButtonsContainer, { HorizontalSect
     // );
     addEventListeners(
         HorizontalSectionButton,
-        'click',
+        'click, touchstart',
         () => {
             toggleHorizontalCutButton();
             // clearTimeout(timeout_id);
