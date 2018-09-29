@@ -65,7 +65,8 @@ typings/
 
 #3d file extension
 *.ifc
-*.gltf
+*.gltf 
+!15-assimp.gltf
 *.bin
 
 #webpack folder

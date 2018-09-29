@@ -17,7 +17,7 @@ class ThreePopup extends Component {
         super(props);
         // this.buildingGltfPath = '/gltfs/Project1-assimp.gltf';
         // this.buildingGltfPath = 'https://s3-eu-west-1.amazonaws.com/clovis/15-assimp.gltf';
-        this.buildingGltfPath = '15-assimp.gltf';
+        this.buildingGltfPath = 'gltfs/15-assimp.gltf';
 
         this.ViewerOptions = {
             LocalizedNotes: generatedTasks(),
@@ -93,30 +93,30 @@ class ThreePopup extends Component {
         const popupClassName = `popup-viewer ${this.props.isViewerOpened ? 'popup-viewer-open' : ''}`;
 
         return (
-            <div
-                className={popupClassName}
-            id="popup-viewer"
-          >
+          <div
+              className={popupClassName}
+              id="popup-viewer"
+            >
 
-                <div
-                    className="popup-close-button"
-                    onClick={e => this.props.OnViewerClose()}
-              >
+              <div
+                  className="popup-close-button"
+                  onClick={e => this.props.OnViewerClose()}
+                >
                 ✕
-              </div>
+                </div>
 
-                { this.props.isViewerOpened
+              { this.props.isViewerOpened
                     ? (
-                        <div
-                            ref={element => this.threeRootElement = element}
-                            className="clovis-3d-viewer-container"
-                            id="clovis-viewer-container"
-                      />
+                      <div
+                          ref={element => this.threeRootElement = element}
+                          className="clovis-3d-viewer-container"
+                          id="clovis-viewer-container"
+                        />
                     )
                     : 'Loading Viewer...'
                 }
 
-          </div>
+            </div>
         );
     }
 }
