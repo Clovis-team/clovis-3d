@@ -16,6 +16,7 @@ class ThreePopup extends Component {
     constructor(props) {
         super(props);
         // this.buildingGltfPath = '/gltfs/Project1-assimp.gltf';
+        // this.buildingGltfPath = 'https://s3-eu-west-1.amazonaws.com/clovis/15-assimp.gltf';
         this.buildingGltfPath = 'gltfs/15-assimp.gltf';
 
         this.ViewerOptions = {
