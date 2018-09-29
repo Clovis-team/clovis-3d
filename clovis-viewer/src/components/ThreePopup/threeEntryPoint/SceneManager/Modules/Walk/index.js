@@ -53,11 +53,11 @@ function walk({
     };
 
     const keyDown = (event) => {
-        movement[matchWASD[event.key]] = true;
+        movement[matchESDF[event.key]] = true;
     };
 
     const keyUp = (event) => {
-        movement[matchWASD[event.key]] = false;
+        movement[matchESDF[event.key]] = false;
     };
 
     const move = (actualMoveSpeed) => {
