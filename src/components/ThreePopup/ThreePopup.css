@@ -16,6 +16,7 @@
 }
 
 .popup-close-button {
+  display: none;
   border-radius: 50%;
   position: absolute;
   top: 0.5rem;
