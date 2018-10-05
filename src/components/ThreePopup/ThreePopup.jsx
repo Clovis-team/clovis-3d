@@ -64,6 +64,10 @@ class ThreePopup extends Component {
                     active: true,
                     options: {},
                 },
+                GoTo: {
+                    active: true,
+                    options: {},
+                },
             },
             Background: {
                 // Type could also be 3d model

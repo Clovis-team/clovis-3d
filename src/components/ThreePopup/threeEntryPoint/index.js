@@ -26,7 +26,7 @@ const ThreeEntryPoint = (ThreeDomContainer, buildingGltfPath, ViewerOptions) => 
     // its a function that loops 60 times per second ideally
     function render() {
         // TODO: look into stop running when browser on blur https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
-        // FrameRequestCallback. calls the render when window is active
+        // FrameRequestCallback. calls the render when the tab is active ( even if browser on background)
         requestAnimationFrame(render);
         devTools.stats.update();
         // renders the frame and updates the controls and sceneSubjects

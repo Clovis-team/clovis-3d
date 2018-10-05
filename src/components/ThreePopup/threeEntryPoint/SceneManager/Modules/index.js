@@ -3,6 +3,7 @@ import Select from './Select';
 import HorizontalSection from './Cut';
 import Explosion from './Explosion';
 import Label from './Label';
+import GoTo from './GoTo';
 
 const Modules = (InitializedScene, canvas) => {
     const {
@@ -25,6 +26,7 @@ const Modules = (InitializedScene, canvas) => {
         HorizontalSection,
         Explosion,
         Label,
+        GoTo,
     };
 
     Object.keys(ViewerOptions.Modules).forEach((element) => {
